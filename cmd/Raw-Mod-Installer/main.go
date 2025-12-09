@@ -6,6 +6,10 @@ import (
 	"os"
 
 	"github.com/w1lam/Packages/pkg/fabric"
+	"github.com/w1lam/Raw-Mod-Installer/internal/download"
+	"github.com/w1lam/Raw-Mod-Installer/internal/features"
+	"github.com/w1lam/Raw-Mod-Installer/internal/menu"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
 const mcVersion = "1.21.10"
@@ -17,7 +21,7 @@ func main() {
 	//
 	// ------------------------------------
 	fmt.Printf("Raw Mod Installer\n")
-	ver, err2 := GetRemoteVersion(ModListURL)
+	ver, err2 := features.GetRemoteVersion(paths.ModListURL)
 	if err2 != nil {
 		log.Fatal(err2)
 	}
@@ -44,7 +48,7 @@ func main() {
 		fmt.Printf("Would you like to install Fabric now? Press Y / N to Continue\n")
 
 		// Get User Input
-		switch input, err := UserInput(); input {
+		switch input, err := menu.UserInput(); input {
 		case true:
 			fmt.Printf("Downloading Fabric Installer...\n")
 			installerPth, err := fabric.GetLatestFabricInstallerJar()
@@ -70,7 +74,7 @@ func main() {
 		fmt.Printf("Would you like to install the latest version? Press Y / N to Continue")
 
 		// Get User Input
-		switch input, err := UserInput(); input {
+		switch input, err := menu.UserInput(); input {
 		case true:
 			fmt.Printf("Downloading Fabric Installer...\n")
 			installerPth, err := fabric.GetLatestFabricInstallerJar()
@@ -106,37 +110,37 @@ func main() {
 	// ------------------------------------
 	for {
 		// Get Program State
-		switch programState, err := GetState(); programState {
+		switch programState, err := menu.GetState(); programState {
 		case 0:
 			if err != nil {
 				log.Fatal(err)
 			}
 
 		// Mods Not Installed State Menu
-		case StateNotInstalled:
+		case menu.StateNotInstalled:
 
-			switch input, err := UserInput(); input {
+			switch input, err := menu.UserInput(); input {
 			case true:
 				// Download Mods in Temp Folder
-				err := DownloadMods(ModListURL, "mods")
+				err := download.DownloadMods(paths.ModListURL, "mods")
 				if err != nil {
 					log.Fatal(err)
 				}
 
 				// Backup Existing Mods
-				err1 := BackupModFolder()
+				err1 := features.BackupModFolder()
 				if err1 != nil {
 					log.Fatal(err1)
 				}
 
 				// Move Temp Download to Mods Folder
-				err2 := os.Rename(TempModDownloadPath, ModFolderPath)
+				err2 := os.Rename(paths.TempModDownloadPath, paths.ModFolderPath)
 				if err2 != nil {
 					log.Fatal(err2)
 				}
 
 				fmt.Printf("\n\nPress ESC or Q to Exit")
-				_, err3 := UserInput()
+				_, err3 := menu.UserInput()
 				if err3 != nil {
 					log.Fatal(err3)
 				}
@@ -147,39 +151,39 @@ func main() {
 				}
 
 				fmt.Printf("\nBruh u Deadass\n\nPress ESC or Q to Exit")
-				_, err := UserInput()
+				_, err := menu.UserInput()
 				if err != nil {
 					log.Fatal(err)
 				}
 			}
 
 		// Mods Update Found State Menu
-		case StateUpdateFound:
+		case menu.StateUpdateFound:
 
 			fmt.Printf("\n\nMods update found. Would you like to update them? Press Y / N to Continue")
 
-			switch input, err := UserInput(); input {
+			switch input, err := menu.UserInput(); input {
 			case true:
 				// Download Mods in Temp Folder
-				err := DownloadMods(ModListURL, "mods")
+				err := download.DownloadMods(paths.ModListURL, "mods")
 				if err != nil {
 					log.Fatal(err)
 				}
 
 				// Uninstall Existing Mods
-				err1 := UninstallMods()
+				err1 := features.UninstallMods()
 				if err1 != nil {
 					log.Fatal(err1)
 				}
 
 				// Move Temp Download to Mods Folder
-				err2 := os.Rename(TempModDownloadPath, ModFolderPath)
+				err2 := os.Rename(paths.TempModDownloadPath, paths.ModFolderPath)
 				if err2 != nil {
 					log.Fatal(err2)
 				}
 
 				fmt.Printf("\n\nPress ESC or Q to Exit")
-				_, err3 := UserInput()
+				_, err3 := menu.UserInput()
 				if err3 != nil {
 					log.Fatal(err3)
 				}
@@ -190,33 +194,33 @@ func main() {
 				}
 
 				fmt.Printf("\nBruh u Deadass\n\nPress ESC or Q to Exit")
-				_, err := UserInput()
+				_, err := menu.UserInput()
 				if err != nil {
 					log.Fatal(err)
 				}
 
 			}
 		// Mods Up to Date State Menu
-		case StateUpToDate:
+		case menu.StateUpToDate:
 			fmt.Printf("\n\n Mods are up to date. Would you like to uninstall them? Press Y / N to Continue")
 
-			switch input, err := UserInput(); input {
+			switch input, err := menu.UserInput(); input {
 			case true:
 				fmt.Printf("\n Uninstalling Mods...")
 
-				err := UninstallMods()
+				err := features.UninstallMods()
 				if err != nil {
 					log.Fatal(err)
 				}
 
-				err1 := RestoreModBackup()
+				err1 := features.RestoreModBackup()
 				if err1 != nil {
 					log.Fatal(err1)
 				}
 
 				fmt.Printf("\n Mods Uninstalled Successfully!")
 				fmt.Printf("\n\n Press ESC or Q to Exit")
-				_, err2 := UserInput()
+				_, err2 := menu.UserInput()
 				if err2 != nil {
 					log.Fatal(err2)
 				}
@@ -227,7 +231,7 @@ func main() {
 				}
 
 				fmt.Printf("\n\n Press ESC or Q to Exit")
-				_, err1 := UserInput()
+				_, err1 := menu.UserInput()
 				if err1 != nil {
 					log.Fatal(err1)
 				}
