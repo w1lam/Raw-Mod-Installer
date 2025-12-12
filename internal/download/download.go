@@ -8,8 +8,8 @@ import (
 	"sync"
 
 	"github.com/w1lam/Packages/pkg/dl"
+	"github.com/w1lam/Packages/pkg/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/features"
-	"github.com/w1lam/Raw-Mod-Installer/internal/fetch"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
@@ -81,13 +81,13 @@ func DownloadMods(listURL string, fopts string) error {
 	}
 
 	fmt.Printf("Parsing Mod List...\n")
-	parsedList, err := fetch.ParseModList(slugList)
+	parsedList, err := modrinth.ParseModList(slugList)
 	if err != nil {
 		return err
 	}
 
 	fmt.Printf("Fetching Download URLs...\n")
-	fetchedURLs, err := fetch.FetchAllConcurrent(parsedList, "1.21.10", fetch.SimpleProgress)
+	fetchedURLs, err := modrinth.FetchAllConcurrent(parsedList, "1.21.10", modrinth.SimpleProgress)
 	if err != nil {
 		return err
 	}

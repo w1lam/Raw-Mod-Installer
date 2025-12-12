@@ -63,7 +63,19 @@ func GetLocalVersion() string {
 
 // Mod Backup and Restore Functions
 
+var Timestamp = new(string)
+
 func BackupModFolder() error {
+	*Timestamp = time.Now().Format("20060102150405")
+
+	err := os.Rename(paths.ModFolderPath, paths.ModBackupPath)
+	if err != nil {
+		err1 := os.Rename(paths.ModFolderPath, paths.ModBackupPath+"_"+*Timestamp)
+		if err1 != nil {
+			return err1
+		}
+	}
+
 	if _, err := os.Stat(paths.ModFolderPath); err == nil {
 		if _, err2 := os.Stat(paths.ModBackupPath); err2 == nil {
 			timestamp := time.Now().Format("20060102150405")
@@ -91,7 +103,11 @@ func BackupModFolder() error {
 func RestoreModBackup() error {
 	err := os.Rename(paths.ModBackupPath, paths.ModFolderPath)
 	if err != nil {
-		return fmt.Errorf("failed to restore backup mods: %v", err)
+
+		err1 := os.Rename(paths.ModBackupPath+"_"+*Timestamp, paths.ModFolderPath)
+		if err1 != nil {
+			return fmt.Errorf("failed to restore backup mods: %v\n %v", err, err1)
+		}
 	}
 	return nil
 }

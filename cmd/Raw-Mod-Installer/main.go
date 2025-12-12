@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/w1lam/Packages/pkg/fabric"
 	"github.com/w1lam/Raw-Mod-Installer/internal/download"
@@ -14,7 +15,29 @@ import (
 
 const mcVersion = "1.21.10"
 
+// NOTES:
+// Add independent mod update checking and updating and only update mods that have new versions
+// Add ModInstallerProgram version to mod-list.txt and check for program updates
+// Print mod list info to README.txt or a separate MODLIST-INFO.txt file
+// Merge README and ver.txt and mod-list into one file that contains all information about versions and mod list info
+// Keep catgegory names from mod list and print them in mod info list
+// Verify installed mods?
+// !!!!!!Fix Fabric installer detection to check for exact version match instead of just latest version!!!!!! IMPORTANT
+
 func main() {
+	// TEMP TESTING CODE
+
+	fabVer, err0 := fabric.GetLatestLocalFabricVersion(mcVersion)
+	if err0 != nil {
+		log.Fatal(err0)
+	}
+	fmt.Printf("Latest Fabric Loader Version for MC %s: %s\n", mcVersion, fabVer)
+	//	err := menu.PrintModInfoList(paths.ModListURL)
+	//	if err != nil {
+	//		log.Fatal(err)
+	//	}
+	time.Sleep(5 * time.Hour)
+
 	// ------------------------------------
 	//
 	// Program Intro
@@ -28,7 +51,13 @@ func main() {
 
 	// Display Mod List Version
 	fmt.Printf("Mod List Version: %s\n", ver)
-	fmt.Printf("\nAt any point Press Q or ESC to Exit.\n")
+
+	fmt.Printf("\nAt any point Press Q or ESC to Exit.\n\n")
+	fmt.Printf("Press Enter to Continue or Press I for Mod List Info.\n")
+	err := menu.InitInput()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Check Fabric version and install if req
 	fmt.Print("Checking Fabric version...\n")
@@ -49,8 +78,8 @@ func main() {
 
 		// Get User Input
 		switch input, err := menu.UserInput(); input {
-		case true:
-			fmt.Printf("Downloading Fabric Installer...\n")
+		case "yes":
+			fmt.Printf("\nDownloading Fabric Installer...\n")
 			installerPth, err := fabric.GetLatestFabricInstallerJar()
 			if err != nil {
 				log.Fatal(err)
@@ -61,8 +90,9 @@ func main() {
 			if err1 != nil {
 				log.Fatal(err1)
 			}
+			fmt.Printf("Fabric Installed Successfully!\n")
 
-		case false:
+		case "no":
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -70,13 +100,13 @@ func main() {
 		}
 
 	case "updateFound":
-		fmt.Printf("New Version of Fabric Found: %s\n", ver)
-		fmt.Printf("Would you like to install the latest version? Press Y / N to Continue")
+		fmt.Printf("New Version of Fabric Found\n")
+		fmt.Printf("Would you like to install the latest version? Press Y / N to Continue\n")
 
 		// Get User Input
 		switch input, err := menu.UserInput(); input {
-		case true:
-			fmt.Printf("Downloading Fabric Installer...\n")
+		case "yes":
+			fmt.Printf("\nDownloading Fabric Installer...\n")
 			installerPth, err := fabric.GetLatestFabricInstallerJar()
 			if err != nil {
 				log.Fatal(err)
@@ -87,8 +117,9 @@ func main() {
 			if err1 != nil {
 				log.Fatal(err1)
 			}
+			fmt.Printf("Fabric Updated Successfully!\n")
 
-		case false:
+		case "no":
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -119,8 +150,10 @@ func main() {
 		// Mods Not Installed State Menu
 		case menu.StateNotInstalled:
 
+			fmt.Printf("\n\nMods are not installed. Would you like to install them? Press Y / N to Continue")
+
 			switch input, err := menu.UserInput(); input {
-			case true:
+			case "yes":
 				// Download Mods in Temp Folder
 				err := download.DownloadMods(paths.ModListURL, "mods")
 				if err != nil {
@@ -145,7 +178,7 @@ func main() {
 					log.Fatal(err3)
 				}
 
-			case false:
+			case "no":
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -163,7 +196,7 @@ func main() {
 			fmt.Printf("\n\nMods update found. Would you like to update them? Press Y / N to Continue")
 
 			switch input, err := menu.UserInput(); input {
-			case true:
+			case "yes":
 				// Download Mods in Temp Folder
 				err := download.DownloadMods(paths.ModListURL, "mods")
 				if err != nil {
@@ -188,7 +221,7 @@ func main() {
 					log.Fatal(err3)
 				}
 
-			case false:
+			case "no":
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -202,10 +235,10 @@ func main() {
 			}
 		// Mods Up to Date State Menu
 		case menu.StateUpToDate:
-			fmt.Printf("\n\n Mods are up to date. Would you like to uninstall them? Press Y / N to Continue")
+			fmt.Printf("\nMods are up to date. Would you like to uninstall them? Press Y / N to Continue")
 
 			switch input, err := menu.UserInput(); input {
-			case true:
+			case "yes":
 				fmt.Printf("\n Uninstalling Mods...")
 
 				err := features.UninstallMods()
@@ -218,19 +251,19 @@ func main() {
 					log.Fatal(err1)
 				}
 
-				fmt.Printf("\n Mods Uninstalled Successfully!")
-				fmt.Printf("\n\n Press ESC or Q to Exit")
+				fmt.Printf("\nMods Uninstalled Successfully!")
+				fmt.Printf("\n\nPress ESC or Q to Exit")
 				_, err2 := menu.UserInput()
 				if err2 != nil {
 					log.Fatal(err2)
 				}
 
-			case false:
+			case "no":
 				if err != nil {
 					log.Fatal(err)
 				}
 
-				fmt.Printf("\n\n Press ESC or Q to Exit")
+				fmt.Printf("\n\nPress ESC or Q to Exit")
 				_, err1 := menu.UserInput()
 				if err1 != nil {
 					log.Fatal(err1)
