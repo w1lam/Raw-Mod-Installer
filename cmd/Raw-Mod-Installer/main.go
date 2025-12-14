@@ -4,39 +4,35 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"github.com/w1lam/Packages/pkg/fabric"
-	"github.com/w1lam/Raw-Mod-Installer/internal/download"
+	"github.com/w1lam/Raw-Mod-Installer/internal/downloadmods"
 	"github.com/w1lam/Raw-Mod-Installer/internal/features"
 	"github.com/w1lam/Raw-Mod-Installer/internal/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
-
-const mcVersion = "1.21.10"
 
 // NOTES:
 // Add independent mod update checking and updating and only update mods that have new versions
 // Add ModInstallerProgram version to mod-list.txt and check for program updates
 // Print mod list info to README.txt or a separate MODLIST-INFO.txt file
 // Merge README and ver.txt and mod-list into one file that contains all information about versions and mod list info
-// Keep catgegory names from mod list and print them in mod info list
 // Verify installed mods?
-// !!!!!!Fix Fabric installer detection to check for exact version match instead of just latest version!!!!!! IMPORTANT
+// MENU system needs to be cleaned up and modularized more
 
 func main() {
 	// TEMP TESTING CODE
 
-	fabVer, err0 := fabric.GetLatestLocalFabricVersion(mcVersion)
-	if err0 != nil {
-		log.Fatal(err0)
-	}
-	fmt.Printf("Latest Fabric Loader Version for MC %s: %s\n", mcVersion, fabVer)
-	//	err := menu.PrintModInfoList(paths.ModListURL)
-	//	if err != nil {
-	//		log.Fatal(err)
+	//modInfoList, errM := modrinth.FetchModInfoList(paths.ModListURL, 10)
+	//if errM != nil {
+	//	log.Fatal(errM)
+	//}
+	//
+	//	err0 := menu.PrintModInfoList(modInfoList)
+	//	if err0 != nil {
+	//		log.Fatal(err0)
 	//	}
-	time.Sleep(5 * time.Hour)
+	//	time.Sleep(5 * time.Hour)
 
 	// ------------------------------------
 	//
@@ -61,7 +57,7 @@ func main() {
 
 	// Check Fabric version and install if req
 	fmt.Print("Checking Fabric version...\n")
-	fabricState, err := fabric.CheckFabricVersions(mcVersion)
+	fabricState, err := fabric.CheckFabricVersions(paths.McVersion)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -86,7 +82,7 @@ func main() {
 			}
 
 			fmt.Printf("Installing Fabric...\n")
-			err1 := fabric.RunFabricInstaller(installerPth, mcVersion)
+			err1 := fabric.RunFabricInstaller(installerPth, paths.McVersion)
 			if err1 != nil {
 				log.Fatal(err1)
 			}
@@ -113,7 +109,7 @@ func main() {
 			}
 
 			fmt.Printf("Installing New Fabric Vernsion...\n")
-			err1 := fabric.RunFabricInstaller(installerPth, mcVersion)
+			err1 := fabric.RunFabricInstaller(installerPth, paths.McVersion)
 			if err1 != nil {
 				log.Fatal(err1)
 			}
@@ -155,7 +151,7 @@ func main() {
 			switch input, err := menu.UserInput(); input {
 			case "yes":
 				// Download Mods in Temp Folder
-				err := download.DownloadMods(paths.ModListURL, "mods")
+				err := downloadmods.DownloadMods(paths.ModListURL, "mods")
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -198,7 +194,7 @@ func main() {
 			switch input, err := menu.UserInput(); input {
 			case "yes":
 				// Download Mods in Temp Folder
-				err := download.DownloadMods(paths.ModListURL, "mods")
+				err := downloadmods.DownloadMods(paths.ModListURL, "mods")
 				if err != nil {
 					log.Fatal(err)
 				}
