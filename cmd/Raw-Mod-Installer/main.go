@@ -17,8 +17,7 @@ import (
 
 // NOTES:
 // Add independent mod update checking and updating and only update mods that have new versions
-// Add ModInstallerProgram version to mod-list.txt and check for program updates
-// Print mod list info to README.txt or a separate MODLIST-INFO.txt file
+// Add version checking for program updates
 // Merge README and ver.txt and mod-list into one file that contains all information about versions and mod list info
 // Verify installed mods?
 // MENU system needs to be cleaned up and modularized more
