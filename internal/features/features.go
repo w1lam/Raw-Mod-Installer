@@ -6,11 +6,27 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
+
+func WriteVersionFile(path, version string) error {
+	// Ensure parent dir exists
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return err
+	}
+
+	// Write atomically
+	tmp := path + ".tmp"
+	if err := os.WriteFile(tmp, []byte(version), 0o644); err != nil {
+		return err
+	}
+
+	return os.Rename(tmp, path)
+}
 
 func CheckForModlistUpdate() (bool, error) {
 	if _, err := os.Stat(paths.VerFilePath); err == nil {

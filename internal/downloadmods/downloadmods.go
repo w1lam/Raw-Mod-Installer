@@ -4,6 +4,7 @@ package downloadmods
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"sync"
 
 	dl "github.com/w1lam/Packages/pkg/download"
@@ -35,7 +36,12 @@ func DisplayDownloadProgress(progressCh <-chan dl.Progress, fopts string, listUR
 
 	if failures == 0 {
 		version, _ := features.GetRemoteVersion(listURL)
-		os.WriteFile("ver.txt", []byte(version), 0o755)
+
+		err := os.WriteFile("ver.txt", []byte(version), 0o755)
+		if err != nil {
+			return
+		}
+
 		fmt.Printf("\n\nAll %d %s installed successfully! ✓", success, fopts)
 	} else {
 		fmt.Printf("\n\n%d %s failed to install! ✗ \n", failures, fopts)
@@ -104,7 +110,13 @@ func DownloadMods(listURL string, fopts string) error {
 
 		if failures == 0 {
 			version, _ := features.GetRemoteVersion(listURL)
-			os.WriteFile("ver.txt", []byte(version), 0o755)
+
+			err := features.WriteVersionFile(filepath.Join(paths.ModFolderPath, "ver.txt"), version)
+			if err != nil {
+				fmt.Printf("\n\nFailed to write version file: %v", err)
+				return
+			}
+
 			fmt.Printf("\n\nAll %d %s installed successfully! ✓", success, fopts)
 		} else {
 			fmt.Printf("\n\n%d %s failed to install! ✗ \n", failures, fopts)

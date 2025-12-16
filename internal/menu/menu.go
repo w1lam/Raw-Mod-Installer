@@ -19,7 +19,7 @@ func ExitProgram() {
 	os.Exit(0)
 }
 
-func PrintModInfoList(modInfoList []modrinth.ModInfo) error {
+func PrintModInfoList(modInfoList modrinth.ModInfoList) error {
 	fmt.Printf("\n\n\n\n\n\n\n\n\n")
 
 	fmt.Printf("MOD LIST INFO:\n\n")
@@ -135,7 +135,7 @@ func UserInput() (string, error) {
 	}
 }
 
-func InfoInput(modListInfo []modrinth.ModInfo) error {
+func InfoInput(modListInfo modrinth.ModInfoList) error {
 	if err := keyboard.Open(); err != nil {
 		return err
 	}
@@ -156,9 +156,7 @@ func InfoInput(modListInfo []modrinth.ModInfo) error {
 				return err
 			}
 
-			sortedByCategoryModInfoList := modrinth.SortModsByCategory(modListInfo)
-
-			err1 := PrintModInfoList(sortedByCategoryModInfoList)
+			err1 := PrintModInfoList(modListInfo.SortByCategory())
 			if err1 != nil {
 				return err1
 			}
@@ -171,9 +169,7 @@ func InfoInput(modListInfo []modrinth.ModInfo) error {
 				return err
 			}
 
-			sortedByNameModInfoList := modrinth.SortModsByName(modListInfo)
-
-			err1 := PrintModInfoList(sortedByNameModInfoList)
+			err1 := PrintModInfoList(modListInfo.SortByName())
 			if err1 != nil {
 				return err1
 			}

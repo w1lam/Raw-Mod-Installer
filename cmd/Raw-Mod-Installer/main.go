@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/w1lam/Packages/pkg/fabric"
+	"github.com/w1lam/Packages/pkg/modrinth"
+	"github.com/w1lam/Packages/pkg/tui"
 	"github.com/w1lam/Raw-Mod-Installer/internal/downloadmods"
 	"github.com/w1lam/Raw-Mod-Installer/internal/features"
 	"github.com/w1lam/Raw-Mod-Installer/internal/menu"
@@ -22,6 +25,41 @@ import (
 
 func main() {
 	// TEMP TESTING CODE
+	tui.ClearScreenRaw()
+
+	testMenu := tui.NewRawMenu("Test Menu", "This is a test menu.").AddButton(
+		"INFO",
+		"This is a test button.",
+		func() error {
+			fmt.Printf("Fetching Mod Info List...\n")
+			modInfoList, err := modrinth.FetchModInfoList(paths.ModListURL, 10)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("Writing Mod Info List README...\n")
+			err1 := modrinth.WriteModInfoListREADME(paths.ModFolderPath, modInfoList.SortByCategory())
+			if err1 != nil {
+				return err1
+			}
+
+			return nil
+		},
+		'i',
+	).AddButton(
+		"BITCH",
+		"This is a bitch button.",
+		func() error {
+			fmt.Printf("BITCH")
+			return nil
+		},
+		'b',
+	)
+	testMenu.RenderMenu()
+	errR := testMenu.GetInput()
+	if errR != nil {
+		log.Fatal(errR)
+	}
 
 	//modInfoList, errM := modrinth.FetchModInfoList(paths.ModListURL, 10)
 	//if errM != nil {
@@ -32,14 +70,16 @@ func main() {
 	//	if err0 != nil {
 	//		log.Fatal(err0)
 	//	}
-	//	time.Sleep(5 * time.Hour)
+	time.Sleep(5 * time.Hour)
 
 	// ------------------------------------
 	//
 	// Program Intro
 	//
 	// ------------------------------------
-	fmt.Printf("Raw Mod Installer\n")
+	fmt.Printf("-------------------\n")
+	fmt.Printf(" Raw Mod Installer \n")
+	fmt.Printf("-------------------\n")
 	ver, err2 := features.GetRemoteVersion(paths.ModListURL)
 	if err2 != nil {
 		log.Fatal(err2)
