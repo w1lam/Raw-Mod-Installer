@@ -19,11 +19,7 @@ func ExitProgram() {
 	os.Exit(0)
 }
 
-func PrintModInfoList(modInfoList modrinth.ModInfoList) error {
-	fmt.Printf("\n\n\n\n\n\n\n\n\n")
-
-	fmt.Printf("MOD LIST INFO:\n\n")
-
+func PrintModInfoList(modInfoList modrinth.ModInfoList) {
 	for _, modInfo := range modInfoList {
 		fmt.Printf(" * %s\n  ", modInfo.Title)
 
@@ -43,14 +39,6 @@ func PrintModInfoList(modInfoList modrinth.ModInfoList) error {
 			fmt.Printf("\n")
 		}
 	}
-	fmt.Printf("\n\nPress C to sort by Category, Press N to sort by Name.\n\nPress Enter to Continue...\n")
-
-	err1 := InfoInput(modInfoList)
-	if err1 != nil {
-		return err1
-	}
-
-	return nil
 }
 
 type State int
@@ -156,10 +144,7 @@ func InfoInput(modListInfo modrinth.ModInfoList) error {
 				return err
 			}
 
-			err1 := PrintModInfoList(modListInfo.SortByCategory())
-			if err1 != nil {
-				return err1
-			}
+			PrintModInfoList(modListInfo.SortByCategory())
 
 			return nil
 
@@ -169,10 +154,7 @@ func InfoInput(modListInfo modrinth.ModInfoList) error {
 				return err
 			}
 
-			err1 := PrintModInfoList(modListInfo.SortByName())
-			if err1 != nil {
-				return err1
-			}
+			PrintModInfoList(modListInfo.SortByName())
 
 			return nil
 
@@ -233,10 +215,7 @@ func InitInput() error {
 				return err0
 			}
 
-			err1 := PrintModInfoList(modInfoList)
-			if err1 != nil {
-				return err1
-			}
+			PrintModInfoList(modInfoList)
 
 			return nil
 

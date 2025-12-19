@@ -18,46 +18,122 @@ import (
 // NOTES:
 // Add independent mod update checking and updating and only update mods that have new versions
 // Add version checking for program updates
-// Merge README and ver.txt and mod-list into one file that contains all information about versions and mod list info
 // Verify installed mods?
-// MENU system needs to be cleaned up and modularized more
+// MENU system IS COMIN ALONG MF
+// FIX SORT BY CATEGORY
+
+var ModListInfo modrinth.ModInfoList
+
+var ver string
+
+// initiation
+func init() {
+	tui.ClearScreenRaw()
+
+	fmt.Printf("Starting Up...\n")
+
+	tui.SetProgramExitFunc(func() {
+		tui.ClearScreenRaw()
+		fmt.Printf("Exiting...")
+		time.Sleep(500 * time.Millisecond)
+		os.Exit(0)
+	})
+
+	fmt.Printf("Fetching Mod List Info...\n")
+
+	var err error
+	ModListInfo, err = modrinth.FetchModInfoList(paths.ModListURL, 10)
+	if err != nil {
+		fmt.Printf("Failed to fetch Mod Info List: %v\n", err)
+	}
+
+	var err1 error
+	ver, err1 = features.GetRemoteVersion(paths.ModListURL)
+	if err1 != nil {
+		log.Fatal(err1)
+	}
+}
+
+const (
+	MainMenu tui.CurrentMenu = iota
+	InfoMenu
+)
+
+var CurrentMenu tui.CurrentMenu
 
 func main() {
 	// TEMP TESTING CODE
-	tui.ClearScreenRaw()
 
-	testMenu := tui.NewRawMenu("Test Menu", "This is a test menu.").AddButton(
-		"INFO",
-		"This is a test button.",
-		func() error {
-			fmt.Printf("Fetching Mod Info List...\n")
-			modInfoList, err := modrinth.FetchModInfoList(paths.ModListURL, 10)
-			if err != nil {
-				return err
-			}
-
-			fmt.Printf("Writing Mod Info List README...\n")
-			err1 := modrinth.WriteModInfoListREADME(paths.ModFolderPath, modInfoList.SortByCategory())
-			if err1 != nil {
-				return err1
-			}
-
+	infoMenu := tui.NewRawMenu("Mod List Info", "Menu for Mod List Info").AddButton(
+		"C] Category",
+		"Press C to sort by Category.",
+		func(any) error {
+			tui.ClearScreenRaw()
+			menu.PrintModInfoList(ModListInfo.SortByCategory())
 			return nil
 		},
-		'i',
+		'c',
 	).AddButton(
-		"BITCH",
-		"This is a bitch button.",
-		func() error {
-			fmt.Printf("BITCH")
+		"N] Name",
+		"Press N to sort by Name.",
+		func(any) error {
+			tui.ClearScreenRaw()
+			menu.PrintModInfoList(ModListInfo.SortByName())
+			return nil
+		},
+		'n',
+	).AddButton(
+		"B] Back",
+		"Press B to go back to Main Menu.",
+		func(any) error {
+			CurrentMenu = MainMenu
 			return nil
 		},
 		'b',
 	)
-	testMenu.RenderMenu()
-	errR := testMenu.GetInput()
-	if errR != nil {
-		log.Fatal(errR)
+
+	mainMenu := tui.NewRawMenu("Main Menu", "This is the Main Menu.").AddButton(
+		"I] INFO",
+		"Press I to show Mod List Info.",
+		func(any) error {
+			CurrentMenu = InfoMenu
+			return nil
+		},
+		'i',
+	).AddButton(
+		"S] Start",
+		"Press S to start Installation.",
+		func(any) error {
+			return nil
+		},
+		'b',
+	)
+
+	// MAIN SYSTEM LOOP
+	for {
+		switch CurrentMenu {
+		case MainMenu:
+			tui.ClearScreenRaw()
+
+			fmt.Printf("MOD INSTALLER\n")
+			fmt.Printf("Mod List Version: %s\n\n", ver)
+
+			mainMenu.RenderMenu(60)
+
+			err := mainMenu.GetInput()
+			if err != nil {
+				log.Fatal(err)
+			}
+		case InfoMenu:
+			menu.PrintModInfoList(ModListInfo)
+
+			infoMenu.RenderMenu(60)
+
+			err := infoMenu.GetInput()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 	}
 
 	//modInfoList, errM := modrinth.FetchModInfoList(paths.ModListURL, 10)
