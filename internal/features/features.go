@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/w1lam/Packages/pkg/fetch"
+	"github.com/w1lam/Packages/pkg/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
@@ -49,6 +51,20 @@ func CheckForModlistUpdate() (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func GetModEntryList(modListURL string) ([]modrinth.ModEntry, error) {
+	rawList, err := fetch.GetList(modListURL)
+	if err != nil {
+		return nil, err
+	}
+
+	modEntryList, err1 := modrinth.ParseModList(rawList)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	return modEntryList, nil
 }
 
 func GetRemoteVersion(url string) (string, error) {

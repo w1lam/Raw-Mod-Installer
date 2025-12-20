@@ -6,14 +6,18 @@ import (
 	"os"
 	"time"
 
+	"github.com/olekukonko/ts"
 	"github.com/w1lam/Packages/pkg/fabric"
 	"github.com/w1lam/Packages/pkg/modrinth"
 	"github.com/w1lam/Packages/pkg/tui"
+	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/downloadmods"
 	"github.com/w1lam/Raw-Mod-Installer/internal/features"
 	"github.com/w1lam/Raw-Mod-Installer/internal/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
+
+var GetSize, _ = ts.GetSize()
 
 // NOTES:
 // Add independent mod update checking and updating and only update mods that have new versions
@@ -22,9 +26,20 @@ import (
 // MENU system IS COMIN ALONG MF
 // FIX SORT BY CATEGORY
 
-var ModListInfo modrinth.ModInfoList
+// PROGRAM INFO
+var ProgramInfo = menu.ProgramInfo{
+	ProgramVersion: "0.0.1",
+	ModListVersion: "",
+}
 
-var ver string
+// ModEntryList is the list of all mod entries from the mod list
+var ModEntryList []modrinth.ModEntry
+
+// ModInfoList is the list of all mod info from the mod entries
+var ModInfoList modrinth.ModInfoList
+
+// ResolvedModList is the list of all mods with latest and local versions and slugs
+var ResolvedMods modrinth.ResolvedModList
 
 // initiation
 func init() {
@@ -32,6 +47,7 @@ func init() {
 
 	fmt.Printf("Starting Up...\n")
 
+	// Setting Program Exit Function
 	tui.SetProgramExitFunc(func() {
 		tui.ClearScreenRaw()
 		fmt.Printf("Exiting...")
@@ -39,97 +55,158 @@ func init() {
 		os.Exit(0)
 	})
 
-	fmt.Printf("Fetching Mod List Info...\n")
+	// Setting width to terminal width
+	config.Width = GetSize.Col() + 1
 
+	// Setting Config Variables
+	tui.SetConfigVariables(config.Width, true)
+
+	// Get Mod Entry List
 	var err error
-	ModListInfo, err = modrinth.FetchModInfoList(paths.ModListURL, 10)
+	ModEntryList, err = features.GetModEntryList(paths.ModListURL)
 	if err != nil {
+		fmt.Printf("Failed to fetch Mod Entry List: %v\n", err)
+	}
+
+	// Get Mod List Info
+	fmt.Printf("Fetching Mod List Info...")
+	var err1 error
+	ModInfoList, err1 = modrinth.FetchModInfoList(ModEntryList, 10)
+	if err1 != nil {
 		fmt.Printf("Failed to fetch Mod Info List: %v\n", err)
 	}
 
-	var err1 error
-	ver, err1 = features.GetRemoteVersion(paths.ModListURL)
-	if err1 != nil {
-		log.Fatal(err1)
+	// Resolving Mod List
+	fmt.Printf("Resolving Mod List...")
+	var err2 error
+	ResolvedMods, err2 = modrinth.FetchModListConcurrent(ModEntryList, paths.McVersion, modrinth.SimpleProgress)
+	if err2 != nil {
+		fmt.Printf("Failed to Resolve Mod List: %v\n", err)
+	}
+
+	// Get Mod List Version
+	var err3 error
+	ProgramInfo.ModListVersion, err3 = features.GetRemoteVersion(paths.ModListURL)
+	if err3 != nil {
+		log.Fatal(err3)
 	}
 }
 
+// Menu IDs
 const (
-	MainMenu tui.CurrentMenu = iota
+	MainMenu tui.MenuID = iota
 	InfoMenu
 )
 
-var CurrentMenu tui.CurrentMenu
-
 func main() {
-	// TEMP TESTING CODE
-
-	infoMenu := tui.NewRawMenu("Mod List Info", "Menu for Mod List Info").AddButton(
-		"C] Category",
+	dir, errD := os.ReadDir(paths.ModFolderPath)
+	if errD != nil {
+		log.Fatal(errD)
+	}
+	fmt.Printf("Dir Entries: %v", dir)
+	time.Sleep(1 * time.Hour)
+	// MENUS SETUP
+	infoMenu := tui.NewRawMenu("Mod List Info", "Menu for Mod List Info", InfoMenu).AddButton(
+		// SORT BY CATEGORY CURRENTLY NOT WORKING
+		"[C] Category",
 		"Press C to sort by Category.",
-		func(any) error {
+		func() error {
 			tui.ClearScreenRaw()
-			menu.PrintModInfoList(ModListInfo.SortByCategory())
+			menu.PrintModInfoList(ModInfoList.SortByCategory())
 			return nil
 		},
 		'c',
+		"sortCategory",
 	).AddButton(
-		"N] Name",
+		"[N] Name",
 		"Press N to sort by Name.",
-		func(any) error {
+		func() error {
 			tui.ClearScreenRaw()
-			menu.PrintModInfoList(ModListInfo.SortByName())
+			menu.PrintModInfoList(ModInfoList.SortByName())
 			return nil
 		},
 		'n',
+		"sortName",
 	).AddButton(
-		"B] Back",
+		"[P] Print Mod Info to README",
+		"Press P to print Mod Info to README.md file.",
+		func() error {
+			err := modrinth.WriteModInfoListREADME(paths.ModFolderPath, ModInfoList)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+		'p',
+		"printReadme",
+	).AddButton(
+		"[B] Back",
 		"Press B to go back to Main Menu.",
-		func(any) error {
-			CurrentMenu = MainMenu
+		func() error {
+			err := tui.SetCurrentMenu(MainMenu)
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 		'b',
+		"back",
 	)
 
-	mainMenu := tui.NewRawMenu("Main Menu", "This is the Main Menu.").AddButton(
-		"I] INFO",
+	mainMenu := tui.NewRawMenu("Main Menu", "This is the Main Menu.", MainMenu).AddButton(
+		"[S] Start",
+		"Press S to start Installation.",
+		func() error {
+			return nil
+		},
+		's',
+		"start",
+	).AddButton(
+		"[I] INFO",
 		"Press I to show Mod List Info.",
-		func(any) error {
-			CurrentMenu = InfoMenu
+		func() error {
+			err := tui.SetCurrentMenu(InfoMenu)
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 		'i',
-	).AddButton(
-		"S] Start",
-		"Press S to start Installation.",
-		func(any) error {
-			return nil
-		},
-		'b',
+		"info",
 	)
+
+	// Setting innitial Menu
+	if err := tui.SetCurrentMenu(MainMenu); err != nil {
+		log.Fatal(err)
+	}
 
 	// MAIN SYSTEM LOOP
 	for {
-		switch CurrentMenu {
+		GetSize, _ = ts.GetSize()
+		config.Width = GetSize.Col() + 1
+		tui.SetConfigVariables(config.Width, true)
+
+		switch tui.CurrentActiveMenu.ID {
 		case MainMenu:
 			tui.ClearScreenRaw()
 
-			fmt.Printf("MOD INSTALLER\n")
-			fmt.Printf("Mod List Version: %s\n\n", ver)
+			menu.MainMenu(ProgramInfo, config.Width)
 
-			mainMenu.RenderMenu(60)
+			mainMenu.PrintMenu()
 
-			err := mainMenu.GetInput()
+			err := tui.GetInput()
 			if err != nil {
 				log.Fatal(err)
 			}
+
 		case InfoMenu:
-			menu.PrintModInfoList(ModListInfo)
+			tui.ClearScreenRaw()
 
-			infoMenu.RenderMenu(60)
+			menu.PrintModInfoList(ModInfoList)
 
-			err := infoMenu.GetInput()
+			infoMenu.PrintMenu()
+
+			err := tui.GetInput()
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -266,7 +343,7 @@ func main() {
 			switch input, err := menu.UserInput(); input {
 			case "yes":
 				// Download Mods in Temp Folder
-				err := downloadmods.DownloadMods(paths.ModListURL, "mods")
+				err := downloadmods.DownloadMods(ResolvedMods.GetURLs())
 				if err != nil {
 					log.Fatal(err)
 				}
@@ -309,7 +386,7 @@ func main() {
 			switch input, err := menu.UserInput(); input {
 			case "yes":
 				// Download Mods in Temp Folder
-				err := downloadmods.DownloadMods(paths.ModListURL, "mods")
+				err := downloadmods.DownloadMods(ResolvedMods.GetURLs())
 				if err != nil {
 					log.Fatal(err)
 				}

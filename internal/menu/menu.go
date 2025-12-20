@@ -5,13 +5,36 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/eiannone/keyboard"
 	"github.com/w1lam/Packages/pkg/modrinth"
+	"github.com/w1lam/Packages/pkg/tui"
 	"github.com/w1lam/Raw-Mod-Installer/internal/features"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
+
+type ProgramInfo struct {
+	ProgramVersion string
+	ModListVersion string
+}
+
+func MainMenu(programInfo ProgramInfo, width int) {
+	fmt.Print(strings.Repeat("━", width))
+	fmt.Print("\n\n")
+
+	tui.PrintCentered("┏━━━━━━━━━━━━━━━┓", width)
+	fmt.Print("\n")
+	tui.PrintCentered("┃ MOD INSTALLER ┃", width)
+	fmt.Print("\n")
+	tui.PrintCentered("┗━━━━━━━━━━━━━━━┛", width)
+	fmt.Print("\n")
+	tui.PrintCentered("Program Version: "+programInfo.ProgramVersion, width)
+	fmt.Print("\n")
+	tui.PrintCentered("Mod List Version: "+programInfo.ModListVersion, width)
+	fmt.Print("\n\n")
+}
 
 func ExitProgram() {
 	fmt.Print("\n\n\n\n\n\n\n\nExiting...\n")
@@ -210,7 +233,12 @@ func InitInput() error {
 
 			fmt.Printf("\nFetching Mod List Info...\n\n")
 
-			modInfoList, err0 := modrinth.FetchModInfoList(paths.ModListURL, 10)
+			modEntryList, errM := features.GetModEntryList(paths.ModListURL)
+			if errM != nil {
+				return errM
+			}
+
+			modInfoList, err0 := modrinth.FetchModInfoList(modEntryList, 10)
 			if err0 != nil {
 				return err0
 			}

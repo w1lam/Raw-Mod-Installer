@@ -8,8 +8,6 @@ import (
 	"sync"
 
 	dl "github.com/w1lam/Packages/pkg/download"
-	"github.com/w1lam/Packages/pkg/fetch"
-	"github.com/w1lam/Packages/pkg/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/features"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
@@ -48,30 +46,8 @@ func DisplayDownloadProgress(progressCh <-chan dl.Progress, fopts string, listUR
 	}
 }
 
-// Main Mod Download Function
-
-func DownloadMods(listURL string, fopts string) error {
-	// Fetching Mod List
-	fmt.Printf("Fetching Mod List...\n")
-	slugList, err := fetch.GetList(listURL)
-	if err != nil {
-		return err
-	}
-
-	// Parsing Mod List
-	fmt.Printf("Parsing Mod List...\n")
-	parsedList, err := modrinth.ParseModList(slugList)
-	if err != nil {
-		return err
-	}
-
-	// Fetching Download URLs
-	fmt.Printf("Fetching Download URLs...\n")
-	fetchedURLs, err := modrinth.FetchAllConcurrent(parsedList, "1.21.10", modrinth.SimpleProgress)
-	if err != nil {
-		return err
-	}
-
+// DownloadMods downloads the mods from the provided list of resolved mods.
+func DownloadMods(urls []string) error {
 	// Creates temp mod download dir
 	err2 := os.MkdirAll(paths.TempModDownloadPath, os.ModePerm)
 	if err2 != nil {
@@ -84,11 +60,11 @@ func DownloadMods(listURL string, fopts string) error {
 
 	// Start downloads concurrently
 	wg.Go(func() {
-		dl.DownloadFromListConcurrent(fetchedURLs, paths.TempModDownloadPath, progressCh)
+		dl.DownloadMultipleConcurrent(urls, paths.TempModDownloadPath, progressCh)
 	})
 
 	// Handle UI printing in main goroutine
-	func(progressCh <-chan dl.Progress, fopts string, listURL string) {
+	func(progressCh <-chan dl.Progress) {
 		success, failures, active := 0, 0, 0
 
 		for p := range progressCh {
@@ -109,7 +85,7 @@ func DownloadMods(listURL string, fopts string) error {
 		}
 
 		if failures == 0 {
-			version, _ := features.GetRemoteVersion(listURL)
+			version, _ := features.GetRemoteVersion(paths.ModListURL)
 
 			err := features.WriteVersionFile(filepath.Join(paths.ModFolderPath, "ver.txt"), version)
 			if err != nil {
@@ -117,11 +93,11 @@ func DownloadMods(listURL string, fopts string) error {
 				return
 			}
 
-			fmt.Printf("\n\nAll %d %s installed successfully! ✓", success, fopts)
+			fmt.Printf("\n\nAll %d Mods installed successfully! ✓", success)
 		} else {
-			fmt.Printf("\n\n%d %s failed to install! ✗ \n", failures, fopts)
+			fmt.Printf("\n\n%d Mods failed to install! ✗ \n", failures)
 		}
-	}(progressCh, fopts, listURL)
+	}(progressCh)
 
 	wg.Wait()
 
