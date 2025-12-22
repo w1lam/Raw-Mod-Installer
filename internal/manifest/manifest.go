@@ -4,51 +4,15 @@ package manifest
 import (
 	"strings"
 
-	"github.com/w1lam/Packages/pkg/modrinth"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modinfo"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
+	"github.com/w1lam/Raw-Mod-Installer/internal/mods"
+	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
 var GlobalManifest *Manifest
 
 // TYPES
-
-type Manifest struct {
-	SchemaVersion  int    `json:"schemaVersion"`
-	ProgramVersion string `json:"programVersion"`
-
-	Minecraft MinecraftInfo `json:"minecraft"`
-	ModList   ModListInfo   `json:"modList"`
-
-	Mods map[string]ManifestMod `json:"mods"`
-}
-
-type MinecraftInfo struct {
-	Version       string `json:"version"`
-	Loader        string `json:"loader"`
-	LoaderVersion string `json:"loaderVersion"`
-}
-
-type ModListInfo struct {
-	Source  string `json:"source"`
-	Version string `json:"version"`
-}
-
-type ManifestMod struct {
-	Slug        string   `json:"slug"`
-	Title       string   `json:"title"`
-	Categories  []string `json:"categories"`
-	Description string   `json:"description"`
-
-	LatestVer string `json:"latestVersion,omitempty"`
-	LocalVer  string `json:"localVersion,omitempty"`
-
-	Source string `json:"source,omitempty"`
-	Wiki   string `json:"wiki,omitempty"`
-}
-
-type ProgramInfo struct {
-	ProgramVersion string
-	ModListVersion string
-}
 
 func normalizeID(s string) string {
 	s = strings.ToLower(s)
@@ -65,10 +29,10 @@ func MigrateToManifest(
 	loader string,
 	loaderVersion string,
 
-	modEntries []modrinth.ModEntry,
-	modInfos modrinth.ModInfoList,
-	resolvedMods modrinth.ResolvedModList,
-	localMods []modrinth.LocalMod,
+	modEntries []modlist.ModEntry,
+	modInfos modinfo.ModInfoList,
+	resolvedMods resolve.ResolvedModList,
+	localMods []mods.LocalMod,
 ) (*Manifest, error) {
 	manifest := &Manifest{
 		SchemaVersion:  1,
@@ -92,7 +56,7 @@ func MigrateToManifest(
 	}
 
 	// Build resolved lookup by slug
-	resolvedMap := make(map[string]modrinth.ResolvedMod)
+	resolvedMap := make(map[string]resolve.ResolvedMod)
 	for _, r := range resolvedMods {
 		resolvedMap[r.Slug] = r
 	}

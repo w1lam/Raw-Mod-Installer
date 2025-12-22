@@ -5,9 +5,10 @@ import (
 	"log"
 
 	"github.com/eiannone/keyboard"
-	"github.com/w1lam/Packages/pkg/modrinth"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modinfo"
 	"github.com/w1lam/Raw-Mod-Installer/internal/modrinthsvc"
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
+	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
 // User Input OLD LOGIC NEW USES EXTERNAL PKG
@@ -63,7 +64,7 @@ func UserInput() (string, error) {
 	}
 }
 
-func InfoInput(modListInfo modrinth.ModInfoList) error {
+func InfoInput(modListInfo modinfo.ModInfoList) error {
 	if err := keyboard.Open(); err != nil {
 		return err
 	}
@@ -155,7 +156,7 @@ func InitInput() error {
 				return errM
 			}
 
-			modInfoList, err0 := modrinth.FetchModInfoList(modEntryList, 10)
+			modInfoList, err0 := resolve.FetchModInfoList(modEntryList, 10)
 			if err0 != nil {
 				return err0
 			}

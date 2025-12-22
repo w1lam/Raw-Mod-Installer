@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/w1lam/Packages/pkg/modrinth"
 	"github.com/w1lam/Packages/pkg/tui"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modinfo"
 )
 
 func MainMenu(programInfo manifest.ProgramInfo, width int) {
@@ -25,7 +25,7 @@ func MainMenu(programInfo manifest.ProgramInfo, width int) {
 	fmt.Print("\n\n")
 }
 
-func PrintModInfoList(modInfoList modrinth.ModInfoList) {
+func PrintModInfoList(modInfoList modinfo.ModInfoList) {
 	for _, modInfo := range modInfoList {
 		fmt.Printf(" * %s\n  ", modInfo.Title)
 

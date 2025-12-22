@@ -6,16 +6,16 @@ import (
 	"strings"
 
 	"github.com/w1lam/Packages/pkg/fetch"
-	"github.com/w1lam/Packages/pkg/modrinth"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
 )
 
-func GetModEntryList(modListURL string) ([]modrinth.ModEntry, error) {
+func GetModEntryList(modListURL string) ([]modlist.ModEntry, error) {
 	rawList, err := fetch.GetList(modListURL)
 	if err != nil {
 		return nil, err
 	}
 
-	modEntryList, err1 := modrinth.ParseModList(rawList)
+	modEntryList, err1 := modlist.ParseModList(rawList)
 	if err1 != nil {
 		return nil, err1
 	}

@@ -34,18 +34,6 @@ var ProgramInfo = manifest.ProgramInfo{
 	ModListVersion: "",
 }
 
-// ModEntryList is the list of all mod entries from the mod list
-var ModEntryList []modrinth.ModEntry
-
-// ModInfoList is the list of all mod info from the mod entries
-var ModInfoList modrinth.ModInfoList
-
-// LocalMods is the list of all local mods in the mods folder
-var LocalMods []modrinth.LocalMod
-
-// ResolvedMods is the list of all mods with latest and local versions and slugs
-var ResolvedMods modrinth.ResolvedModList
-
 // Menu IDs
 const (
 	StartMenu tui.MenuID = iota

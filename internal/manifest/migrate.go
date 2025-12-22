@@ -4,11 +4,12 @@ import (
 	"fmt"
 
 	"github.com/w1lam/Packages/pkg/fabric"
-	"github.com/w1lam/Packages/pkg/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/modrinthsvc"
+	"github.com/w1lam/Raw-Mod-Installer/internal/mods"
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
+	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
 func BuildManifestFromScratch(programInfo ProgramInfo) (*Manifest, error) {
@@ -26,32 +27,34 @@ func BuildManifestFromScratch(programInfo ProgramInfo) (*Manifest, error) {
 
 	// 3. Mod info
 	fmt.Println("Fetching Mod List Info...")
-	modInfoList, err := modrinth.FetchModInfoList(modEntries, 10)
+	modInfoList, err := resolve.FetchModInfoList(modEntries, 10)
 	if err != nil {
 		return nil, err
 	}
 
 	// 4. Resolve mods
 	fmt.Println("Resolving Mod List...")
-	resolvedMods, err := modrinth.FetchModListConcurrent(
+	resolvedMods, err := resolve.FetchModListConcurrent(
 		modEntries,
 		config.McVersion,
-		modrinth.SimpleProgress,
+		func(done, total int, mod string) {
+			fmt.Printf("Fetched %d/%d -> %s\n", done, total, mod)
+		},
 	)
 	if err != nil {
 		return nil, err
 	}
 
 	// 5. Local mods
-	var localMods []modrinth.LocalMod
+	var localMods []mods.LocalMod
 	if IsModListPresent() {
-		localMods, err = modrinth.GetLocalMods(paths.ModFolderPath)
+		localMods, err = mods.GetLocalMods(paths.ModFolderPath)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	fabricLoaderVersion, err := fabric.GetLatestLocalFabricVersion(config.McVersion)
+	fabricLoaderVersion, err := fabric.GetLatestLocalVersion(config.McVersion)
 	if err != nil {
 		return nil, err
 	}
