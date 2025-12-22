@@ -13,8 +13,3 @@ var (
 	VerFilePath         = filepath.Join(UserProfile, "AppData", "Roaming", ".minecraft", "mods", "ver.txt")
 	TempModDownloadPath = filepath.Join(os.TempDir(), "temp-mod-downloads")
 )
-
-const (
-	McVersion  = "1.21.10"
-	ModListURL = "https://raw.githubusercontent.com/w1lam/mods/refs/heads/main/mod-list.txt"
-)

@@ -1,7 +1,6 @@
 // Package config has config variables
 package config
 
-var (
-	Width    int    = 60
-	LineChar string = "_"
-)
+var McVersion string = "1.21.10"
+
+var Width int = 60

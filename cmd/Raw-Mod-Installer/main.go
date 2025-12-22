@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/olekukonko/ts"
@@ -13,6 +14,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/downloadmods"
 	"github.com/w1lam/Raw-Mod-Installer/internal/features"
+	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
@@ -26,8 +28,8 @@ var GetSize, _ = ts.GetSize()
 // MENU system IS COMIN ALONG MF
 // FIX SORT BY CATEGORY
 
-// PROGRAM INFO
-var ProgramInfo = menu.ProgramInfo{
+// ProgramInfo has some basic info about program (future version checking of the program???? maybe)
+var ProgramInfo = manifest.ProgramInfo{
 	ProgramVersion: "0.0.1",
 	ModListVersion: "",
 }
@@ -38,8 +40,17 @@ var ModEntryList []modrinth.ModEntry
 // ModInfoList is the list of all mod info from the mod entries
 var ModInfoList modrinth.ModInfoList
 
-// ResolvedModList is the list of all mods with latest and local versions and slugs
+// LocalMods is the list of all local mods in the mods folder
+var LocalMods []modrinth.LocalMod
+
+// ResolvedMods is the list of all mods with latest and local versions and slugs
 var ResolvedMods modrinth.ResolvedModList
+
+// Menu IDs
+const (
+	StartMenu tui.MenuID = iota
+	InfoMenu
+)
 
 // initiation
 func init() {
@@ -61,49 +72,29 @@ func init() {
 	// Setting Config Variables
 	tui.SetConfigVariables(config.Width, true)
 
-	// Get Mod Entry List
-	var err error
-	ModEntryList, err = features.GetModEntryList(paths.ModListURL)
+	manifestPath := filepath.Join(paths.ModFolderPath, "manifest.json")
+
+	if m, err := manifest.ReadManifest(manifestPath); err == nil {
+		manifest.GlobalManifest = m
+		return
+	}
+
+	fmt.Printf("No Manifest Found, Building from Scratch...\n")
+
+	scratchManifest, err := manifest.BuildManifestFromScratch(ProgramInfo)
 	if err != nil {
-		fmt.Printf("Failed to fetch Mod Entry List: %v\n", err)
+		log.Fatal(err)
 	}
 
-	// Get Mod List Info
-	fmt.Printf("Fetching Mod List Info...")
-	var err1 error
-	ModInfoList, err1 = modrinth.FetchModInfoList(ModEntryList, 10)
-	if err1 != nil {
-		fmt.Printf("Failed to fetch Mod Info List: %v\n", err)
+	if err := manifest.WriteManifest(manifestPath, scratchManifest); err != nil {
+		log.Fatal(err)
 	}
 
-	// Resolving Mod List
-	fmt.Printf("Resolving Mod List...")
-	var err2 error
-	ResolvedMods, err2 = modrinth.FetchModListConcurrent(ModEntryList, paths.McVersion, modrinth.SimpleProgress)
-	if err2 != nil {
-		fmt.Printf("Failed to Resolve Mod List: %v\n", err)
-	}
-
-	// Get Mod List Version
-	var err3 error
-	ProgramInfo.ModListVersion, err3 = features.GetRemoteVersion(paths.ModListURL)
-	if err3 != nil {
-		log.Fatal(err3)
-	}
+	manifest.GlobalManifest = scratchManifest
 }
 
-// Menu IDs
-const (
-	MainMenu tui.MenuID = iota
-	InfoMenu
-)
-
 func main() {
-	dir, errD := os.ReadDir(paths.ModFolderPath)
-	if errD != nil {
-		log.Fatal(errD)
-	}
-	fmt.Printf("Dir Entries: %v", dir)
+	// fmt.Printf("%s: LocalVer: %s, LatestVet: %s", ResolvedMods[1].Slug, ResolvedMods[1].LocalVer, ResolvedMods[1].LatestVer)
 	time.Sleep(1 * time.Hour)
 	// MENUS SETUP
 	infoMenu := tui.NewRawMenu("Mod List Info", "Menu for Mod List Info", InfoMenu).AddButton(
@@ -143,7 +134,7 @@ func main() {
 		"[B] Back",
 		"Press B to go back to Main Menu.",
 		func() error {
-			err := tui.SetCurrentMenu(MainMenu)
+			err := tui.SetCurrentMenu(StartMenu)
 			if err != nil {
 				return err
 			}
@@ -153,7 +144,7 @@ func main() {
 		"back",
 	)
 
-	mainMenu := tui.NewRawMenu("Main Menu", "This is the Main Menu.", MainMenu).AddButton(
+	startMenu := tui.NewRawMenu("Start Menu", "This is the Start Menu.", StartMenu).AddButton(
 		"[S] Start",
 		"Press S to start Installation.",
 		func() error {
@@ -176,9 +167,14 @@ func main() {
 	)
 
 	// Setting innitial Menu
-	if err := tui.SetCurrentMenu(MainMenu); err != nil {
+	if err := tui.SetCurrentMenu(StartMenu); err != nil {
 		log.Fatal(err)
 	}
+
+	for _, ver := range ResolvedMods.GetLatestVers() {
+		fmt.Printf("%s\n", ver)
+	}
+	time.Sleep(1 * time.Hour)
 
 	// MAIN SYSTEM LOOP
 	for {
@@ -187,12 +183,12 @@ func main() {
 		tui.SetConfigVariables(config.Width, true)
 
 		switch tui.CurrentActiveMenu.ID {
-		case MainMenu:
+		case StartMenu:
 			tui.ClearScreenRaw()
 
 			menu.MainMenu(ProgramInfo, config.Width)
 
-			mainMenu.PrintMenu()
+			startMenu.PrintMenu()
 
 			err := tui.GetInput()
 			if err != nil {
@@ -213,6 +209,7 @@ func main() {
 		}
 	}
 
+	// OLD POOPOO SHIT CODE
 	//modInfoList, errM := modrinth.FetchModInfoList(paths.ModListURL, 10)
 	//if errM != nil {
 	//	log.Fatal(errM)

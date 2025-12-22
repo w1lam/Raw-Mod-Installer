@@ -1,5 +1,5 @@
-// Package downloadmods handles downloading mods from given URLs and displays progress.
-package downloadmods
+// Package install handles downloading mods from given URLs and displays progress.
+package install
 
 import (
 	"fmt"
@@ -8,43 +8,11 @@ import (
 	"sync"
 
 	dl "github.com/w1lam/Packages/pkg/download"
-	"github.com/w1lam/Raw-Mod-Installer/internal/features"
+	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modrinthsvc"
+	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
-
-func DisplayDownloadProgress(progressCh <-chan dl.Progress, fopts string, listURL string) {
-	success, failures, active := 0, 0, 0
-
-	for p := range progressCh {
-		switch p.Status {
-		case "downloading":
-			active++
-			fmt.Print("\n ◌ ", p.File, "...")
-		case "success":
-			active--
-			success++
-			fmt.Print("\n ● ", p.File, " ✓")
-		case "failure":
-			active--
-			failures++
-			fmt.Print("\n ✗ ", p.File, ": ", p.Err)
-		}
-		fmt.Print(" [Active: ", active, " | Success: ", success, " | Failures: ", failures, "]")
-	}
-
-	if failures == 0 {
-		version, _ := features.GetRemoteVersion(listURL)
-
-		err := os.WriteFile("ver.txt", []byte(version), 0o755)
-		if err != nil {
-			return
-		}
-
-		fmt.Printf("\n\nAll %d %s installed successfully! ✓", success, fopts)
-	} else {
-		fmt.Printf("\n\n%d %s failed to install! ✗ \n", failures, fopts)
-	}
-}
 
 // DownloadMods downloads the mods from the provided list of resolved mods.
 func DownloadMods(urls []string) error {
@@ -85,9 +53,9 @@ func DownloadMods(urls []string) error {
 		}
 
 		if failures == 0 {
-			version, _ := features.GetRemoteVersion(paths.ModListURL)
+			version, _ := modrinthsvc.GetRemoteVersion(netcfg.ModListURL)
 
-			err := features.WriteVersionFile(filepath.Join(paths.ModFolderPath, "ver.txt"), version)
+			err := manifest.WriteVersionFile(filepath.Join(paths.ModFolderPath, "ver.txt"), version)
 			if err != nil {
 				fmt.Printf("\n\nFailed to write version file: %v", err)
 				return
