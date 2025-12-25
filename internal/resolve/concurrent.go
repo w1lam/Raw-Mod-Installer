@@ -1,3 +1,4 @@
+// Package resolve provides functions to resolve mod information concurrently.
 package resolve
 
 import (
@@ -8,12 +9,11 @@ import (
 	"sync/atomic"
 
 	"github.com/w1lam/Packages/pkg/modrinth"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modinfo"
 	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
 )
 
 // FetchModInfoList fetches mod information from Modrinth for a list of mod entries concurrently.
-func FetchModInfoList(modEntryList []modlist.ModEntry, maxConcurrentFetches int) (modinfo.ModInfoList, error) {
+func ResolveModInfoList(modEntryList []modlist.ModEntry, maxConcurrentFetches int) ([]modrinth.ModInfo, error) {
 	modInfoList := make([]modrinth.ModInfo, len(modEntryList))
 
 	sem := make(chan struct{}, maxConcurrentFetches)
@@ -56,8 +56,8 @@ func FetchModInfoList(modEntryList []modlist.ModEntry, maxConcurrentFetches int)
 	}
 }
 
-// FetchModListConcurrent fetches the latest download URLs for all mods concurrently, reporting progress via the provided function.
-func FetchModListConcurrent(
+// ResolveModListConcurrent fetches the latest download URLs for all mods concurrently, reporting progress via the provided function.
+func ResolveModListConcurrent(
 	mods []modlist.ModEntry,
 	mcVersion string,
 	progressFunc func(done, total int, currentMod string),

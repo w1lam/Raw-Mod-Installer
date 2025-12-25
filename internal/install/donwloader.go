@@ -4,35 +4,40 @@ package install
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"sync"
 
-	dl "github.com/w1lam/Packages/pkg/download"
+	"github.com/w1lam/Packages/pkg/download"
+	"github.com/w1lam/Raw-Mod-Installer/internal/app"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modrinthsvc"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
 // DownloadMods downloads the mods from the provided list of resolved mods.
 func DownloadMods(urls []string) error {
-	// Creates temp mod download dir
-	err2 := os.MkdirAll(paths.TempModDownloadPath, os.ModePerm)
-	if err2 != nil {
-		return fmt.Errorf("ERROR: failed to create temp dir: %v", err2)
+	path, err := paths.Resolve()
+	if err != nil {
+		return err
 	}
 
-	progressCh := make(chan dl.Progress)
+	// Creates temp mod download dir
+	err1 := os.MkdirAll(path.TempDownloadDir, os.ModePerm)
+	if err1 != nil {
+		return fmt.Errorf("ERROR: failed to create temp dir: %v", err1)
+	}
+
+	progressCh := make(chan download.Progress)
 
 	var wg sync.WaitGroup
 
 	// Start downloads concurrently
 	wg.Go(func() {
-		dl.DownloadMultipleConcurrent(urls, paths.TempModDownloadPath, progressCh)
+		download.DownloadMultipleConcurrent(urls, path.TempDownloadDir, progressCh)
 	})
 
 	// Handle UI printing in main goroutine
-	func(progressCh <-chan dl.Progress) {
+	func(progressCh <-chan download.Progress) {
 		success, failures, active := 0, 0, 0
 
 		for p := range progressCh {
@@ -53,11 +58,16 @@ func DownloadMods(urls []string) error {
 		}
 
 		if failures == 0 {
-			version, _ := modrinthsvc.GetRemoteVersion(netcfg.ModListURL)
-
-			err := manifest.WriteVersionFile(filepath.Join(paths.ModFolderPath, "ver.txt"), version)
+			version, err := modlist.GetRemoteVersion(netcfg.ModListURL)
 			if err != nil {
-				fmt.Printf("\n\nFailed to write version file: %v", err)
+				fmt.Printf("\n\nFfailed to fetch mod list version: %v", err)
+				return
+			}
+
+			app.GlobalManifest.ModList.InstalledVersion = version
+
+			if err := manifest.Save(path.ManifestPath, app.GlobalManifest); err != nil {
+				fmt.Printf("\n\nFailed to save manifest: %v", err)
 				return
 			}
 

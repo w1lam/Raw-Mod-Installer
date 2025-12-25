@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	dl "github.com/w1lam/Packages/pkg/download"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modrinthsvc"
+	"github.com/w1lam/Packages/pkg/download"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
 )
 
-func DisplayDownloadProgress(progressCh <-chan dl.Progress, fopts string, listURL string) {
+func DisplayDownloadProgress(progressCh <-chan download.Progress, fopts string, listURL string) {
 	success, failures, active := 0, 0, 0
 
 	for p := range progressCh {
@@ -29,7 +29,7 @@ func DisplayDownloadProgress(progressCh <-chan dl.Progress, fopts string, listUR
 	}
 
 	if failures == 0 {
-		version, _ := modrinthsvc.GetRemoteVersion(listURL)
+		version, _ := modlist.GetRemoteVersion(listURL)
 
 		err := os.WriteFile("ver.txt", []byte(version), 0o755)
 		if err != nil {

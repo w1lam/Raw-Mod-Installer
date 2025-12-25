@@ -2,15 +2,17 @@
 package manifest
 
 import (
+	"fmt"
 	"strings"
 
-	"github.com/w1lam/Raw-Mod-Installer/internal/modinfo"
+	"github.com/w1lam/Packages/pkg/fabric"
+	"github.com/w1lam/Packages/pkg/modrinth"
+	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
-	"github.com/w1lam/Raw-Mod-Installer/internal/mods"
+	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
-
-var GlobalManifest *Manifest
 
 // TYPES
 
@@ -21,68 +23,103 @@ func normalizeID(s string) string {
 	return s
 }
 
-func MigrateToManifest(
+// NewManifest creates a new Manifest instance from the provided parameters.
+func NewManifest(
 	programVersion string,
 	modListURL string,
-	modListVersion string,
+	modListInstalledVersion string,
 	mcVersion string,
 	loader string,
 	loaderVersion string,
 
 	modEntries []modlist.ModEntry,
-	modInfos modinfo.ModInfoList,
-	resolvedMods resolve.ResolvedModList,
-	localMods []mods.LocalMod,
+	modInfos []modrinth.ModInfo,
 ) (*Manifest, error) {
 	manifest := &Manifest{
 		SchemaVersion:  1,
 		ProgramVersion: programVersion,
+
 		Minecraft: MinecraftInfo{
 			Version:       mcVersion,
 			Loader:        loader,
 			LoaderVersion: loaderVersion,
 		},
+
 		ModList: ModListInfo{
-			Source:  modListURL,
-			Version: modListVersion,
+			Source:           modListURL,
+			InstalledVersion: modListInstalledVersion,
 		},
+
 		Mods: make(map[string]ManifestMod),
 	}
 
-	// Build local version lookup (FAST + SAFE)
-	localVersionMap := make(map[string]string)
-	for _, lm := range localMods {
-		localVersionMap[normalizeID(lm.ID)] = lm.Version
-	}
-
-	// Build resolved lookup by slug
-	resolvedMap := make(map[string]resolve.ResolvedMod)
-	for _, r := range resolvedMods {
-		resolvedMap[r.Slug] = r
-	}
-
-	// Merge EVERYTHING into manifest
-	for i, info := range modInfos {
-		slug := modEntries[i].Slug
-		resolved := resolvedMap[slug]
-
-		localVer := ""
-		if resolved.FabricID != "" {
-			if v, ok := localVersionMap[normalizeID(resolved.FabricID)]; ok {
-				localVer = v
-			}
+	// ModInfo list is assumed to be in the same order as modEntries
+	// (this is how your existing pipeline works)
+	for i, entry := range modEntries {
+		if i >= len(modInfos) {
+			break
 		}
 
-		manifest.Mods[slug] = ManifestMod{
-			Slug:        slug,
+		info := modInfos[i]
+
+		manifest.Mods[entry.Slug] = ManifestMod{
+			Slug:        entry.Slug,
 			Title:       info.Title,
 			Categories:  info.Category,
 			Description: info.Description,
 			Source:      info.Source,
 			Wiki:        info.Wiki,
-			LatestVer:   resolved.LatestVer,
-			LocalVer:    localVer,
+
+			InstalledVersion: "", // populated ONLY after install
 		}
+	}
+
+	return manifest, nil
+}
+
+func BuildManifest(programVersion string) (*Manifest, error) {
+	path, err := paths.Resolve()
+	if err != nil {
+		return nil, err
+	}
+
+	// 1. Fetch mod entries (slug + loader)
+	modEntries, err := modlist.GetModEntryList(netcfg.ModListURL)
+	if err != nil {
+		return nil, err
+	}
+
+	// 2. Fetch Modrinth metadata (NOT versions)
+	fmt.Println("Fetching mod metadata from Modrinth...")
+	modInfos, err := resolve.ResolveModInfoList(modEntries, 10)
+	if err != nil {
+		return nil, err
+	}
+
+	// 3. Resolve loader version (Fabric example)
+	loaderVersion, err := fabric.GetLatestLocalVersion(config.McVersion)
+	if err != nil {
+		return nil, err
+	}
+
+	// 4. Build manifest
+	manifest, err := NewManifest(
+		programVersion,
+		netcfg.ModListURL,
+		"", // mod list not installed yet
+		config.McVersion,
+		"fabric",
+		loaderVersion,
+		modEntries,
+		modInfos,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	// 5. Save immediately
+	if err := Save(path.ManifestPath, manifest); err != nil {
+		return nil, err
 	}
 
 	return manifest, nil

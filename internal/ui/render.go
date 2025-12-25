@@ -5,42 +5,42 @@ import (
 	"strings"
 
 	"github.com/w1lam/Packages/pkg/tui"
+	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modinfo"
 )
 
-func MainMenu(programInfo manifest.ProgramInfo, width int) {
-	fmt.Print(strings.Repeat("━", width))
+func StartHeader(m *manifest.Manifest) {
+	fmt.Print(strings.Repeat("━", config.Style.Width))
 	fmt.Print("\n\n")
 
-	tui.PrintCentered("┏━━━━━━━━━━━━━━━┓", width)
+	tui.PrintCentered("┏━━━━━━━━━━━━━━━┓", config.Style.Width)
 	fmt.Print("\n")
-	tui.PrintCentered("┃ MOD INSTALLER ┃", width)
+	tui.PrintCentered("┃ MOD INSTALLER ┃", config.Style.Width)
 	fmt.Print("\n")
-	tui.PrintCentered("┗━━━━━━━━━━━━━━━┛", width)
+	tui.PrintCentered("┗━━━━━━━━━━━━━━━┛", config.Style.Width)
 	fmt.Print("\n")
-	tui.PrintCentered("Program Version: "+programInfo.ProgramVersion, width)
+	tui.PrintCentered("Program Version: "+m.ProgramVersion, config.Style.Width)
 	fmt.Print("\n")
-	tui.PrintCentered("Mod List Version: "+programInfo.ModListVersion, width)
+	tui.PrintCentered("Mod List Version: "+m.ModList.InstalledVersion, config.Style.Width)
 	fmt.Print("\n\n")
 }
 
-func PrintModInfoList(modInfoList modinfo.ModInfoList) {
-	for _, modInfo := range modInfoList {
-		fmt.Printf(" * %s\n  ", modInfo.Title)
+func PrintModInfoList(mods []manifest.ManifestMod) {
+	for _, mod := range mods {
+		fmt.Printf(" * %s\n  ", mod.Title)
 
-		for _, cat := range modInfo.Category {
+		for _, cat := range mod.Categories {
 			fmt.Printf(" 📂 %s ", cat)
 		}
 
-		fmt.Printf("\n   ✎  %s\n", modInfo.Description)
+		fmt.Printf("\n   ✎  %s\n", mod.Description)
 
-		if modInfo.Source != "" {
-			fmt.Printf("   🔗 %s\n", modInfo.Source)
+		if mod.Source != "" {
+			fmt.Printf("   🔗 %s\n", mod.Source)
 		}
 
-		if modInfo.Wiki != "" {
-			fmt.Printf("   📖 %s\n\n", modInfo.Wiki)
+		if mod.Wiki != "" {
+			fmt.Printf("   📖 %s\n\n", mod.Wiki)
 		} else {
 			fmt.Printf("\n")
 		}

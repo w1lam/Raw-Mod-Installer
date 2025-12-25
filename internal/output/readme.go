@@ -1,3 +1,4 @@
+// Package output contains functions for generating output files.
 package output
 
 import (
@@ -6,12 +7,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/w1lam/Raw-Mod-Installer/internal/modinfo"
+	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 )
 
 // WriteModInfoListREADME writes a README.txt file summarizing the mod information in the specified output path.
-func WriteModInfoListREADME(outPath string, modInfoList modinfo.ModInfoList) error {
-	content := func(mods modinfo.ModInfoList) string {
+func WriteModInfoListREADME(outPath string, mods []manifest.ManifestMod) error {
+	content := func(mods []manifest.ManifestMod) string {
 		var b strings.Builder
 
 		b.WriteString("MODPACK README\n")
@@ -23,8 +24,8 @@ func WriteModInfoListREADME(outPath string, modInfoList modinfo.ModInfoList) err
 			b.WriteString("* " + mod.Title + " *\n")
 			b.WriteString(strings.Repeat("-", len(mod.Title)+4) + "\n")
 
-			if len(mod.Category) > 0 {
-				b.WriteString("📂 " + strings.Join(mod.Category, ", 📂 ") + "\n")
+			if len(mod.Categories) > 0 {
+				b.WriteString("📂 " + strings.Join(mod.Categories, ", 📂 ") + "\n")
 			}
 
 			if mod.Description != "" {
@@ -43,7 +44,7 @@ func WriteModInfoListREADME(outPath string, modInfoList modinfo.ModInfoList) err
 		}
 
 		return b.String()
-	}(modInfoList)
+	}(mods)
 
 	err1 := os.WriteFile(filepath.Join(outPath, "README.md"), []byte(content), 0o644)
 	if err1 != nil {

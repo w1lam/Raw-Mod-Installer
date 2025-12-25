@@ -6,6 +6,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
+// AttachLocalVersions OLD system only exists as fallback
 func AttachLocalVersions(
 	resolved resolve.ResolvedModList,
 	localMods []LocalMod,

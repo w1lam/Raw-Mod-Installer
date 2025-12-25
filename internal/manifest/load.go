@@ -5,21 +5,8 @@ import (
 	"os"
 )
 
-func ReadManifest(path string) (*Manifest, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	var m Manifest
-	if err := json.Unmarshal(data, &m); err != nil {
-		return nil, err
-	}
-	return &m, nil
-}
-
-// LoadManifest loads the manifest from the specified path.
-func LoadManifest(path string) (*Manifest, error) {
+// Load loads the manifest from the specified path.
+func Load(path string) (*Manifest, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err

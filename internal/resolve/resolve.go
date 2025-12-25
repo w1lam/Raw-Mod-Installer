@@ -1,6 +1,7 @@
 package resolve
 
 import (
+	"log"
 	"strings"
 
 	"github.com/w1lam/Packages/pkg/modrinth"
@@ -51,7 +52,8 @@ func ResolveMod(slug, mcVersion, loader string) (ResolvedMod, error) {
 
 	latestVer, err := modrinth.FetchLatestModrinthVersion(project.ID, mcVersion, loader)
 	if err != nil {
-		return ResolvedMod{}, err
+		log.Printf("⚠ skipping %s: %v", slug, err)
+		return ResolvedMod{}, nil
 	}
 
 	return ResolvedMod{

@@ -17,24 +17,19 @@ type MinecraftInfo struct {
 }
 
 type ModListInfo struct {
-	Source  string `json:"source"`
-	Version string `json:"version"`
+	Source           string `json:"source"`
+	InstalledVersion string `json:"version"`
 }
 
 type ManifestMod struct {
-	Slug        string   `json:"slug"`
-	Title       string   `json:"title"`
-	Categories  []string `json:"categories"`
-	Description string   `json:"description"`
-
-	LatestVer string `json:"latestVersion,omitempty"`
-	LocalVer  string `json:"localVersion,omitempty"`
+	Slug             string   `json:"slug"`
+	Title            string   `json:"title"`
+	Categories       []string `json:"categories"`
+	Description      string   `json:"description"`
+	InstalledVersion string   `json:"InstalledVersion"`
 
 	Source string `json:"source,omitempty"`
 	Wiki   string `json:"wiki,omitempty"`
 }
 
-type ProgramInfo struct {
-	ProgramVersion string
-	ModListVersion string
-}
+type ModList []ManifestMod

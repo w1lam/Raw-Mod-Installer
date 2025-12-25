@@ -1,3 +1,4 @@
+// Package mods handles backup and restoration of mod folders.
 package mods
 
 import (
@@ -5,60 +6,65 @@ import (
 	"os"
 	"time"
 
+	"github.com/w1lam/Packages/pkg/utils"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
-// Mod Backup and Restore Functions
-
-func BackupModFolder() error {
-	*Timestamp = time.Now().Format("20060102150405")
-
-	err := os.Rename(paths.ModFolderPath, paths.ModBackupPath)
+// Backup creates a backup of the mod folder
+func Backup() error {
+	path, err := paths.Resolve()
 	if err != nil {
-		err1 := os.Rename(paths.ModFolderPath, paths.ModBackupPath+"_"+*Timestamp)
-		if err1 != nil {
-			return err1
-		}
+		return err
 	}
 
-	if _, err := os.Stat(paths.ModFolderPath); err == nil {
-		if _, err2 := os.Stat(paths.ModBackupPath); err2 == nil {
-			timestamp := time.Now().Format("20060102150405")
-
-			err3 := os.Rename(paths.ModBackupPath, paths.ModBackupPath+"_"+timestamp)
-			if err3 != nil {
-				return fmt.Errorf("failed to backup existing mod backup folder: %v", err3)
-			}
-		}
-
-		err := os.Rename(paths.ModFolderPath, paths.ModBackupPath)
+	if utils.CheckFileExists(path.ModsDir) {
+		entries, err := os.ReadDir(path.ModsDir)
 		if err != nil {
-			timestamp := time.Now().Format("20060102150405")
+			return err
+		}
+		if len(entries) == 0 {
+			return fmt.Errorf("mods folder is empty, refusing to backup")
+		}
 
-			err2 := os.Rename(paths.ModFolderPath, paths.ModBackupPath+"_"+timestamp+"bruh")
-			if err2 != nil {
-				return fmt.Errorf("failed to backup existing mod backup folder: %v", err2)
+		if utils.CheckFileExists(path.BackupDir) {
+			err := os.Rename(path.BackupDir, path.BackupDir+"_"+time.Now().Format("20060102150405"))
+			if err != nil {
+				return err
 			}
 		}
-	}
 
-	return nil
-}
-
-func RestoreModBackup() error {
-	err := os.Rename(paths.ModBackupPath, paths.ModFolderPath)
-	if err != nil {
-
-		err1 := os.Rename(paths.ModBackupPath+"_"+*Timestamp, paths.ModFolderPath)
-		if err1 != nil {
-			return fmt.Errorf("failed to restore backup mods: %v\n %v", err, err1)
+		if err := os.Rename(path.ModsDir, path.BackupDir); err != nil {
+			return err
 		}
 	}
 	return nil
 }
 
-func UninstallMods() error {
-	err := os.RemoveAll(paths.ModFolderPath)
+// RestoreBackup restores the mod folder from backup
+func RestoreBackup() error {
+	path, err := paths.Resolve()
+	if err != nil {
+		return err
+	}
+
+	if !utils.CheckFileExists(path.BackupDir) {
+		return fmt.Errorf("no backup folder found")
+	}
+
+	if utils.CheckFileExists(path.ModsDir) {
+		return fmt.Errorf("mods folder already exists, refusing to overwrite")
+	}
+	return os.Rename(path.BackupDir, path.ModsDir)
+}
+
+// RemoveAll removes the mod folder
+func RemoveAll() error {
+	path, err0 := paths.Resolve()
+	if err0 != nil {
+		return err0
+	}
+
+	err := os.RemoveAll(path.ModsDir)
 	if err != nil {
 		return fmt.Errorf("failed to uninstall mods: %v", err)
 	}

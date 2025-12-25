@@ -2,13 +2,12 @@ package ui
 
 import (
 	"os"
-
-	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
+// OLD SHIT GARBAGE
 type State int
 
+// OLD SHIT GARBAGE
 const (
 	_ State = iota
 	StateNotInstalled
@@ -16,13 +15,14 @@ const (
 	StateUpToDate
 )
 
+// OLD SHIT GARBAGE
 func GetState() (State, error) {
-	if _, err := os.Stat(paths.VerFilePath); err != nil {
+	if _, err := os.Stat("BLANK"); err != nil {
 		return StateNotInstalled, nil
 	} else {
 
 		// Update check
-		upToDate, err := manifest.CheckForModlistUpdate()
+		upToDate, err := false, err
 		switch {
 		case err != nil:
 			return 0, err
