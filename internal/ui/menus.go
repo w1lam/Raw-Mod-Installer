@@ -21,6 +21,10 @@ type Context struct {
 }
 
 func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
+	if ctx.Manifest == nil {
+		panic("InitializeMenus: ctx.Manifest is nil")
+	}
+
 	InfoMenu := menu.NewMenu("Mod List Info", "Menu for Mod List Info", InfoMenuID).AddButton(
 		// SORT BY CATEGORY CURRENTLY NOT WORKING
 		"[C] Category",
@@ -64,7 +68,7 @@ func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
 		},
 		'b',
 		"back",
-	).SetOnEnter(
+	).SetRender(
 		func() {
 			PrintModInfoList(ctx.Manifest.ModsSlice())
 		})
@@ -89,11 +93,13 @@ func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
 		},
 		'i',
 		"info",
-	).SetOnEnter(
+	).SetRender(
 		func() {
 			tui.ClearScreenRaw()
 			StartHeader(ctx.Manifest)
 		})
+
+	menu.MustSetCurrent(StartMenuID)
 
 	return StartMenu, InfoMenu
 }

@@ -15,12 +15,12 @@ import (
 
 // initiation
 func init() {
-	ctx := app.Initialize()
-	ui.InitializeMenus(ctx)
-
-	menu.MustSetCurrent(ui.StartMenuID)
 }
 
 func main() {
-	app.Run()
+	ctx := app.Initialize()
+
+	ui.InitializeMenus(ctx)
+
+	menu.Run()
 }

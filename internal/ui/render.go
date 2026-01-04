@@ -10,6 +10,9 @@ import (
 )
 
 func StartHeader(m *manifest.Manifest) {
+	if m == nil {
+		panic("StartHeader: Manifest is nil")
+	}
 	fmt.Print(strings.Repeat("━", config.Style.Width))
 	fmt.Print("\n\n")
 

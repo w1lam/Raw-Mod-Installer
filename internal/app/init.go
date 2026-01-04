@@ -38,8 +38,15 @@ func Initialize() ui.Context {
 		log.Fatal(err)
 	}
 
+	if !utils.CheckFileExists(path.RawModInstallerDir) {
+		err := os.MkdirAll(path.RawModInstallerDir, 0o755)
+		if err != nil {
+			panic("Failed to create Raw Mod Installer Directory: " + err.Error())
+		}
+	}
+
 	if !utils.CheckFileExists(path.ModsDir) {
-		err := os.MkdirAll(path.ModsDir, 0755)
+		err := os.MkdirAll(path.ModsDir, 0o755)
 		if err != nil {
 			fmt.Printf("Failed to create Mods Directory: %s\n", err)
 		}
@@ -64,23 +71,5 @@ func Initialize() ui.Context {
 	return ui.Context{
 		Manifest: GlobalManifest,
 		Paths:    path,
-	}
-}
-
-func Run() {
-	for {
-		if size, err := ts.GetSize(); err == nil {
-			config.Style.Width = size.Col() + 1
-			config.Style.Set()
-		}
-		tui.ClearScreenRaw()
-
-		menu.CurrentActiveMenu.OnEnter()
-
-		menu.RenderCurrent()
-
-		if err := menu.GetInput(); err != nil {
-			log.Fatal(err)
-		}
 	}
 }

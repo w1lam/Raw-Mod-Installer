@@ -2,42 +2,28 @@ package install
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/w1lam/Packages/pkg/download"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
 )
 
-func DisplayDownloadProgress(progressCh <-chan download.Progress, fopts string, listURL string) {
-	success, failures, active := 0, 0, 0
-
-	for p := range progressCh {
+func RenderProgress(ch <-chan download.Progress) (successFiles []string, failedFiles []string) {
+	for p := range ch {
 		switch p.Status {
 		case "downloading":
-			active++
 			fmt.Print("\n ◌ ", p.File, "...")
+
 		case "success":
-			active--
-			success++
 			fmt.Print("\n ● ", p.File, " ✓")
+			successFiles = append(successFiles, p.File)
+
 		case "failure":
-			active--
-			failures++
 			fmt.Print("\n ✗ ", p.File, ": ", p.Err)
+			failedFiles = append(failedFiles, p.File)
 		}
-		fmt.Print(" [Active: ", active, " | Success: ", success, " | Failures: ", failures, "]")
 	}
+	return
+}
 
-	if failures == 0 {
-		version, _ := modlist.GetRemoteVersion(listURL)
-
-		err := os.WriteFile("ver.txt", []byte(version), 0o755)
-		if err != nil {
-			return
-		}
-
-		fmt.Printf("\n\nAll %d %s installed successfully! ✓", success, fopts)
-	} else {
-		fmt.Printf("\n\n%d %s failed to install! ✗ \n", failures, fopts)
-	}
+func SimpleProgress(done, total int, currentFile string) {
+	fmt.Printf("%d/%d: %s...\n", done, total, currentFile)
 }

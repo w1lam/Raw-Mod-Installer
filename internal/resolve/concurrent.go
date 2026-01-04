@@ -12,7 +12,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
 )
 
-// FetchModInfoList fetches mod information from Modrinth for a list of mod entries concurrently.
+// ResolveModInfoList fetches mod information from Modrinth for a list of mod entries concurrently.
 func ResolveModInfoList(modEntryList []modlist.ModEntry, maxConcurrentFetches int) ([]modrinth.ModInfo, error) {
 	modInfoList := make([]modrinth.ModInfo, len(modEntryList))
 
@@ -24,7 +24,10 @@ func ResolveModInfoList(modEntryList []modlist.ModEntry, maxConcurrentFetches in
 	errCh := make(chan error, 1)
 
 	for i, mod := range modEntryList {
-		go func() {
+		i := i
+		mod := mod
+
+		go func(i int, mod modlist.ModEntry) {
 			defer wg.Done()
 
 			sem <- struct{}{}
@@ -39,7 +42,7 @@ func ResolveModInfoList(modEntryList []modlist.ModEntry, maxConcurrentFetches in
 				return
 			}
 			modInfoList[i] = info
-		}()
+		}(i, mod)
 	}
 
 	done := make(chan struct{})

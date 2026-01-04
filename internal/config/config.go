@@ -7,5 +7,5 @@ var McVersion string = "1.21.10"
 
 var Style = menu.Config{
 	Width:         60,
-	RenderHeaders: true,
+	RenderHeaders: false,
 }

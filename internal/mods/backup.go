@@ -11,12 +11,7 @@ import (
 )
 
 // Backup creates a backup of the mod folder
-func Backup() error {
-	path, err := paths.Resolve()
-	if err != nil {
-		return err
-	}
-
+func Backup(path *paths.Paths) error {
 	if utils.CheckFileExists(path.ModsDir) {
 		entries, err := os.ReadDir(path.ModsDir)
 		if err != nil {
@@ -41,12 +36,7 @@ func Backup() error {
 }
 
 // RestoreBackup restores the mod folder from backup
-func RestoreBackup() error {
-	path, err := paths.Resolve()
-	if err != nil {
-		return err
-	}
-
+func RestoreBackup(path *paths.Paths) error {
 	if !utils.CheckFileExists(path.BackupDir) {
 		return fmt.Errorf("no backup folder found")
 	}
@@ -58,12 +48,7 @@ func RestoreBackup() error {
 }
 
 // RemoveAll removes the mod folder
-func RemoveAll() error {
-	path, err0 := paths.Resolve()
-	if err0 != nil {
-		return err0
-	}
-
+func RemoveAll(path *paths.Paths) error {
 	err := os.RemoveAll(path.ModsDir)
 	if err != nil {
 		return fmt.Errorf("failed to uninstall mods: %v", err)
