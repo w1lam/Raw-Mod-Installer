@@ -12,14 +12,16 @@ import (
 	"github.com/w1lam/Packages/pkg/utils"
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/output"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
+	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 	"github.com/w1lam/Raw-Mod-Installer/internal/ui"
 )
 
 func Initialize() ui.Context {
 	tui.ClearScreenRaw()
 
-	fmt.Printf("Starting Up...\n")
+	fmt.Println("* Starting up...")
 
 	// Setting Program Exit Function
 	menu.SetProgramExitFunc(func() {
@@ -33,30 +35,24 @@ func Initialize() ui.Context {
 	// Setting TUI Config Variables
 	config.Style.Set()
 
+	fmt.Println("* Resolving Paths...")
 	path, err := paths.Resolve()
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	fmt.Println("* Creating Installer Directory...")
 	if !utils.CheckFileExists(path.RawModInstallerDir) {
 		err := os.MkdirAll(path.RawModInstallerDir, 0o755)
 		if err != nil {
-			panic("Failed to create Raw Mod Installer Directory: " + err.Error())
+			panic("* Failed to create Raw Mod Installer Directory: " + err.Error())
 		}
 	}
 
-	if !utils.CheckFileExists(path.ModsDir) {
-		err := os.MkdirAll(path.ModsDir, 0o755)
-		if err != nil {
-			fmt.Printf("Failed to create Mods Directory: %s\n", err)
-		}
-	}
-
+	fmt.Println("* Loading Manifest...")
 	m, err := manifest.Load(path.ManifestPath)
 	if err != nil {
-		fmt.Printf("No Manifest Found, Building from Scratch...\n")
-
-		m, err := manifest.BuildManifest("0.0.1")
+		m, err = manifest.BuildManifest(state.ProgramVersion)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -66,10 +62,17 @@ func Initialize() ui.Context {
 		}
 	}
 
-	GlobalManifest = m
+	state.GlobalManifest = m
+
+	fmt.Println("* Writing README...")
+	if err := output.WriteModInfoListREADME(path.RawModInstallerDir, state.GlobalManifest.ModsSlice()); err != nil {
+		fmt.Printf("failed to write modlist README: %s", err)
+	}
+
+	tui.ClearScreenRaw()
 
 	return ui.Context{
-		Manifest: GlobalManifest,
+		Manifest: state.GlobalManifest,
 		Paths:    path,
 	}
 }

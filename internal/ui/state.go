@@ -1,37 +1,49 @@
 package ui
 
 import (
-	"os"
+	"github.com/w1lam/Packages/pkg/fabric"
+	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
+	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
+	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
-// OLD SHIT GARBAGE
-type State int
+// MainMenuState is the Main Menus state struct
+type MainMenuState struct {
+	HasManifest      bool
+	HasModsInstalled bool
 
-// OLD SHIT GARBAGE
-const (
-	_ State = iota
-	StateNotInstalled
-	StateUpdateFound
-	StateUpToDate
-)
+	ModlistUpdateAvailable bool
+	FabricUpdateAvailable  bool
+	ModUpdates             []resolve.ResolvedMod
+}
 
-// OLD SHIT GARBAGE
-func GetState() (State, error) {
-	if _, err := os.Stat("BLANK"); err != nil {
-		return StateNotInstalled, nil
-	} else {
+// ComputeMainMenuState computes the main menus state
+func ComputeMainMenuState(m *manifest.Manifest) (*MainMenuState, error) {
+	state := &MainMenuState{
+		HasManifest: m != nil,
+	}
 
-		// Update check
-		upToDate, err := false, err
-		switch {
-		case err != nil:
-			return 0, err
+	if m == nil {
+		return state, nil
+	}
 
-		case upToDate:
-			return StateUpdateFound, nil
+	state.HasModsInstalled = m.ModList.InstalledVersion != ""
 
-		default:
-			return StateUpToDate, nil
+	if remote, err := modlist.GetRemoteVersion(netcfg.ModListURL); err == nil {
+		state.ModlistUpdateAvailable = remote != m.ModList.InstalledVersion
+	}
+
+	if latest, err := fabric.GetLatestLocalVersion(m.Minecraft.Version); err == nil {
+		state.FabricUpdateAvailable = latest != m.Minecraft.LoaderVersion
+	}
+
+	for _, mod := range m.Mods {
+		latest, err := resolve.ResolveMod(mod.Slug, m.Minecraft.Version, m.Minecraft.Loader)
+		if err == nil && latest.LatestVer != mod.InstalledVersion {
+			state.ModUpdates = append(state.ModUpdates, latest)
 		}
 	}
+
+	return state, nil
 }

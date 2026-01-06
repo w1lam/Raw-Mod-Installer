@@ -7,6 +7,7 @@ import (
 
 	"github.com/w1lam/Packages/pkg/fabric"
 	"github.com/w1lam/Packages/pkg/modrinth"
+	"github.com/w1lam/Packages/pkg/tui"
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
@@ -83,25 +84,32 @@ func BuildManifest(programVersion string) (*Manifest, error) {
 		return nil, err
 	}
 
+	fmt.Println("* Fetching Mod Entries...")
 	// 1. Fetch mod entries (slug + loader)
 	modEntries, err := modlist.GetModEntryList(netcfg.ModListURL)
 	if err != nil {
 		return nil, err
 	}
 
+	done := make(chan struct{})
+	go tui.RawSpinner(done, []rune{'|', '/', '-', '\\'}, "Fetching Modrinth Data")
+
 	// 2. Fetch Modrinth metadata (NOT versions)
-	fmt.Println("Fetching mod metadata from Modrinth...")
 	modInfos, err := resolve.ResolveModInfoList(modEntries, 10)
 	if err != nil {
 		return nil, err
 	}
 
+	close(done)
+
+	fmt.Println("* Looking for Fabric loader...")
 	// 3. Resolve loader version (Fabric example)
 	loaderVersion, err := fabric.GetLatestLocalVersion(config.McVersion)
 	if err != nil {
 		return nil, err
 	}
 
+	fmt.Println("* Building Manifest...")
 	// 4. Build manifest
 	manifest, err := NewManifest(
 		programVersion,

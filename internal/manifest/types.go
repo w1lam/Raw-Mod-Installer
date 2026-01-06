@@ -3,6 +3,7 @@ package manifest
 type Manifest struct {
 	SchemaVersion  int    `json:"schemaVersion"`
 	ProgramVersion string `json:"programVersion"`
+	ModPackEnabled bool   `json:"modPackEnabled"`
 
 	Minecraft MinecraftInfo `json:"minecraft"`
 	ModList   ModListInfo   `json:"modList"`

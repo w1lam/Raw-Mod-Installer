@@ -4,14 +4,14 @@ package ui
 import (
 	"github.com/w1lam/Packages/pkg/menu"
 	"github.com/w1lam/Packages/pkg/tui"
+	"github.com/w1lam/Raw-Mod-Installer/internal/install"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/output"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
 // Menu IDs
 const (
-	StartMenuID menu.MenuID = iota
+	MainMenuID menu.MenuID = iota
 	InfoMenuID
 )
 
@@ -20,6 +20,7 @@ type Context struct {
 	Paths    *paths.Paths
 }
 
+// InitializeMenus initializes the default menus for the program
 func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
 	if ctx.Manifest == nil {
 		panic("InitializeMenus: ctx.Manifest is nil")
@@ -45,22 +46,10 @@ func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
 		'n',
 		"sortName",
 	).AddButton(
-		"[P] Print Mod Info to README",
-		"Press P to print Mod Info to README.md file.",
-		func() error {
-			err := output.WriteModInfoListREADME(ctx.Paths.ModsDir, ctx.Manifest.ModsSlice())
-			if err != nil {
-				return err
-			}
-			return nil
-		},
-		'p',
-		"printReadme",
-	).AddButton(
 		"[B] Back",
 		"Press B to go back to Main Menu.",
 		func() error {
-			err := menu.SetCurrent(StartMenuID)
+			err := menu.SetCurrent(MainMenuID)
 			if err != nil {
 				return err
 			}
@@ -73,17 +62,21 @@ func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
 			PrintModInfoList(ctx.Manifest.ModsSlice())
 		})
 
-	StartMenu := menu.NewMenu("Start Menu", "This is the Start Menu.", StartMenuID).AddButton(
-		"[S] Start",
-		"Press S to start Installation.",
+	MainMenu := menu.NewMenu("Main Menu", "This is the Main Menu.", MainMenuID).AddButton(
+		"[I] Install",
+		"Press I to install Modpack.",
 		func() error {
+			err := install.CleanInstall(ctx.Manifest, ctx.Paths)
+			if err != nil {
+				return err
+			}
 			return nil
 		},
-		's',
-		"start",
+		'i',
+		"install",
 	).AddButton(
-		"[I] INFO",
-		"Press I to show Mod List Info.",
+		"[H] Help/Info",
+		"Press H to show Help/Info.",
 		func() error {
 			err := menu.SetCurrent(InfoMenuID)
 			if err != nil {
@@ -91,15 +84,15 @@ func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
 			}
 			return nil
 		},
-		'i',
-		"info",
+		'h',
+		"help",
 	).SetRender(
 		func() {
 			tui.ClearScreenRaw()
 			StartHeader(ctx.Manifest)
 		})
 
-	menu.MustSetCurrent(StartMenuID)
+	menu.MustSetCurrent(MainMenuID)
 
-	return StartMenu, InfoMenu
+	return MainMenu, InfoMenu
 }

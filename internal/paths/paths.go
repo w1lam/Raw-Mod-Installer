@@ -15,6 +15,7 @@ type Paths struct {
 	BackupDir          string
 	TempDownloadDir    string
 	RawModInstallerDir string
+	UnloadedModsDir    string
 }
 
 func DefaultMinecraftDir() (string, error) {
@@ -41,13 +42,16 @@ func Resolve() (*Paths, error) {
 		return nil, err
 	}
 
+	installerDir := filepath.Join(mcDir, ".raw-mod-installer")
+
 	return &Paths{
 		MinecraftDir:       mcDir,
 		ModsDir:            filepath.Join(mcDir, "mods"),
-		ManifestPath:       filepath.Join(mcDir, ".raw-mod-installer", "manifest.json"),
-		BackupDir:          filepath.Join(mcDir, "mods.backup"),
-		TempDownloadDir:    filepath.Join(os.TempDir(), "mod-installer"),
-		RawModInstallerDir: filepath.Join(mcDir, ".raw-mod-installer"),
+		ManifestPath:       filepath.Join(installerDir, "manifest.json"),
+		BackupDir:          filepath.Join(installerDir, "mods.backup"),
+		TempDownloadDir:    filepath.Join(installerDir, "downloaded-mods"),
+		RawModInstallerDir: installerDir,
+		UnloadedModsDir:    filepath.Join(installerDir, "mods"),
 	}, nil
 }
 

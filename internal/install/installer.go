@@ -2,64 +2,67 @@ package install
 
 import (
 	"fmt"
-	"os"
 
-	"github.com/w1lam/Packages/pkg/download"
-	"github.com/w1lam/Raw-Mod-Installer/internal/app"
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
-	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
-	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
-// ADD RENAME FUNCTION TO MOVE TEMP FOLDER TO MOD FOLDER
+type InstallIntent int
 
-func FullInstall() error {
-	path, err := paths.Resolve()
-	if err != nil {
-		return err
+const (
+	IntentInstall InstallIntent = iota
+	IntentUpdate
+	IntentReinstall
+)
+
+type InstallPlan struct {
+	Intent       InstallIntent
+	EnsureFabric bool
+	BackupPolicy BackupPolicy
+	EnableAfter  bool
+}
+
+func ExecutePlan(
+	m *manifest.Manifest,
+	path *paths.Paths,
+	plan InstallPlan,
+) (*manifest.Manifest, error) {
+	if plan.EnsureFabric {
+		if err := EnsureFabric(config.McVersion); err != nil {
+			return nil, fmt.Errorf("fabric install failed: %w", err)
+		}
 	}
 
-	entries, err := modlist.GetModEntryList(netcfg.ModListURL)
-	if err != nil {
-		return err
+	if err := prepareFS(path, plan); err != nil {
+		return nil, err
 	}
 
-	resolved, err := resolve.ResolveModListConcurrent(entries, config.McVersion, SimpleProgress)
-	if err != nil {
-		return err
+	switch plan.Intent {
+	case IntentInstall, IntentReinstall:
+		var err error
+		m, err = DownloadModpack(m, path)
+		if err != nil {
+			return nil, rollback(path, plan, err)
+		}
+
+	case IntentUpdate:
+		var err error
+		m, err = UpdateModpack(m, path)
+		if err != nil {
+			return nil, rollback(path, plan, err)
+		}
 	}
 
-	ctx := buildInstallContext(resolved)
-
-	progressCh := make(chan download.Progress)
-
-	go func() {
-		_ = DownloadConcurrent(
-			resolve.ResolvedModList(resolved).GetURLs(),
-			path.TempDownloadDir,
-			progressCh,
-		)
-	}()
-
-	successFiles, failedFiles := RenderProgress(progressCh)
-
-	if len(failedFiles) > 0 {
-		return fmt.Errorf("%d mods failed to install", len(failedFiles))
+	if plan.EnableAfter {
+		if err := EnableMods(path); err != nil {
+			return nil, rollback(path, plan, err)
+		}
 	}
 
-	UpdateManifestInstalledVersions(app.GlobalManifest, ctx, successFiles)
-
-	version, err := modlist.GetRemoteVersion(netcfg.ModListURL)
-	if err == nil {
-		app.GlobalManifest.ModList.InstalledVersion = version
+	if err := manifest.Save(path.ManifestPath, m); err != nil {
+		return nil, err
 	}
 
-	if err := os.Rename(path.TempDownloadDir, path.ModsDir); err != nil {
-		return fmt.Errorf("failed to move mods to final directory: %w", err)
-	}
-
-	return manifest.Save(path.ManifestPath, app.GlobalManifest)
+	return m, nil
 }

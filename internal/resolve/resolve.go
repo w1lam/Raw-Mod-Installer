@@ -1,3 +1,4 @@
+// Package resolve resolves mods
 package resolve
 
 import (
