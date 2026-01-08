@@ -1,3 +1,4 @@
+// Package state hold global state values
 package state
 
 import "github.com/w1lam/Raw-Mod-Installer/internal/manifest"

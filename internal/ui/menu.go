@@ -1,32 +1,7 @@
-// Package ui provides functions to handle menu states and user input.
 package ui
 
-import (
-	"github.com/w1lam/Packages/pkg/menu"
-	"github.com/w1lam/Packages/pkg/tui"
-	"github.com/w1lam/Raw-Mod-Installer/internal/install"
-	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
-)
 
-// Menu IDs
-const (
-	MainMenuID menu.MenuID = iota
-	InfoMenuID
-)
-
-type Context struct {
-	Manifest *manifest.Manifest
-	Paths    *paths.Paths
-}
-
-// InitializeMenus initializes the default menus for the program
-func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
-	if ctx.Manifest == nil {
-		panic("InitializeMenus: ctx.Manifest is nil")
-	}
-
-	InfoMenu := menu.NewMenu("Mod List Info", "Menu for Mod List Info", InfoMenuID).AddButton(
+	InfoMenu.AddButton(
 		// SORT BY CATEGORY CURRENTLY NOT WORKING
 		"[C] Category",
 		"Press C to sort by Category.",
@@ -62,18 +37,68 @@ func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
 			PrintModInfoList(ctx.Manifest.ModsSlice())
 		})
 
-	MainMenu := menu.NewMenu("Main Menu", "This is the Main Menu.", MainMenuID).AddButton(
+	MainMenu.AddButton(
 		"[I] Install",
 		"Press I to install Modpack.",
 		func() error {
-			err := install.CleanInstall(ctx.Manifest, ctx.Paths)
+			m, err := install.ExecutePlan(ctx.Manifest, ctx.Paths, install.InstallPlan{
+				Intent:       install.IntentInstall,
+				EnsureFabric: true,
+				BackupPolicy: install.BackupOnce,
+				EnableAfter:  true,
+			})
 			if err != nil {
+				return err
+			}
+			if err := m.Save(ctx.Paths.ManifestPath); err != nil {
 				return err
 			}
 			return nil
 		},
 		'i',
 		"install",
+	).AddButton(
+		"[U] Update",
+		"Press U to Update Modpack",
+		func() error {
+			m, err := install.ExecutePlan(ctx.Manifest, ctx.Paths, install.InstallPlan{
+				Intent:       install.IntentUpdate,
+				EnsureFabric: true,
+				BackupPolicy: install.BackupIfExists,
+				EnableAfter:  true,
+			})
+			if err != nil {
+				return err
+			}
+
+			return m.Save(ctx.Paths.ManifestPath)
+		},
+		'u',
+		"update",
+	).AddButton(
+		"[E] Enable",
+		"Press E to Enable Mods",
+		func() error {
+			err := install.EnableMods(ctx.Paths)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+		'e',
+		"enable",
+	).AddButton(
+		"[D] Disable",
+		"Press D to Disable Mods",
+		func() error {
+			err := install.DisableMods(ctx.Paths)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+		'd',
+		"disable",
 	).AddButton(
 		"[H] Help/Info",
 		"Press H to show Help/Info.",
@@ -95,4 +120,3 @@ func InitializeMenus(ctx Context) (*menu.Menu, *menu.Menu) {
 	menu.MustSetCurrent(MainMenuID)
 
 	return MainMenu, InfoMenu
-}

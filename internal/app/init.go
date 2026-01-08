@@ -15,10 +15,9 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/output"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
-	"github.com/w1lam/Raw-Mod-Installer/internal/ui"
 )
 
-func Initialize() ui.Context {
+func Initialize() *manifest.Manifest {
 	tui.ClearScreenRaw()
 
 	fmt.Println("* Starting up...")
@@ -42,8 +41,8 @@ func Initialize() ui.Context {
 	}
 
 	fmt.Println("* Creating Installer Directory...")
-	if !utils.CheckFileExists(path.RawModInstallerDir) {
-		err := os.MkdirAll(path.RawModInstallerDir, 0o755)
+	if !utils.CheckFileExists(path.ProgramFilesDir) {
+		err := os.MkdirAll(path.ProgramFilesDir, 0o755)
 		if err != nil {
 			panic("* Failed to create Raw Mod Installer Directory: " + err.Error())
 		}
@@ -52,12 +51,8 @@ func Initialize() ui.Context {
 	fmt.Println("* Loading Manifest...")
 	m, err := manifest.Load(path.ManifestPath)
 	if err != nil {
-		m, err = manifest.BuildManifest(state.ProgramVersion)
+		m, err = manifest.BuildInitialManifest(path)
 		if err != nil {
-			log.Fatal(err)
-		}
-
-		if err := manifest.Save(path.ManifestPath, m); err != nil {
 			log.Fatal(err)
 		}
 	}
@@ -65,14 +60,11 @@ func Initialize() ui.Context {
 	state.GlobalManifest = m
 
 	fmt.Println("* Writing README...")
-	if err := output.WriteModInfoListREADME(path.RawModInstallerDir, state.GlobalManifest.ModsSlice()); err != nil {
+	if err := output.WriteModInfoListREADME(path.ProgramFilesDir, state.GlobalManifest.ModsSlice()); err != nil {
 		fmt.Printf("failed to write modlist README: %s", err)
 	}
 
 	tui.ClearScreenRaw()
 
-	return ui.Context{
-		Manifest: state.GlobalManifest,
-		Paths:    path,
-	}
+	return m
 }

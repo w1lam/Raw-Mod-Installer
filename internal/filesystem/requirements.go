@@ -1,9 +1,7 @@
-package install
+package filesystem
 
 import (
 	"github.com/w1lam/Packages/pkg/fabric"
-	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
 )
 
 type SystemState struct {
@@ -57,23 +55,4 @@ func EnsureFabric(mcVersion string) error {
 	}
 
 	return fabric.RunInstaller(jar, mcVersion)
-}
-
-func DetectRemovedMods(
-	m *manifest.Manifest,
-	entries []modlist.ModEntry,
-) []string {
-	active := make(map[string]bool)
-	for _, e := range entries {
-		active[e.Slug] = true
-	}
-
-	var removed []string
-	for slug := range m.Mods {
-		if !active[slug] {
-			removed = append(removed, slug)
-		}
-	}
-
-	return removed
 }

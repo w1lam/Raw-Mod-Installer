@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/w1lam/Packages/pkg/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
 	"github.com/w1lam/Raw-Mod-Installer/internal/ui"
 )
@@ -14,13 +13,12 @@ import (
 // FIX SORT BY CATEGORY
 
 // initiation
-func init() {
-}
+func init() {}
 
 func main() {
-	ctx := app.Initialize()
+	m := app.Initialize()
 
-	ui.InitializeMenus(ctx)
+	ui.InitializeMenus(m)
 
-	menu.Run()
+	app.Run()
 }

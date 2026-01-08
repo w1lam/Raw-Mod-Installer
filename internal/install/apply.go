@@ -1,13 +1,10 @@
 package install
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 
-	"github.com/w1lam/Packages/pkg/utils"
+	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
@@ -29,6 +26,7 @@ func buildInstallContext(mods []resolve.ResolvedMod) installContext {
 func UpdateManifestInstalledVersions(
 	manifest *manifest.Manifest,
 	ctx installContext,
+	modPack string,
 	successFiles []string,
 ) {
 	for _, file := range successFiles {
@@ -37,40 +35,15 @@ func UpdateManifestInstalledVersions(
 			continue
 		}
 
-		entry := manifest.Mods[mod.Slug]
+		entry := manifest.InstalledModPacks[modPack].Mods[mod.Slug]
 		entry.InstalledVersion = mod.LatestVer
-		manifest.Mods[mod.Slug] = entry
+		manifest.InstalledModPacks[modPack].Mods[mod.Slug] = entry
 	}
 }
 
-func prepareFS(path *paths.Paths, plan InstallPlan) error {
-	switch plan.BackupPolicy {
-	case BackupIfExists:
-		return BackupIfNeeded(path)
-
-	case BackupOnce:
-		if !utils.CheckFileExists(path.BackupDir) {
-			return BackupIfNeeded(path)
-		}
+func rollback(modPack manifest.InstalledModPack, m *manifest.Manifest, plan InstallPlan, cause error) error {
+	if plan.BackupPolicy != filesystem.BackupNever {
+		_ = filesystem.RestoreBackup(modPack, m)
 	}
-	if plan.Intent == IntentReinstall {
-		return os.RemoveAll(path.ModsDir)
-	}
-
-	return nil
-}
-
-func EnableMods(path *paths.Paths) error {
-	if utils.CheckFileExists(path.ModsDir) {
-		return fmt.Errorf("mods aleady enabled")
-	}
-
-	return os.Rename(path.UnloadedModsDir, path.ModsDir)
-}
-
-func DisableMods(path *paths.Paths) error {
-	if !utils.CheckFileExists(path.ModsDir) {
-		return nil
-	}
-	return os.Rename(path.ModsDir, path.UnloadedModsDir)
+	return cause
 }

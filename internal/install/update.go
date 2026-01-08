@@ -6,11 +6,9 @@ import (
 
 	"github.com/w1lam/Packages/pkg/download"
 	"github.com/w1lam/Packages/pkg/modrinth"
-	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modpack"
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
@@ -30,10 +28,10 @@ type UpdateCandidate struct {
 	Decision  UpdateDecision
 }
 
+// ResolveUpdates resolved updates for specified modpack
 func ResolveUpdates(
 	m *manifest.Manifest,
-	entries []modlist.ModEntry,
-	mcVersion string,
+	modPack *manifest.InstalledModPack,
 ) ([]resolve.ResolvedMod, error) {
 	var (
 		results []resolve.ResolvedMod
@@ -43,8 +41,8 @@ func ResolveUpdates(
 		sem     = make(chan struct{}, 8)
 	)
 
-	for _, entry := range entries {
-		entry := entry
+	for _, s := range modPack.GetSlugs() {
+		s := s
 		wg.Add(1)
 
 		go func() {
@@ -53,9 +51,9 @@ func ResolveUpdates(
 			defer func() { <-sem }()
 
 			latest, err := modrinth.FetchLatestModrinthVersion(
-				entry.Slug,
-				mcVersion,
-				entry.Loader,
+				s,
+				modPack.McVersion,
+				modPack.Loader,
 			)
 			if err != nil {
 				select {
@@ -65,15 +63,13 @@ func ResolveUpdates(
 				return
 			}
 
-			installed := m.InstalledVersion(entry.Slug)
-
-			needs := installed == "" || latest.VersionNumber != installed
+			needs := m.EnabledModPack.InstalledVersion == "" || latest.VersionNumber != m.EnabledModPack.InstalledVersion
 			if !needs {
 				return
 			}
 
 			resolved := resolve.ResolvedMod{
-				Slug:        entry.Slug,
+				Slug:        s,
 				DownloadURL: latest.Files[0].URL,
 				LatestVer:   latest.VersionNumber,
 			}
@@ -99,8 +95,9 @@ func ResolveUpdates(
 	}
 }
 
-func UpdateModpack(m *manifest.Manifest, path *paths.Paths) (*manifest.Manifest, error) {
-	updates, err := ResolveUpdates(m, m.GetModEntries(), config.McVersion)
+// UpdateModpack upates the specified mod pack
+func UpdateModpack(modPack manifest.InstalledModPack, m *manifest.Manifest) (*manifest.Manifest, error) {
+	updates, err := ResolveUpdates(m, m.EnabledModPack)
 	if err != nil {
 		return nil, err
 	}
@@ -112,9 +109,9 @@ func UpdateModpack(m *manifest.Manifest, path *paths.Paths) (*manifest.Manifest,
 	progressCh := make(chan download.Progress)
 
 	go func() {
-		_ = DownloadConcurrent(
+		download.DownloadMultipleConcurrent(
 			resolve.ResolvedModList(updates).GetURLs(),
-			path.TempDownloadDir,
+			m.Paths.TempDownloadDir,
 			progressCh,
 		)
 	}()
@@ -124,10 +121,12 @@ func UpdateModpack(m *manifest.Manifest, path *paths.Paths) (*manifest.Manifest,
 		return nil, fmt.Errorf("%d updates failed", len(failed))
 	}
 
-	UpdateManifestInstalledVersions(m, buildInstallContext(updates), success)
+	UpdateManifestInstalledVersions(m, buildInstallContext(updates), modPack.Name, success)
 
-	if version, err := modlist.GetRemoteVersion(netcfg.ModListURL); err == nil {
-		m.ModList.InstalledVersion = version
+	if modPacks, err := modpack.GetAvailableModPacks(netcfg.ModPacksURL); err == nil {
+		m.EnabledModPack.InstalledVersion = modPacks[modPack.Name].ListVersion
+	} else {
+		return m, err
 	}
 
 	return m, nil

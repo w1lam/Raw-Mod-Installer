@@ -7,36 +7,35 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/w1lam/Raw-Mod-Installer/internal/modlist"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modpack"
 )
 
 // ResolveModListConcurrent fetches the latest download URLs for all mods concurrently, reporting progress via the provided function.
-func ResolveModListConcurrent(
-	mods []modlist.ModEntry,
-	mcVersion string,
+func ResolveModsConcurrent(
+	resolvedModPack modpack.ResolvedModPackList,
 	progressFunc func(done, total int, currentMod string),
 ) ([]ResolvedMod, error) {
 	//
-	total := len(mods)
+	total := len(resolvedModPack.Slugs)
 	results := make([]ResolvedMod, total)
 	errChan := make(chan error, total)
 
 	var wg sync.WaitGroup
 	var done int32
 
-	for i, mod := range mods {
+	for i, mod := range resolvedModPack.Slugs {
 		wg.Add(1)
 
-		go func(i int, mod modlist.ModEntry) {
+		go func(i int, mod string) {
 			defer wg.Done()
 			defer func() {
 				atomic.AddInt32(&done, 1)
-				progressFunc(int(done), total, mod.Slug)
+				progressFunc(int(done), total, mod)
 			}()
 
-			resolved, err := ResolveMod(mod.Slug, mcVersion, mod.Loader)
+			resolved, err := ResolveMod(mod, resolvedModPack.McVersion, resolvedModPack.Loader)
 			if err != nil {
-				errChan <- fmt.Errorf("%s: %w", mod.Slug, err)
+				errChan <- fmt.Errorf("%s: %w", mod, err)
 				return
 			}
 

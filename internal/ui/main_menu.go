@@ -9,12 +9,9 @@ import (
 )
 
 func BuildMainMenu(ctx *Context) *menu.Menu {
-	m := menu.NewMenu("Start Menu", "Main Menu", MainMenuID)
+	m := menu.NewMenu("Main Menu", "Main Menu", MainMenuID)
 
-	m.SetRender(func() {
-		tui.ClearScreenRaw()
-		StartHeader(ctx.Manifest)
-
+	m.SetOnEnter(func() {
 		state, err := ComputeMainMenuState(ctx.Manifest)
 		if err != nil {
 			fmt.Println("⚠ Failed to check updates")
@@ -29,11 +26,16 @@ func BuildMainMenu(ctx *Context) *menu.Menu {
 				"[I] Install",
 				"Install the modpack",
 				func() error {
-					err := install.Install(ctx.Manifest, ctx.Paths)
+					m, err := install.ExecutePlan(ctx.Manifest, ctx.Paths, install.InstallPlan{
+						Intent:       install.IntentInstall,
+						EnsureFabric: true,
+						BackupPolicy: install.BackupOnce,
+						EnableAfter:  true,
+					})
 					if err != nil {
 						return err
 					}
-					return nil
+					return m.Save(ctx.Paths.ManifestPath)
 				},
 				'i',
 				"install",
@@ -47,7 +49,17 @@ func BuildMainMenu(ctx *Context) *menu.Menu {
 					len(state.ModUpdates),
 				),
 				func() error {
-					return install.Update(ctx.Manifest)
+					m, err := install.ExecutePlan(ctx.Manifest, ctx.Paths, install.InstallPlan{
+						Intent:       install.IntentUpdate,
+						EnsureFabric: true,
+						BackupPolicy: install.BackupIfExists,
+						EnableAfter:  true,
+					})
+					if err != nil {
+						return err
+					}
+
+					return m.Save(ctx.Paths.ManifestPath)
 				},
 				'u',
 				"update",
@@ -58,7 +70,16 @@ func BuildMainMenu(ctx *Context) *menu.Menu {
 				"[R] Reinstall",
 				"Reinstall the modpack",
 				func() error {
-					return install.CleanInstall(ctx.Manifest, ctx.Paths)
+					m, err := install.ExecutePlan(ctx.Manifest, ctx.Paths, install.InstallPlan{
+						Intent:       install.IntentReinstall,
+						EnsureFabric: false,
+						BackupPolicy: install.BackupNever,
+						EnableAfter:  true,
+					})
+					if err != nil {
+						return err
+					}
+					return m.Save(ctx.Paths.ManifestPath)
 				},
 				'r',
 				"reinstall",
@@ -74,6 +95,11 @@ func BuildMainMenu(ctx *Context) *menu.Menu {
 			'h',
 			"help",
 		)
+
+		m.SetRender(func() {
+			tui.ClearScreenRaw()
+			StartHeader(ctx.Manifest)
+		})
 	})
 
 	return m
