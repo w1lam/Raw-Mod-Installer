@@ -1,7 +1,12 @@
 package filesystem
 
 import (
-	"github.com/w1lam/Packages/pkg/fabric"
+	"fmt"
+	"os"
+
+	"github.com/w1lam/Packages/fabric"
+	"github.com/w1lam/Packages/utils"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
 type SystemState struct {
@@ -16,6 +21,43 @@ const (
 	FabricOutdated
 	FabricUpToDate
 )
+
+// EnsureDirectories ensures all program directories exists
+func EnsureDirectories(path *paths.Paths) error {
+	if !utils.CheckFileExists(path.MinecraftDir) {
+		return fmt.Errorf("minecraft directory not found")
+	}
+
+	if !utils.CheckFileExists(path.ProgramFilesDir) {
+		err := os.MkdirAll(path.ProgramFilesDir, 0o755)
+		if err != nil {
+			return err
+		}
+	}
+
+	if !utils.CheckFileExists(path.DataDir) {
+		err := os.MkdirAll(path.DataDir, 0o755)
+		if err != nil {
+			return err
+		}
+	}
+
+	if !utils.CheckFileExists(path.ModPacksDir) {
+		err := os.MkdirAll(path.ModPacksDir, 0o755)
+		if err != nil {
+			return err
+		}
+	}
+
+	if !utils.CheckFileExists(path.BackupsDir) {
+		err := os.MkdirAll(path.BackupsDir, 0o755)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
 
 func DetectSystem(mcVersion string) (SystemState, error) {
 	statusStr, err := fabric.CheckVersions(mcVersion)

@@ -7,12 +7,14 @@ import (
 	"strings"
 )
 
-// ResolvedModPackList is a list of resolved mod packs
-type ResolvedModPackList struct {
+// ResolvedModPack is a resolved mod pack
+type ResolvedModPack struct {
 	Name        string
+	ListSource  string
 	ListVersion string
 	McVersion   string
 	Loader      string
+	Description string
 	Slugs       []string
 }
 
@@ -22,19 +24,20 @@ type availableModPack struct {
 }
 
 // GetAvailableModPacks gets the url for a modpack from a list
-func GetAvailableModPacks(modPacksListURL string) (map[string]ResolvedModPackList, error) {
+func GetAvailableModPacks(modPacksListURL string) (map[string]ResolvedModPack, error) {
 	resp, err := http.Get(modPacksListURL)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	resolvedModPacks := make(map[string]ResolvedModPackList)
+	resolvedModPacks := make(map[string]ResolvedModPack)
 	var modPack availableModPack
+
 	scanner := bufio.NewScanner(resp.Body)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
-		splitLines := strings.Split(line, "#")
+		splitLines := strings.Split(line, "@")
 
 		modPack.Name = splitLines[0]
 		modPack.URL = splitLines[1]
@@ -51,14 +54,14 @@ func GetAvailableModPacks(modPacksListURL string) (map[string]ResolvedModPackLis
 }
 
 // ResolveModPack resolves a modpack list with modpack version, mcversion and loader
-func ResolveModPack(modPack availableModPack) (ResolvedModPackList, error) {
+func ResolveModPack(modPack availableModPack) (ResolvedModPack, error) {
 	resp, err := http.Get(modPack.URL)
 	if err != nil {
-		return ResolvedModPackList{}, err
+		return ResolvedModPack{}, err
 	}
 	defer resp.Body.Close()
 
-	var resolvedModPack ResolvedModPackList
+	var resolvedModPack ResolvedModPack
 
 	var slugs []string
 	scanner := bufio.NewScanner(resp.Body)
@@ -69,11 +72,11 @@ func ResolveModPack(modPack availableModPack) (ResolvedModPackList, error) {
 			slugs = append(slugs, line)
 		}
 
-		if name, ok := strings.CutPrefix(line, "# Mod Pack Name: "); ok {
+		if name, ok := strings.CutPrefix(line, "# Name: "); ok {
 			resolvedModPack.Name = name
 		}
 
-		if version, ok := strings.CutPrefix(line, "# Mod Pack Version: "); ok {
+		if version, ok := strings.CutPrefix(line, "# Version: "); ok {
 			resolvedModPack.ListVersion = version
 		}
 
@@ -84,13 +87,19 @@ func ResolveModPack(modPack availableModPack) (ResolvedModPackList, error) {
 		if loader, ok := strings.CutPrefix(line, "# Loader: "); ok {
 			resolvedModPack.Loader = loader
 		}
+
+		if description, ok := strings.CutPrefix(line, "# Description: "); ok {
+			resolvedModPack.Description = description
+		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		return ResolvedModPackList{}, err
+		return ResolvedModPack{}, err
 	}
 
 	resolvedModPack.Slugs = slugs
+
+	resolvedModPack.ListSource = modPack.URL
 
 	return resolvedModPack, nil
 }

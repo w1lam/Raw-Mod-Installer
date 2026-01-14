@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/w1lam/Packages/pkg/utils"
+	"github.com/w1lam/Packages/utils"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 )
 
@@ -25,8 +25,8 @@ func BackupIfNeeded(m *manifest.Manifest) error {
 	}
 
 	backupDir := filepath.Join(m.Paths.BackupsDir, "mods.backup")
-	if m.EnabledModPack != nil {
-		backupDir = filepath.Join(m.Paths.BackupsDir, m.EnabledModPack.Name+".backup")
+	if m.EnabledModPack != "" {
+		backupDir = filepath.Join(m.Paths.BackupsDir, m.EnabledModPack+".backup")
 	}
 
 	if utils.CheckFileExists(backupDir) {

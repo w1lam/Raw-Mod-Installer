@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
-	"github.com/w1lam/Raw-Mod-Installer/internal/ui"
 )
 
 // NOTES:
@@ -18,7 +17,7 @@ func init() {}
 func main() {
 	m := app.Initialize()
 
-	ui.InitializeMenus(m)
+	_ = m
 
 	app.Run()
 }

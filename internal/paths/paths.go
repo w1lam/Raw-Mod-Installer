@@ -9,14 +9,16 @@ import (
 )
 
 type Paths struct {
-	MinecraftDir    string
+	MinecraftDir string
+	ModsDir      string
+
 	ProgramFilesDir string
-	ModsDir         string
+	DataDir         string
 	ManifestPath    string
-	BackupsDir      string
-	TempDownloadDir string
-	ModPacksDir     string
-	UnloadedModsDir string
+	MetaDataPath    string
+
+	BackupsDir  string
+	ModPacksDir string
 }
 
 func DefaultMinecraftDir() (string, error) {
@@ -44,15 +46,19 @@ func Resolve() (*Paths, error) {
 	}
 
 	installerDir := filepath.Join(mcDir, ".raw-mod-installer")
+	dataDir := filepath.Join(installerDir, "data")
 
 	return &Paths{
-		MinecraftDir:    mcDir,
+		MinecraftDir: mcDir,
+		ModsDir:      filepath.Join(mcDir, "mods"),
+
 		ProgramFilesDir: installerDir,
-		ModsDir:         filepath.Join(mcDir, "mods"),
-		ManifestPath:    filepath.Join(installerDir, "manifest.json"),
-		BackupsDir:      filepath.Join(installerDir, "backups"),
-		TempDownloadDir: filepath.Join(installerDir, ".temp-download"),
-		ModPacksDir:     filepath.Join(installerDir, "modpacks"),
+		DataDir:         dataDir,
+		ManifestPath:    filepath.Join(dataDir, "manifest.json"),
+		MetaDataPath:    filepath.Join(dataDir, "meta.json"),
+
+		BackupsDir:  filepath.Join(installerDir, "backups"),
+		ModPacksDir: filepath.Join(installerDir, "modpacks"),
 	}, nil
 }
 

@@ -1,71 +1,45 @@
-// Package resolve resolves mods
+// Package resolve resolves mod versions and metadata
 package resolve
 
 import (
-	"log"
-	"strings"
-
-	"github.com/w1lam/Packages/pkg/modrinth"
+	"github.com/w1lam/Packages/modrinth"
+	"github.com/w1lam/Packages/tui"
+	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 )
 
-// ResolvedMod represents a mod with its slug, latest version, and download URL.
+// ResolvedMod is a fullt resolved mod that has all metadata
 type ResolvedMod struct {
-	Slug        string
-	ProjectID   string
-	FabricID    string
-	LatestVer   string
-	LocalVer    string
-	DownloadURL string
+	Slug        string             `json:"slug"`
+	Version     modrinth.MRVersion `json:"version"`
+	DownloadURL string             `json:"url"`
 }
 
-// ResolvedModList is a list of ResolvedMod objects.
-type ResolvedModList []ResolvedMod
+func ResolveMods(slugs []string, mcVersion, loader string) (map[string]ResolvedMod, error) {
+	finished := make(chan struct{})
+	go tui.RawSpinner(finished, []rune{'▙', '▛', '▜', '▟'}, config.Style.Margin, "Resolving Mods")
+	defer close(finished)
 
-func (rm ResolvedModList) GetURLs() []string {
-	urls := make([]string, 0, len(rm))
-	for _, m := range rm {
-		urls = append(urls, m.DownloadURL)
-	}
-	return urls
-}
+	bestVersions := modrinth.FetchBestVersions(slugs, mcVersion, loader)
 
-func (rm ResolvedModList) GetLatestVers() []string {
-	vers := make([]string, 0, len(rm))
-	for _, m := range rm {
-		vers = append(vers, m.LatestVer)
-	}
-	return vers
-}
+	out := map[string]ResolvedMod{}
 
-func (rm ResolvedModList) GetLocalVers() []string {
-	vers := make([]string, 0, len(rm))
-	for _, m := range rm {
-		vers = append(vers, m.LocalVer)
-	}
-	return vers
-}
+	for _, slug := range slugs {
+		version := bestVersions[slug]
 
-func ResolveMod(slug, mcVersion, loader string) (ResolvedMod, error) {
-	project, err := modrinth.FetchModrinthProject(slug)
-	if err != nil {
-		return ResolvedMod{}, err
+		downloadURL := version.Files[0].URL
+		for _, f := range version.Files {
+			if f.Primary {
+				downloadURL = f.URL
+				break
+			}
+		}
+
+		out[slug] = ResolvedMod{
+			Slug:        slug,
+			Version:     *version,
+			DownloadURL: downloadURL,
+		}
 	}
 
-	latestVer, err := modrinth.FetchLatestModrinthVersion(project.ID, mcVersion, loader)
-	if err != nil {
-		log.Printf("⚠ skipping %s: %v", slug, err)
-		return ResolvedMod{}, nil
-	}
-
-	return ResolvedMod{
-		Slug:        slug,
-		ProjectID:   project.ID,
-		FabricID:    project.Slug, //
-		LatestVer:   latestVer.VersionNumber,
-		DownloadURL: latestVer.Files[0].URL,
-	}, nil
-}
-
-func NormalizeID(s string) string {
-	return strings.ReplaceAll(strings.ToLower(s), "-", "")
+	return out, nil
 }

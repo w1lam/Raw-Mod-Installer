@@ -2,5 +2,5 @@
 package netcfg
 
 const (
-	ModPacksURL = "https://raw.githubusercontent.com/w1lam/mods/refs/heads/main/mod-packs.txt"
+	ModPacksURL = "https://raw.githubusercontent.com/w1lam/mods/refs/heads/main/all-mod-packs.txt"
 )

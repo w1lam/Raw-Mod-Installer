@@ -4,17 +4,15 @@ package app
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/olekukonko/ts"
-	"github.com/w1lam/Packages/pkg/menu"
-	"github.com/w1lam/Packages/pkg/tui"
-	"github.com/w1lam/Packages/pkg/utils"
+	"github.com/w1lam/Packages/menu"
+	"github.com/w1lam/Packages/tui"
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
+	"github.com/w1lam/Raw-Mod-Installer/internal/env"
+	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/output"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
-	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
 func Initialize() *manifest.Manifest {
@@ -40,16 +38,13 @@ func Initialize() *manifest.Manifest {
 		log.Fatal(err)
 	}
 
-	fmt.Println("* Creating Installer Directory...")
-	if !utils.CheckFileExists(path.ProgramFilesDir) {
-		err := os.MkdirAll(path.ProgramFilesDir, 0o755)
-		if err != nil {
-			panic("* Failed to create Raw Mod Installer Directory: " + err.Error())
-		}
+	fmt.Println("* Creating Installer Directories...")
+	if err := filesystem.EnsureDirectories(path); err != nil {
+		panic("* Failed to create Raw Mod Installer Directories: " + err.Error())
 	}
 
 	fmt.Println("* Loading Manifest...")
-	m, err := manifest.Load(path.ManifestPath)
+	m, err := manifest.Load(path)
 	if err != nil {
 		m, err = manifest.BuildInitialManifest(path)
 		if err != nil {
@@ -57,14 +52,9 @@ func Initialize() *manifest.Manifest {
 		}
 	}
 
-	state.GlobalManifest = m
+	env.GlobalManifest = m
 
-	fmt.Println("* Writing README...")
-	if err := output.WriteModInfoListREADME(path.ProgramFilesDir, state.GlobalManifest.ModsSlice()); err != nil {
-		fmt.Printf("failed to write modlist README: %s", err)
-	}
-
-	tui.ClearScreenRaw()
+	InitializeMenus(m)
 
 	return m
 }

@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
-// Load loads the manifest from the specified path.
-func Load(path string) (*Manifest, error) {
-	data, err := os.ReadFile(path)
+// Load loads the manifest
+func Load(path *paths.Paths) (*Manifest, error) {
+	data, err := os.ReadFile(path.ManifestPath)
 	if err != nil {
 		return nil, err
 	}
@@ -17,6 +19,9 @@ func Load(path string) (*Manifest, error) {
 	if err := json.Unmarshal(data, &m); err != nil {
 		return nil, err
 	}
+
+	m.Paths = path
+
 	return &m, nil
 }
 

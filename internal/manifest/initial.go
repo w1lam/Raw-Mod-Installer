@@ -4,9 +4,7 @@ package manifest
 import (
 	"fmt"
 
-	"github.com/w1lam/Packages/pkg/fabric"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modpack"
-	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
+	"github.com/w1lam/Packages/fabric"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/programinfo"
 )
@@ -15,17 +13,12 @@ import (
 func BuildInitialManifest(path *paths.Paths) (*Manifest, error) {
 	fmt.Printf(" * Building Initial Manifest...\n")
 
-	availableModPacks, err := modpack.GetAvailableModPacks(netcfg.ModPacksURL)
-	if err != nil {
-		fmt.Printf(" * Failed to Fetch available Mod Packs: %s\n", err)
-	}
-
 	var loaderVer string
 	var loader string
 
 	if loaderVersion, err := fabric.GetLatestLocalVersion(programinfo.ProgramInfo.McVersion); err != nil {
 		fmt.Printf(" * No local Mod Loader found\n")
-		loaderVer = ""
+		loaderVer = "NONE"
 		loader = "NONE"
 	} else {
 		loaderVer = loaderVersion
@@ -35,17 +28,15 @@ func BuildInitialManifest(path *paths.Paths) (*Manifest, error) {
 	m := Manifest{
 		SchemaVersion:  1,
 		ProgramVersion: programinfo.ProgramInfo.Version,
-		Minecraft: MinecraftInfo{
-			Version:       "",
-			Loader:        loader,
-			LoaderVersion: loaderVer,
+		InstalledLoader: LoaderInfo{
+			Loader:  loader,
+			Version: loaderVer,
 		},
 		Paths: path,
 
-		EnabledModPack: nil,
+		EnabledModPack: "",
 
-		AvailableModPacks: availableModPacks,
-		InstalledModPacks: nil,
+		InstalledModPacks: make(map[string]InstalledModPack),
 	}
 
 	if err := m.Save(); err != nil {

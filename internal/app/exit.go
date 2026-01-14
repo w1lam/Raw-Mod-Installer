@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/w1lam/Packages/pkg/tui"
+	"github.com/w1lam/Packages/tui"
 )
 
 func Exit() {

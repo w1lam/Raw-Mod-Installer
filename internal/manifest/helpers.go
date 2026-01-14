@@ -1,7 +1,7 @@
 package manifest
 
 import (
-	"github.com/w1lam/Packages/pkg/utils"
+	"github.com/w1lam/Packages/utils"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
