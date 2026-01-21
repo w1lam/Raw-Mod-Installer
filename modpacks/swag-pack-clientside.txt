@@ -1,0 +1,96 @@
+# Name: SwagPackClientSide
+# Env: Client
+# Version: 0.0.3
+# McVersion: 1.21.11
+# Loader: fabric
+# Description: Client Side only version of SwagPack
+
+#FIXES
+debugify
+packet-fixer
+no-resource-pack-warnings
+yeetus-experimentus
+
+#UI
+current-game-music-track
+minecraft-cursor
+cubes-without-borders
+zoomify
+invmove
+resourcify
+modmenu
+jade
+reeses-sodium-options
+smooth-gui
+dynamiccrosshair
+dynamiccrosshaircompat
+immersive-hotbar
+pick-up-notifier
+better-advancements
+
+#APIs AND LIBs
+silk
+fabric-api
+cloth-config
+fabric-language-kotlin
+creativecore
+collective
+mru
+yacl
+balm
+player-animation-library
+puzzles-lib
+forge-config-api-port
+architectury-api
+glitchcore
+fzzy-config
+geckolib@5.4
+
+#PERFORMANCE
+sodium-extra
+sodium
+sodium-shadowy-path-blocks
+entityculling
+lithium
+immediatelyfast
+badoptimizations
+ferrite-core
+c2me-fabric
+moreculling
+cull-leaves
+scalablelux
+krypton
+dynamic-fps
+better-block-entities
+
+#RENDER DISTANCE
+distanthorizons
+
+#VISUALS
+lambdynamiclights
+iris
+visuality
+particular-reforged
+fallingleaves
+bettergrassify
+ambient-environment
+physicsmod
+not-enough-animations
+skyboxify
+entity-model-features
+entitytexturefeatures
+optigui
+continuity
+3dskinlayers
+weaponmaster
+cameraoverhaul
+subtle-effects
+armor-3d
+explosive-enhancement
+punchy-fpa
+
+#SOUND
+sound-physics-remastered
+sound
+ambientsounds
+presence-footsteps

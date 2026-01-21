@@ -37,8 +37,11 @@ func InstallModPack(
 		panic("InstallModPack: Manifest is nil")
 	}
 
+	if m.EnabledModPack == plan.RequestedModPack.Name {
+		return nil, nil
+	}
+
 	if plan.EnsureFabric {
-		fmt.Printf("\n\nENSURING FABRIC EXISTS\n\n")
 		if err := filesystem.EnsureFabric(plan.RequestedModPack.McVersion); err != nil {
 			return nil, fmt.Errorf("fabric install failed: %w", err)
 		}
@@ -48,13 +51,11 @@ func InstallModPack(
 		return nil, err
 	}
 
-	fmt.Printf("\n\nRESOLVING MODS\n\n")
-	resolved, err := resolve.ResolveMods(plan.RequestedModPack.Slugs, plan.RequestedModPack.McVersion, plan.RequestedModPack.Loader)
+	resolved, err := resolve.ResolveMods(plan.RequestedModPack.Entries, plan.RequestedModPack.McVersion, plan.RequestedModPack.Loader)
 	if err != nil {
 		return nil, rollback(m.InstalledModPacks[m.EnabledModPack], m, plan, err)
 	}
 
-	fmt.Printf("\n\nSTARTING DOWNLOAD\n\n")
 	downloads, err := downloader.ModsDownloader(resolved, m)
 	if err != nil {
 		return nil, rollback(m.InstalledModPacks[m.EnabledModPack], m, plan, err)
@@ -78,12 +79,10 @@ func InstallModPack(
 	}
 
 	if plan.EnableAfter {
-		nm, err := EnableModPack(plan.RequestedModPack.Name, m)
+		err := EnableModPack(plan.RequestedModPack.Name)
 		if err != nil {
 			return nil, rollback(m.InstalledModPacks[m.EnabledModPack], m, plan, err)
 		}
-
-		m = nm
 	}
 
 	return m, m.Save()

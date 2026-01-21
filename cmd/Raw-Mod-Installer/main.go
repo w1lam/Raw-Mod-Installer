@@ -1,7 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
+	"github.com/w1lam/Raw-Mod-Installer/internal/modpack"
 )
 
 // NOTES:
@@ -15,6 +19,14 @@ import (
 func init() {}
 
 func main() {
+	mps, err := modpack.GetAvailableModPacks()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%+v", mps)
+	time.Sleep(time.Hour * 1)
+
 	m := app.Initialize()
 
 	_ = m

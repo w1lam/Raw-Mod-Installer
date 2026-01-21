@@ -1,6 +1,7 @@
 package manifest
 
 import (
+	"github.com/w1lam/Packages/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
@@ -14,6 +15,7 @@ type Manifest struct {
 
 	InstalledModPacks map[string]InstalledModPack `json:"installedModPacks"`
 	Paths             *paths.Paths                `json:"-"`
+	Updates           Updates                     `json:"-"`
 }
 
 // LoaderInfo is the information about the mod loader
@@ -36,5 +38,13 @@ type InstalledModPack struct {
 type ManifestMod struct {
 	Slug             string `json:"slug"`
 	FileName         string `json:"fileName"`
+	Sha512           string `json:"sha512"`
+	Sha1             string `json:"sha1,omitempty"`
 	InstalledVersion string `json:"InstalledVersion"`
+}
+
+// Updates is all info on available updates
+type Updates struct {
+	ModListUpdate map[string]bool                   `json:"-"`
+	ModUpdates    map[string][]modrinth.UpdateEntry `json:"-"`
 }

@@ -45,3 +45,43 @@ func (mp *InstalledModPack) GetSlugs() []string {
 	}
 	return slugs
 }
+
+func (mp *InstalledModPack) GetHashes() []string {
+	var hashes []string
+	for _, mod := range mp.Mods {
+		hashes = append(hashes, mod.Sha512)
+	}
+	return hashes
+}
+
+// AllInstalledModSlugs gets all installed mods slugs
+func (m *Manifest) AllInstalledModSlugs() []string {
+	seen := map[string]bool{}
+	var slugs []string
+
+	for _, mp := range m.InstalledModPacks {
+		for slug := range mp.Mods {
+			if !seen[slug] {
+				seen[slug] = true
+				slugs = append(slugs, slug)
+			}
+		}
+	}
+	return slugs
+}
+
+// AllInstalledModHashes gets the hash for all installed mods
+func (m *Manifest) AllInstalledModHashes() []string {
+	seen := map[string]bool{}
+	var hashes []string
+
+	for _, mp := range m.InstalledModPacks {
+		for slug, mod := range mp.Mods {
+			if !seen[slug] {
+				seen[slug] = true
+				hashes = append(hashes, mod.Sha512)
+			}
+		}
+	}
+	return hashes
+}

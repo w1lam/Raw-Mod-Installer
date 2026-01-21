@@ -13,6 +13,13 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
+func PrintInfoField(msg string) {
+	margin := strings.Repeat(" ", config.Style.Margin)
+	marginBottom := strings.Repeat("\n", config.Style.Margin/3)
+	trailSpace := strings.Repeat(" ", config.Style.Width-(config.Style.Margin+utf8.RuneCountInString(msg)))
+	fmt.Printf("\r%s%s%s%s", margin, msg, trailSpace, marginBottom)
+}
+
 // RenderModPackModList renders a list of the mods inside a modpack with Title, Categories, Source and Wiki if available
 func RenderModPackModList(modPack manifest.InstalledModPack, meta *resolve.MetaData) {
 	for _, mod := range modPack.Mods {
