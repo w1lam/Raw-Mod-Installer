@@ -71,37 +71,37 @@ func ResolveModPack(modPackURL string) (ResolvedModPack, error) {
 			continue
 		}
 
-		if name, ok := strings.CutPrefix(line, "# Name: "); ok {
+		if name, ok := strings.CutPrefix(line, "Name: "); ok {
 			resolvedModPack.Name = name
 			continue
 		}
 
-		if env, ok := strings.CutPrefix(line, "# Env: "); ok {
+		if env, ok := strings.CutPrefix(line, "Env: "); ok {
 			resolvedModPack.Env = env
 			continue
 		}
 
-		if version, ok := strings.CutPrefix(line, "# Version: "); ok {
+		if version, ok := strings.CutPrefix(line, "Version: "); ok {
 			resolvedModPack.ListVersion = version
 			continue
 		}
 
-		if mcVersion, ok := strings.CutPrefix(line, "# McVersion: "); ok {
+		if mcVersion, ok := strings.CutPrefix(line, "McVersion: "); ok {
 			resolvedModPack.McVersion = mcVersion
 			continue
 		}
 
-		if loader, ok := strings.CutPrefix(line, "# Loader: "); ok {
+		if loader, ok := strings.CutPrefix(line, "Loader: "); ok {
 			resolvedModPack.Loader = loader
 			continue
 		}
 
-		if description, ok := strings.CutPrefix(line, "# Description: "); ok {
+		if description, ok := strings.CutPrefix(line, "Description: "); ok {
 			resolvedModPack.Description = description
 			continue
 		}
 
-		if hash, ok := strings.CutPrefix(line, "# Hash: "); ok {
+		if hash, ok := strings.CutPrefix(line, "Hash: "); ok {
 			resolvedModPack.Hash = hash
 			continue
 		}

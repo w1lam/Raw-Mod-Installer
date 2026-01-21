@@ -1,10 +1,10 @@
-# Name: SwagPack
-# Env: Client and Server
-# Version: 0.2.0
-# McVersion: 1.21.10
-# Loader: fabric
-# Description: Mod Pack that mainly adds visual and small immersion and building mods.
-# Hash: 
+Name: SwagPack
+Env: Client and Server
+Version: 0.2.0
+McVersion: 1.21.10
+Loader: fabric
+Description: Mod Pack that mainly adds visual and small immersion and building mods.
+Hash: 967087fedf583cda616a089706b439da83e2ef9af7f5cb7d6f52e67c541164553b6344c41c393d964c9f6a99ef8b21ca3e56101a051bc1b67790a1d33450d903
 
 #FIXES
 debugify

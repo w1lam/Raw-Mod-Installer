@@ -66,27 +66,27 @@ func ResolveResourceBundle(url string) (ResolvedResourceBundle, error) {
 			continue
 		}
 
-		if name, ok := strings.CutPrefix(line, "# Name: "); ok {
+		if name, ok := strings.CutPrefix(line, "Name: "); ok {
 			resolvedResourceBundle.Name = name
 			continue
 		}
 
-		if version, ok := strings.CutPrefix(line, "# Version: "); ok {
+		if version, ok := strings.CutPrefix(line, "Version: "); ok {
 			resolvedResourceBundle.ListVersion = version
 			continue
 		}
 
-		if mcVersion, ok := strings.CutPrefix(line, "# McVersion: "); ok {
+		if mcVersion, ok := strings.CutPrefix(line, "McVersion: "); ok {
 			resolvedResourceBundle.McVersion = mcVersion
 			continue
 		}
 
-		if description, ok := strings.CutPrefix(line, "# Description: "); ok {
+		if description, ok := strings.CutPrefix(line, "Description: "); ok {
 			resolvedResourceBundle.Description = description
 			continue
 		}
 
-		if hash, ok := strings.CutPrefix(line, "# Hash: "); ok {
+		if hash, ok := strings.CutPrefix(line, "Hash: "); ok {
 			resolvedResourceBundle.Hash = hash
 			continue
 		}

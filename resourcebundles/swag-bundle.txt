@@ -1,8 +1,8 @@
-# Name: SwagBundle
-# Version: 0.0.1
-# McVersion: 1.21.11
-# Description: Cool lil resourcepacks that spice up minecraft
-# Hash: 
+Name: SwagBundle
+Version: 0.0.1
+McVersion: 1.21.11
+Description: Cool lil resourcepacks that spice up minecraft
+Hash: 
 
 #CONNECTED TEXTURES
 connected-rocks

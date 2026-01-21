@@ -1,10 +1,10 @@
-# Name: SwagPackServerSide
-# Env: Server
-# Version: 0.1.3
-# McVersion: 1.21.10
-# Loader: fabric
-# Description: Server Side version of SwagPack
-# Hash: 
+Name: SwagPackServerSide
+Env: Server
+Version: 0.1.3
+McVersion: 1.21.10
+Loader: fabric
+Description: Server Side version of SwagPack
+Hash: ef9306533cbde7d3fc5c45571a5a02607b237aec9b22501cbfd0cf4cb1a9150b76b06b1d2b3a6ebee021dc37af0bfe70134893050b2b69970a66596077c7419f
 
 #FIXES
 attributefix

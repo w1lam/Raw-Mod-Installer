@@ -1,10 +1,10 @@
-# Name: SwagPackClientSide
-# Env: Client
-# Version: 0.0.3
-# McVersion: 1.21.11
-# Loader: fabric
-# Description: Client Side only version of SwagPack
-# Hash: 
+Name: SwagPackClientSide
+Env: Client
+Version: 0.0.3
+McVersion: 1.21.11
+Loader: fabric
+Description: Client Side only version of SwagPack
+Hash: 
 
 #FIXES
 debugify
