@@ -11,8 +11,8 @@ type GithubContentResponse struct {
 }
 
 type AvailableLists struct {
-	ModPacks        map[string]ResolvedModPack
-	ResourceBundles map[string]ResolvedResourceBundle
+	ModPacks        map[string]ResolvedModPack        `json:"modPacks"`
+	ResourceBundles map[string]ResolvedResourceBundle `json:"resourcePacks"`
 }
 
 // GetAllAvailableLists gets the url for a modpack from a list

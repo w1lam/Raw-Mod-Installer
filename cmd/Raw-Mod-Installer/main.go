@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -23,8 +24,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	indented, err := json.MarshalIndent(allLists, "", "  ")
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Printf("%+v", allLists)
+	fmt.Printf("%+v", string(indented))
 	time.Sleep(time.Hour * 1)
 
 	m := app.Initialize()

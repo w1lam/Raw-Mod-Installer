@@ -17,11 +17,12 @@ type ResolvedResourceBundle struct {
 	ListVersion string
 	McVersion   string
 	Description string
+	Hash        string
 	Entries     []modrinth.ModrinthListEntry
 }
 
 func GetAvailableResourceBundles() (map[string]ResolvedResourceBundle, error) {
-	req := fmt.Sprintf("%s/contents/resourcebundles", netcfg.GithubRepoAPI)
+	req := fmt.Sprintf("%scontents/resourcebundles", netcfg.GithubRepoAPI)
 
 	resp, err := http.Get(req)
 	if err != nil {
@@ -82,6 +83,11 @@ func ResolveResourceBundle(url string) (ResolvedResourceBundle, error) {
 
 		if description, ok := strings.CutPrefix(line, "# Description: "); ok {
 			resolvedResourceBundle.Description = description
+			continue
+		}
+
+		if hash, ok := strings.CutPrefix(line, "# Hash: "); ok {
+			resolvedResourceBundle.Hash = hash
 			continue
 		}
 

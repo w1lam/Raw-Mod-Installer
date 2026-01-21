@@ -69,12 +69,18 @@ func InstallModPack(
 		return nil, fmt.Errorf("failed to move to target modpack dir: %w", err)
 	}
 
+	packHash, err := lists.ComputeDirHash(destDir)
+	if err != nil {
+		return nil, fmt.Errorf("failed to compute pack hash: %w", err)
+	}
+
 	m.InstalledModPacks[plan.RequestedModPack.Name] = manifest.InstalledModPack{
 		Name:             plan.RequestedModPack.Name,
 		ListSource:       plan.RequestedModPack.ListSource,
 		InstalledVersion: plan.RequestedModPack.ListVersion,
 		McVersion:        plan.RequestedModPack.McVersion,
 		Loader:           plan.RequestedModPack.Loader,
+		Hash:             packHash,
 		Mods:             downloads.DownloadedMods,
 	}
 

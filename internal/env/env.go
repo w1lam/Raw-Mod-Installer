@@ -10,10 +10,11 @@ import (
 )
 
 var (
-	ProgramVersion    string = "0.0.1"
-	GlobalManifest    *manifest.Manifest
-	GlobalMetaData    *resolve.MetaData
-	AvailableModPacks map[string]lists.ResolvedModPack
-	Updates           manifest.Updates
-	ManMu             sync.Mutex
+	ProgramVersion           string = "0.0.1"
+	GlobalManifest           *manifest.Manifest
+	GlobalMetaData           *resolve.MetaData
+	AvailableModPacks        map[string]lists.ResolvedModPack
+	AvailableResourceBundles map[string]lists.ResolvedResourceBundle
+	Updates                  manifest.Updates
+	ManMu                    sync.Mutex
 )

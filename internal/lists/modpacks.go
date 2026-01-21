@@ -21,11 +21,12 @@ type ResolvedModPack struct {
 	McVersion   string
 	Loader      string
 	Description string
+	Hash        string
 	Entries     []modrinth.ModrinthListEntry
 }
 
 func GetAvailableModPacks() (map[string]ResolvedModPack, error) {
-	req := fmt.Sprintf("%s/contents/modpacks", netcfg.GithubRepoAPI)
+	req := fmt.Sprintf("%scontents/modpacks", netcfg.GithubRepoAPI)
 
 	resp, err := http.Get(req)
 	if err != nil {
@@ -97,6 +98,11 @@ func ResolveModPack(modPackURL string) (ResolvedModPack, error) {
 
 		if description, ok := strings.CutPrefix(line, "# Description: "); ok {
 			resolvedModPack.Description = description
+			continue
+		}
+
+		if hash, ok := strings.CutPrefix(line, "# Hash: "); ok {
+			resolvedModPack.Hash = hash
 			continue
 		}
 

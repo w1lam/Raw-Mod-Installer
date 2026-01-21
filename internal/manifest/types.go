@@ -11,10 +11,13 @@ type Manifest struct {
 	ProgramVersion   string                `json:"programVersion"`
 	InstalledLoaders map[string]LoaderInfo `json:"installedLoader"`
 
-	EnabledModPack string `json:"enabledModpack"`
+	EnabledModPack        string `json:"enabledModPack"`
+	EnabledResourceBundle string `json:"enabledResourceBundle"`
 
-	InstalledModPacks map[string]InstalledModPack `json:"installedModPacks"`
-	Paths             *paths.Paths                `json:"-"`
+	InstalledModPacks        map[string]InstalledModPack        `json:"installedModPacks"`
+	InstalledResourceBundles map[string]InstalledResourceBundle `json:"InstalledResourceBundles"`
+
+	Paths *paths.Paths `json:"-"`
 }
 
 // LoaderInfo is the information about a mod loader
@@ -31,7 +34,17 @@ type InstalledModPack struct {
 	InstalledVersion string                 `json:"version"`
 	McVersion        string                 `json:"mcVersion"`
 	Loader           string                 `json:"loader"`
+	Hash             string                 `json:"hash"`
 	Mods             map[string]ManifestMod `json:"installedMods"`
+}
+
+type InstalledResourceBundle struct {
+	Name             string                          `json:"name"`
+	ListSource       string                          `json:"listSource"`
+	InstalledVersion string                          `json:"version"`
+	McVersion        string                          `json:"mcVersion"`
+	Hash             string                          `json:"hash"`
+	ResourcePacks    map[string]ManifestResourcePack `json:"resourcePacks"`
 }
 
 // ManifestMod is a mod entry in the manifest that holds all information about a mod
@@ -41,6 +54,13 @@ type ManifestMod struct {
 	Sha512           string `json:"sha512"`
 	Sha1             string `json:"sha1,omitempty"`
 	InstalledVersion string `json:"InstalledVersion"`
+}
+
+type ManifestResourcePack struct {
+	Slug             string `json:"slug"`
+	FileName         string `json:"fileName"`
+	Sha              string `json:"sha"`
+	InstalledVersion string `json:"version"`
 }
 
 // Updates is all info on available updates

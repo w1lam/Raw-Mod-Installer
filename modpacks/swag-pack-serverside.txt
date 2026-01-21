@@ -4,6 +4,7 @@
 # McVersion: 1.21.10
 # Loader: fabric
 # Description: Server Side version of SwagPack
+# Hash: 
 
 #FIXES
 attributefix

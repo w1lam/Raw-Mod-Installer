@@ -4,6 +4,7 @@
 # McVersion: 1.21.10
 # Loader: fabric
 # Description: Mod Pack that mainly adds visual and small immersion and building mods.
+# Hash: 
 
 #FIXES
 debugify

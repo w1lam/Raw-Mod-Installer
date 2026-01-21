@@ -16,6 +16,7 @@ const (
 	ModPackMenuID
 	UpdateMenuID
 	HelpMenuID
+	ResourceMenuID
 )
 
 // InitializeMenus initializes the empty menus for the program
@@ -27,12 +28,12 @@ func InitializeMenus(m *manifest.Manifest) {
 	// MAIN MENU
 	mainMenu := menu.NewMenu("Main Menu", "This is the Main Menu.", MainMenuID)
 	mainMenu.AddButton("Mod Packs", "", "Press M to view available Mod Packs", menu.ChangeMenu(ModPackMenuID), 'm', "modpacks")
+	mainMenu.AddButton("Resource Bundles", "", "Press R to view available Resource Bundles", menu.ChangeMenu(ResourceMenuID), 'r', "resourceBundles")
 	mainMenu.AddButton("Updates", "", "Press U for Update menu", menu.ChangeMenu(UpdateMenuID), 'u', "updateMenu")
 	mainMenu.AddButton("Help", "", "Press H for help menu", menu.ChangeMenu(HelpMenuID), 'h', "help")
 
 	// MODPACK MENU
 	modPackMenu := menu.NewMenu("Mod Packs", "This is the mod packs menu", ModPackMenuID)
-	modPackMenu.AddButton("Back", "", "Press B to go Back", menu.ChangeMenu(MainMenuID), 'b', "back")
 	modPackMenu.SetOnEnter(
 		func() {
 			m := env.GlobalManifest
@@ -78,6 +79,61 @@ func InitializeMenus(m *manifest.Manifest) {
 					title,
 					"",
 					env.AvailableModPacks[installed.Name].Description,
+					action,
+					key,
+					installed.Name,
+				)
+			}
+			modPackMenu.AddButton("Back", "<", "Press B to go Back", menu.ChangeMenu(MainMenuID), 'b', "back")
+		})
+
+	// RESOURCEBUNDLE MENU
+	resourceBundleMenu := menu.NewMenu("Resource Bundles", "This is the Resource Bundles Menu", ResourceMenuID)
+	resourceBundleMenu.SetOnEnter(
+		func() {
+			m := env.GlobalManifest
+
+			modPackMenu.ClearButtons()
+
+			var err error
+			env.AvailableResourceBundles, err = lists.GetAvailableResourceBundles()
+			if err != nil {
+				fmt.Printf("failed %s, ID: %d. onEnter func: %s", modPackMenu.Header, modPackMenu.ID, err)
+				return
+			}
+
+			used := map[rune]bool{}
+			// AvailableResourceBundles
+			for _, rb := range env.AvailableResourceBundles {
+				if _, ok := m.InstalledResourceBundles[rb.Name]; !ok {
+					key := menu.AssignKey(rb.Name, used)
+					modPackMenu.AddButton(
+						rb.Name,
+						"*",
+						rb.Description,
+						actions.InstallModPackAction(rb.Name),
+						key,
+						rb.Name,
+					)
+				} else {
+					continue
+				}
+			}
+			// InstalledResourceBundles
+			for _, installed := range m.InstalledResourceBundles {
+				key := menu.AssignKey(installed.Name, used)
+				title := installed.Name
+				action := actions.EnableModPackAction(installed.Name)
+
+				if installed.Name == m.EnabledModPack {
+					title = fmt.Sprintf("%s (Enabled)", installed.Name)
+					action = actions.DisableModPackAction()
+				}
+
+				modPackMenu.AddButton(
+					title,
+					"",
+					env.AvailableResourceBundles[installed.Name].Description,
 					action,
 					key,
 					installed.Name,

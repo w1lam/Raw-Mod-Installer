@@ -15,11 +15,14 @@ func BuildInitialManifest(programVer string, path *paths.Paths) (*Manifest, erro
 		SchemaVersion:    1,
 		ProgramVersion:   programVer,
 		InstalledLoaders: make(map[string]LoaderInfo),
-		Paths:            path,
 
-		EnabledModPack: "",
+		EnabledModPack:        "",
+		EnabledResourceBundle: "",
 
-		InstalledModPacks: make(map[string]InstalledModPack),
+		InstalledModPacks:        make(map[string]InstalledModPack),
+		InstalledResourceBundles: make(map[string]InstalledResourceBundle),
+
+		Paths: path,
 	}
 
 	if err := m.Save(); err != nil {

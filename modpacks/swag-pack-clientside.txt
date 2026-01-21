@@ -4,6 +4,7 @@
 # McVersion: 1.21.11
 # Loader: fabric
 # Description: Client Side only version of SwagPack
+# Hash: 
 
 #FIXES
 debugify
