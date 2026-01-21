@@ -7,21 +7,21 @@ import (
 
 // Manifest is the manifest for all global information required by the program
 type Manifest struct {
-	SchemaVersion   int        `json:"schemaVersion"`
-	ProgramVersion  string     `json:"programVersion"`
-	InstalledLoader LoaderInfo `json:"installedLoader"`
+	SchemaVersion    int                   `json:"schemaVersion"`
+	ProgramVersion   string                `json:"programVersion"`
+	InstalledLoaders map[string]LoaderInfo `json:"installedLoader"`
 
 	EnabledModPack string `json:"enabledModpack"`
 
 	InstalledModPacks map[string]InstalledModPack `json:"installedModPacks"`
 	Paths             *paths.Paths                `json:"-"`
-	Updates           Updates                     `json:"-"`
 }
 
-// LoaderInfo is the information about the mod loader
+// LoaderInfo is the information about a mod loader
 type LoaderInfo struct {
-	Loader  string `json:"loader"`
-	Version string `json:"version"`
+	Loader        string `json:"loader"`
+	McVersion     string `json:"mcVersion"`
+	LoaderVersion string `json:"version"`
 }
 
 // InstalledModPack is an installed mod pack which holds all information about the mod pack, including all mods in form of map of ManifestMod with mods slug as key

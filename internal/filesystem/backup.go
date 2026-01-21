@@ -19,14 +19,14 @@ const (
 	BackupOnce
 )
 
-func BackupIfNeeded(m *manifest.Manifest) error {
+func BackupModsIfNeeded(m *manifest.Manifest) error {
 	if !utils.CheckFileExists(m.Paths.ModsDir) {
 		return nil
 	}
 
-	backupDir := filepath.Join(m.Paths.BackupsDir, "mods.backup")
+	backupDir := filepath.Join(m.Paths.ModsBackupsDir, "mods.backup")
 	if m.EnabledModPack != "" {
-		backupDir = filepath.Join(m.Paths.BackupsDir, m.EnabledModPack+".backup")
+		backupDir = filepath.Join(m.Paths.ModsBackupsDir, m.EnabledModPack+".backup")
 	}
 
 	if utils.CheckFileExists(backupDir) {
@@ -39,11 +39,11 @@ func BackupIfNeeded(m *manifest.Manifest) error {
 }
 
 // RestoreBackup restores the mod folder from backup
-func RestoreBackup(modPack manifest.InstalledModPack, m *manifest.Manifest) error {
+func RestoreModsBackup(modPack manifest.InstalledModPack, m *manifest.Manifest) error {
 	if modPack.Name == "DEFAULT" {
-		return os.Rename(filepath.Join(m.Paths.BackupsDir, "mods.backup"), m.Paths.ModsDir)
+		return os.Rename(filepath.Join(m.Paths.ModsBackupsDir, "mods.backup"), m.Paths.ModsDir)
 	}
-	backupPth := m.Paths.BackupsDir + modPack.Name + ".backup"
+	backupPth := m.Paths.ModsBackupsDir + modPack.Name + ".backup"
 	if !utils.CheckFileExists(backupPth) {
 		return fmt.Errorf("no backup folder found")
 	}

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modpack"
+	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 )
 
 // NOTES:
@@ -19,7 +19,7 @@ import (
 func init() {}
 
 func main() {
-	mps, err := modpack.GetAvailableModPacks()
+	mps, err := lists.GetAllAvailableLists()
 	if err != nil {
 		panic(err)
 	}

@@ -1,5 +1,5 @@
-// Package modpack provides functions to fetch and parse mod lists from remote URLs.
-package modpack
+// Package lists provides functions to fetch and parse mod lists from remote URLs.
+package lists
 
 import (
 	"bufio"
@@ -21,22 +21,11 @@ type ResolvedModPack struct {
 	McVersion   string
 	Loader      string
 	Description string
-	Entries     []modrinth.ModEntry
+	Entries     []modrinth.ModrinthListEntry
 }
 
-type GithubContentResponse struct {
-	Name   string `json:"name"`
-	Path   string `json:"path"`
-	Sha    string `json:"sha"`
-	Size   int    `json:"size"`
-	URL    string `json:"url"`
-	RawURL string `json:"download_url"`
-	Type   string `json:"type"`
-}
-
-// GetAvailableModPacks gets the url for a modpack from a list
 func GetAvailableModPacks() (map[string]ResolvedModPack, error) {
-	req := fmt.Sprintf("%s/contents/modpacks", netcfg.GithubAPI)
+	req := fmt.Sprintf("%s/contents/modpacks", netcfg.GithubRepoAPI)
 
 	resp, err := http.Get(req)
 	if err != nil {
@@ -71,7 +60,7 @@ func ResolveModPack(modPackURL string) (ResolvedModPack, error) {
 
 	var resolvedModPack ResolvedModPack
 
-	var entries []modrinth.ModEntry
+	var entries []modrinth.ModrinthListEntry
 	scanner := bufio.NewScanner(resp.Body)
 
 	for scanner.Scan() {
@@ -116,7 +105,7 @@ func ResolveModPack(modPackURL string) (ResolvedModPack, error) {
 		}
 
 		parts := strings.SplitN(line, "@", 2)
-		entry := modrinth.ModEntry{
+		entry := modrinth.ModrinthListEntry{
 			Slug: parts[0],
 		}
 

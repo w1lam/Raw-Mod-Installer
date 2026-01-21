@@ -6,8 +6,8 @@ import (
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/actions"
 	"github.com/w1lam/Raw-Mod-Installer/internal/env"
+	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modpack"
 )
 
 // Menu IDs
@@ -40,7 +40,7 @@ func InitializeMenus(m *manifest.Manifest) {
 			modPackMenu.ClearButtons()
 
 			var err error
-			env.AvailableModPacks, err = modpack.GetAvailableModPacks()
+			env.AvailableModPacks, err = lists.GetAvailableModPacks()
 			if err != nil {
 				fmt.Printf("failed %s, ID: %d. onEnter func: %s", modPackMenu.Header, modPackMenu.ID, err)
 				return

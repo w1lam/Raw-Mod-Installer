@@ -8,8 +8,8 @@ import (
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/downloader"
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
+	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/modpack"
 	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
@@ -22,7 +22,7 @@ const (
 
 type InstallPlan struct {
 	Intent           InstallIntent
-	RequestedModPack modpack.ResolvedModPack
+	RequestedModPack lists.ResolvedModPack
 	EnsureFabric     bool
 	BackupPolicy     filesystem.BackupPolicy
 	EnableAfter      bool

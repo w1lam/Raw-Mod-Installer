@@ -48,7 +48,7 @@ func Initialize() *manifest.Manifest {
 	fmt.Println(" * Loading Manifest...")
 	m, err := manifest.Load(path)
 	if err != nil {
-		m, err = manifest.BuildInitialManifest(path)
+		m, err = manifest.BuildInitialManifest(env.ProgramVersion, path)
 		if err != nil {
 			log.Fatal(err)
 		}

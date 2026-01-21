@@ -15,7 +15,7 @@ func rollback(modPack manifest.InstalledModPack, m *manifest.Manifest, plan Inst
 	}
 
 	if plan.BackupPolicy != filesystem.BackupNever {
-		_ = filesystem.RestoreBackup(modPack, m)
+		_ = filesystem.RestoreModsBackup(modPack, m)
 	}
 	return cause
 }
@@ -25,18 +25,18 @@ func prepareFS(m *manifest.Manifest, plan InstallPlan) error {
 		panic("prepareFS: Manifest is nil")
 	}
 	if m.Paths.ModsDir == "" ||
-		m.Paths.BackupsDir == "" ||
+		m.Paths.ModsBackupsDir == "" ||
 		m.Paths.ModPacksDir == "" {
 		return fmt.Errorf("manifest paths not initialized")
 	}
 
 	switch plan.BackupPolicy {
 	case filesystem.BackupIfExists:
-		return filesystem.BackupIfNeeded(m)
+		return filesystem.BackupModsIfNeeded(m)
 
 	case filesystem.BackupOnce:
-		if !utils.CheckFileExists(m.Paths.BackupsDir) {
-			return filesystem.BackupIfNeeded(m)
+		if !utils.CheckFileExists(m.Paths.ModsBackupsDir) {
+			return filesystem.BackupModsIfNeeded(m)
 		}
 	}
 	if plan.Intent == Reinstall {
