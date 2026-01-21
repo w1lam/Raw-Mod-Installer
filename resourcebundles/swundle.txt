@@ -1,0 +1,36 @@
+# Name: Swundle
+# Version: 0.0.1
+# McVersion: 1.21.11
+# Description: haha
+
+#CONNECTED TEXTURES
+connected-rocks
+connected-bricks
+connected-paths
+
+#ITEMS
+glowing-glints
+animated-items
+fresh-food
+tools-and-utils
+
+#UI
+recolorful-containers-gui
+eclectic-trove-legendary-tooltips
+
+#FOLIAGE
+fancy-crops
+simple-grass-flowers
+os-colorful-grasses
+better-sugar-cane
+fresh-flower-pots
+better-busy-leaves
+better-foliage
+
+#ANIMATION
+fresh-animations
+fresh-animations-extensions
+fire-rekindled
+
+#SOUND
+vvi

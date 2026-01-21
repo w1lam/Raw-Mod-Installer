@@ -19,12 +19,12 @@ import (
 func init() {}
 
 func main() {
-	mps, err := lists.GetAllAvailableLists()
+	allLists, err := lists.GetAllAvailableLists()
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("%+v", mps)
+	fmt.Printf("%+v", allLists)
 	time.Sleep(time.Hour * 1)
 
 	m := app.Initialize()
