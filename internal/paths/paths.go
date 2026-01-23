@@ -62,7 +62,7 @@ func Resolve() (*Paths, error) {
 		MetaDataPath:    filepath.Join(dataDir, "meta.json"),
 
 		ModPacksDir:    filepath.Join(installerDir, "modpacks"),
-		ModsBackupsDir: filepath.Join(installerDir, "backups", "backups"),
+		ModsBackupsDir: filepath.Join(installerDir, "modpacks", "backups"),
 
 		ResourceBundlesDir:     filepath.Join(installerDir, "resourcebundles"),
 		ResourcePackBackupsDir: filepath.Join(installerDir, "resourcebundles", "backups"),

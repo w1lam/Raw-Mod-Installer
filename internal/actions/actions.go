@@ -6,38 +6,34 @@ import (
 
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Packages/tui"
-	"github.com/w1lam/Raw-Mod-Installer/internal/env"
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/installer"
+	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
 func InstallModPackAction(modPackName string) menu.Action {
-	if env.GlobalManifest == nil {
-		panic("InstallModPackAction: GlobalManifest is nil")
-	}
+	gState := state.Get()
 
-	if env.AvailableModPacks[modPackName].Name != modPackName {
-		panic("no mod pack with specified name: " + modPackName)
-	}
-
-	plan := installer.InstallPlan{
-		Intent:           installer.Install,
-		RequestedModPack: env.AvailableModPacks[modPackName],
-		EnsureFabric:     true,
-		BackupPolicy:     filesystem.BackupOnce,
-		EnableAfter:      true,
-	}
+	plan := installer.InstallPlan{}
+	gState.Read(func(s *state.State) {
+		plan = installer.InstallPlan{
+			Intent:           installer.Install,
+			RequestedPackage: s.ModPacks()[modPackName],
+			EnsureFabric:     true,
+			BackupPolicy:     filesystem.BackupOnce,
+			EnableAfter:      true,
+		}
+	})
 
 	return menu.Action{
 		Function: func() error {
-			m, err := installer.InstallModPack(env.GlobalManifest, plan)
+			err := installer.InstallModPack(plan)
 			if err != nil {
 				return err
 			}
-			env.GlobalManifest = m
-			return env.GlobalManifest.Save()
+			return nil
 		},
-		WrapUp: func() {
+		WrapUp: func(err error) {
 			fmt.Printf("\n* %s Installation Complete!\n", modPackName)
 			time.Sleep(time.Second * 3)
 			tui.ClearScreenRaw()
@@ -55,7 +51,7 @@ func EnableModPackAction(modPackName string) menu.Action {
 			}
 			return nil
 		},
-		WrapUp: func() {},
+		WrapUp: func(err error) {},
 	}
 }
 
@@ -68,6 +64,6 @@ func DisableModPackAction() menu.Action {
 			}
 			return nil
 		},
-		WrapUp: func() {},
+		WrapUp: func(err error) {},
 	}
 }

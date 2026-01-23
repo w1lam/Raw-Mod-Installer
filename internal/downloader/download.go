@@ -4,13 +4,11 @@ package downloader
 import (
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 	"sync"
 
 	"github.com/w1lam/Packages/download"
-	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
 // Progress represents the download progress of a file
@@ -21,16 +19,25 @@ type Progress struct {
 }
 
 type DownloaderResults struct {
-	TempDir        string
-	DownloadedMods map[string]manifest.ManifestMod
+	TempDir         string
+	DownloadedItems map[string]DownloadItem
 }
 
-// ModsDownloader is the download function for mods
-func ModsDownloader(
-	resolvedMods map[string]resolve.ResolvedMod,
-	m *manifest.Manifest,
+type DownloadItem struct {
+	ID       string // slug
+	FileName string
+	URL      string
+	Sha1     string
+	Sha512   string
+	Version  string
+}
+
+// DownloadEntries is the main download function
+func DownloadEntries(
+	entries []DownloadItem,
+	path *paths.Paths,
 ) (DownloaderResults, error) {
-	tempDir, err := os.MkdirTemp(m.Paths.ProgramFilesDir, "downloads")
+	tempDir, err := os.MkdirTemp(path.ProgramFilesDir, "downloads")
 	if err != nil {
 		return DownloaderResults{}, err
 	}
@@ -39,21 +46,21 @@ func ModsDownloader(
 	var wg sync.WaitGroup
 
 	results := DownloaderResults{
-		TempDir:        tempDir,
-		DownloadedMods: make(map[string]manifest.ManifestMod),
+		TempDir:         tempDir,
+		DownloadedItems: make(map[string]DownloadItem),
 	}
 
 	var mu sync.Mutex
 
-	for _, mod := range resolvedMods {
+	for _, entry := range entries {
 		wg.Add(1)
-		mod := mod
+		entry := entry
 		go func() {
 			defer wg.Done()
-			uri := mod.DownloadURL
+			uri := entry.URL
 
 			fileName := filepath.Base(uri)
-			filePath := path.Join(tempDir, fileName)
+			filePath := filepath.Join(tempDir, fileName)
 
 			progressCh <- Progress{File: fileName, Status: "downloading"}
 
@@ -63,13 +70,13 @@ func ModsDownloader(
 				return
 			}
 
-			if mod.Sha512 != "" {
-				if computedSha != mod.Sha512 {
+			if entry.Sha512 != "" {
+				if computedSha != entry.Sha512 {
 					progressCh <- Progress{File: fileName, Status: "failure", Err: fmt.Errorf("SHA512 mismatch")}
 					return
 				}
-			} else if mod.Sha1 == "" {
-				if computedSha != mod.Sha1 {
+			} else if entry.Sha1 == "" {
+				if computedSha != entry.Sha1 {
 					progressCh <- Progress{File: fileName, Status: "failure", Err: fmt.Errorf("SHA1 mismatch")}
 					return
 				}
@@ -78,12 +85,12 @@ func ModsDownloader(
 			progressCh <- Progress{File: fileName, Status: "success"}
 
 			mu.Lock()
-			results.DownloadedMods[mod.Slug] = manifest.ManifestMod{
-				Slug:             mod.Slug,
-				FileName:         fileName,
-				Sha512:           mod.Sha512,
-				Sha1:             mod.Sha1,
-				InstalledVersion: mod.Version.VersionNumber,
+			results.DownloadedItems[entry.ID] = DownloadItem{
+				ID:       entry.ID,
+				FileName: fileName,
+				Sha512:   entry.Sha512,
+				Sha1:     entry.Sha1,
+				Version:  entry.Version,
 			}
 			mu.Unlock()
 		}()
@@ -94,7 +101,7 @@ func ModsDownloader(
 		close(progressCh)
 	}()
 
-	_, failedFiles := RenderProgress(progressCh, len(resolvedMods))
+	_, failedFiles := RenderProgress(progressCh, len(entries))
 
 	if len(failedFiles) > 0 {
 		return DownloaderResults{}, fmt.Errorf("%d mods failed to install", len(failedFiles))

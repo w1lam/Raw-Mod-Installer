@@ -2,5 +2,6 @@
 package netcfg
 
 const (
-	GithubRepoAPI = "https://api.github.com/repos/w1lam/raw-mod-installer/"
+	GithubRepo     = "https://api.github.com/repos/w1lam/raw-mod-installer/"
+	GithubPackages = "https://api.github.com/repos/w1lam/raw-mod-installer/packages/"
 )

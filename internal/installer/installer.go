@@ -10,7 +10,9 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
+	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
 type InstallIntent int
@@ -22,74 +24,84 @@ const (
 
 type InstallPlan struct {
 	Intent           InstallIntent
-	RequestedModPack lists.ResolvedModPack
+	RequestedPackage lists.ResolvedModPack
 	EnsureFabric     bool
 	BackupPolicy     filesystem.BackupPolicy
 	EnableAfter      bool
 }
 
-// InstallModPack executes an InstallPlan
-func InstallModPack(
-	m *manifest.Manifest,
+// PackageInstaller executes an InstallPlan and installs a pacakge
+func PackageInstaller(
 	plan InstallPlan,
-) (*manifest.Manifest, error) {
-	if m == nil {
-		panic("InstallModPack: Manifest is nil")
-	}
+) error {
+	gState := state.Get()
 
-	if m.EnabledModPack == plan.RequestedModPack.Name {
-		return nil, nil
+	var path *paths.Paths
+	var installed map[string]manifest.InstalledModPack
+	var enabled string
+
+	gState.Read(func(s *state.State) {
+		path = s.Manifest().Paths
+		installed = s.Manifest().InstalledModPacks
+		enabled = s.Manifest().EnabledModPack
+	})
+
+	if enabled == plan.RequestedPackage.Name {
+		return nil
 	}
 
 	if plan.EnsureFabric {
-		if err := filesystem.EnsureFabric(plan.RequestedModPack.McVersion); err != nil {
-			return nil, fmt.Errorf("fabric install failed: %w", err)
+		if err := filesystem.EnsureFabric(plan.RequestedPackage.McVersion); err != nil {
+			return fmt.Errorf("fabric install failed: %w", err)
 		}
 	}
 
-	if err := prepareFS(m, plan); err != nil {
-		return nil, err
+	if err := prepareFS(path, plan); err != nil {
+		return err
 	}
 
-	resolved, err := resolve.ResolveMods(plan.RequestedModPack.Entries, plan.RequestedModPack.McVersion, plan.RequestedModPack.Loader)
+	resolved, err := resolve.ResolveMods(plan.RequestedPackage.Entries, plan.RequestedPackage.McVersion, plan.RequestedPackage.Loader)
 	if err != nil {
-		return nil, rollback(m.InstalledModPacks[m.EnabledModPack], m, plan, err)
+		return rollback(installed[enabled], path, plan, err)
 	}
 
-	downloads, err := downloader.ModsDownloader(resolved, m)
+	downloads, err := downloader.ModsDownloader(resolved, path)
 	if err != nil {
-		return nil, rollback(m.InstalledModPacks[m.EnabledModPack], m, plan, err)
+		return rollback(installed[enabled], path, plan, err)
 	}
 
-	destDir := filepath.Join(m.Paths.ModPacksDir, plan.RequestedModPack.Name)
+	destDir := filepath.Join(path.ModPacksDir, plan.RequestedPackage.Name)
 	if err := os.RemoveAll(destDir); err != nil {
-		return nil, fmt.Errorf("failed to clear target modpack dir: %w", err)
+		return fmt.Errorf("failed to clear target modpack dir: %w", err)
 	}
 	if err := os.Rename(downloads.TempDir, destDir); err != nil {
-		return nil, fmt.Errorf("failed to move to target modpack dir: %w", err)
+		return fmt.Errorf("failed to move to target modpack dir: %w", err)
 	}
 
 	packHash, err := lists.ComputeDirHash(destDir)
 	if err != nil {
-		return nil, fmt.Errorf("failed to compute pack hash: %w", err)
+		return fmt.Errorf("failed to compute pack hash: %w", err)
 	}
 
-	m.InstalledModPacks[plan.RequestedModPack.Name] = manifest.InstalledModPack{
-		Name:             plan.RequestedModPack.Name,
-		ListSource:       plan.RequestedModPack.ListSource,
-		InstalledVersion: plan.RequestedModPack.ListVersion,
-		McVersion:        plan.RequestedModPack.McVersion,
-		Loader:           plan.RequestedModPack.Loader,
+	installedMp := manifest.InstalledModPack{
+		Name:             plan.RequestedPackage.Name,
+		ListSource:       plan.RequestedPackage.ListSource,
+		InstalledVersion: plan.RequestedPackage.ListVersion,
+		McVersion:        plan.RequestedPackage.McVersion,
+		Loader:           plan.RequestedPackage.Loader,
 		Hash:             packHash,
 		Mods:             downloads.DownloadedMods,
 	}
 
 	if plan.EnableAfter {
-		err := EnableModPack(plan.RequestedModPack.Name)
+		err := EnableModPack(plan.RequestedPackage.Name)
 		if err != nil {
-			return nil, rollback(m.InstalledModPacks[m.EnabledModPack], m, plan, err)
+			return rollback(installed[enabled], path, plan, err)
 		}
 	}
 
-	return m, m.Save()
+	return gState.Write(func(s *state.State) error {
+		s.Manifest().InstalledModPacks[plan.RequestedPackage.Name] = installedMp
+		return s.Manifest().Save()
+	})
 }

@@ -5,60 +5,76 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/w1lam/Raw-Mod-Installer/internal/env"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
+	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
 // EnableModPack enables the specified mod pack
 func EnableModPack(name string) error {
-	env.ManMu.Lock()
-	defer env.ManMu.Unlock()
+	store := state.Get()
+	var path *paths.Paths
 
-	m := env.GlobalManifest
+	// READ MANIFEST
+	store.Read(func(s *state.State) {
+		path = s.Manifest().Paths
+	})
 
-	if m.EnabledModPack == name {
-		fmt.Printf("Mod Pack already enabled\n")
-		return nil
+	src := filepath.Join(path.ModPacksDir, name)
+	dst := path.ModsDir
+
+	if err := os.RemoveAll(dst); err != nil {
+		return fmt.Errorf("failed to clear mods dir: %w", err)
 	}
-
-	if err := DisableModPack(); err != nil {
-		return fmt.Errorf("failed to disable current mod pack: %s", err)
-	}
-
-	src := filepath.Join(m.Paths.ModPacksDir, name)
-	dst := m.Paths.ModsDir
-
-	_ = os.RemoveAll(dst)
 
 	if err := os.Rename(src, dst); err != nil {
 		return fmt.Errorf("failed to enable modpack \"%s\": %w", name, err)
 	}
 
-	m.EnabledModPack = name
+	// WRITE MANIFEST
+	return store.Write(func(s *state.State) error {
+		if s.Manifest().EnabledModPack == name {
+			return nil
+		}
 
-	return m.Save()
+		s.Manifest().EnabledModPack = name
+		return s.Manifest().Save()
+	})
 }
 
 // DisableModPack disables the currently enabled modpack
 func DisableModPack() error {
-	env.ManMu.Lock()
-	defer env.ManMu.Unlock()
+	store := state.Get()
 
-	m := env.GlobalManifest
+	var (
+		enabled string
+		path    *paths.Paths
+	)
 
-	if m.EnabledModPack == "" {
+	store.Read(func(s *state.State) {
+		enabled = s.Manifest().EnabledModPack
+		path = s.Manifest().Paths
+	})
+
+	if enabled == "" {
 		return nil
 	}
 
-	src := m.Paths.ModsDir
-	dst := filepath.Join(m.Paths.ModPacksDir, m.EnabledModPack)
+	src := path.ModsDir
+	dst := filepath.Join(path.ModPacksDir, enabled)
 
-	_ = os.RemoveAll(dst)
+	if err := os.RemoveAll(dst); err != nil {
+		return fmt.Errorf("failed to clear target modpack dir: %w", err)
+	}
 
 	if err := os.Rename(src, dst); err != nil {
 		return err
 	}
 
-	m.EnabledModPack = ""
-
-	return m.Save()
+	return state.Get().Write(func(s *state.State) error {
+		if s.Manifest().EnabledModPack == enabled {
+			s.Manifest().EnabledModPack = ""
+			return s.Manifest().Save()
+		}
+		return nil
+	})
 }

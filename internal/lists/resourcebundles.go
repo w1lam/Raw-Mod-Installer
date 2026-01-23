@@ -11,17 +11,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 )
 
-type ResolvedResourceBundle struct {
-	Name        string
-	ListSource  string
-	ListVersion string
-	McVersion   string
-	Description string
-	Hash        string
-	Entries     []modrinth.ModrinthListEntry
-}
-
-func GetAvailableResourceBundles() (map[string]ResolvedResourceBundle, error) {
+func GetAvailableResourceBundles() (map[string]ResolvedPackage, error) {
 	req := fmt.Sprintf("%scontents/resourcebundles", netcfg.GithubRepoAPI)
 
 	resp, err := http.Get(req)
@@ -35,7 +25,7 @@ func GetAvailableResourceBundles() (map[string]ResolvedResourceBundle, error) {
 		return nil, err
 	}
 
-	resolvedResourceBundles := make(map[string]ResolvedResourceBundle)
+	resolvedResourceBundles := make(map[string]ResolvedPackage)
 	for _, rb := range respJSON {
 		resolved, err := ResolveResourceBundle(rb.RawURL)
 		if err != nil {
@@ -47,14 +37,14 @@ func GetAvailableResourceBundles() (map[string]ResolvedResourceBundle, error) {
 	return resolvedResourceBundles, nil
 }
 
-func ResolveResourceBundle(url string) (ResolvedResourceBundle, error) {
+func ResolveResourceBundle(url string) (ResolvedPackage, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return ResolvedResourceBundle{}, err
+		return ResolvedPackage{}, err
 	}
 	defer resp.Body.Close()
 
-	var resolvedResourceBundle ResolvedResourceBundle
+	var resolvedResourceBundle ResolvedPackage
 
 	var entries []modrinth.ModrinthListEntry
 	scanner := bufio.NewScanner(resp.Body)
@@ -108,7 +98,7 @@ func ResolveResourceBundle(url string) (ResolvedResourceBundle, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return ResolvedResourceBundle{}, err
+		return ResolvedPackage{}, err
 	}
 
 	resolvedResourceBundle.Entries = entries

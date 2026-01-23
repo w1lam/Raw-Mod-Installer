@@ -7,40 +7,34 @@ import (
 	"github.com/w1lam/Packages/utils"
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
-func rollback(modPack manifest.InstalledModPack, m *manifest.Manifest, plan InstallPlan, cause error) error {
-	if modPack.Name == "NONE" {
-		return cause
-	}
-
+func rollback(modPack manifest.InstalledModPack, path *paths.Paths, plan InstallPlan, cause error) error {
 	if plan.BackupPolicy != filesystem.BackupNever {
-		_ = filesystem.RestoreModsBackup(modPack, m)
+		_ = filesystem.RestoreModsBackup(modPack, path)
 	}
 	return cause
 }
 
-func prepareFS(m *manifest.Manifest, plan InstallPlan) error {
-	if m == nil {
-		panic("prepareFS: Manifest is nil")
-	}
-	if m.Paths.ModsDir == "" ||
-		m.Paths.ModsBackupsDir == "" ||
-		m.Paths.ModPacksDir == "" {
+func prepareFS(path *paths.Paths, plan InstallPlan) error {
+	if path.ModsDir == "" ||
+		path.ModsBackupsDir == "" ||
+		path.ModPacksDir == "" {
 		return fmt.Errorf("manifest paths not initialized")
 	}
 
 	switch plan.BackupPolicy {
 	case filesystem.BackupIfExists:
-		return filesystem.BackupModsIfNeeded(m)
+		return filesystem.BackupModsIfNeeded()
 
 	case filesystem.BackupOnce:
-		if !utils.CheckFileExists(m.Paths.ModsBackupsDir) {
-			return filesystem.BackupModsIfNeeded(m)
+		if !utils.CheckFileExists(path.ModsBackupsDir) {
+			return filesystem.BackupModsIfNeeded()
 		}
 	}
 	if plan.Intent == Reinstall {
-		return os.RemoveAll(m.Paths.ModsDir)
+		return os.RemoveAll(path.ModsDir)
 	}
 
 	return nil

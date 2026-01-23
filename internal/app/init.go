@@ -8,12 +8,13 @@ import (
 	"github.com/olekukonko/ts"
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Packages/tui"
+	minit "github.com/w1lam/Raw-Mod-Installer/internal/app/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
-	"github.com/w1lam/Raw-Mod-Installer/internal/env"
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
+	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
 func Initialize() *manifest.Manifest {
@@ -26,7 +27,12 @@ func Initialize() *manifest.Manifest {
 		Exit()
 	})
 
+	// Start menu workers
 	menu.StartWorkers(4)
+	// Start input checker
+	if err := menu.StartInput(); err != nil {
+		log.Fatal(err)
+	}
 
 	// Setting width to terminal width
 	GetSize, _ := ts.GetSize()
@@ -48,7 +54,7 @@ func Initialize() *manifest.Manifest {
 	fmt.Println(" * Loading Manifest...")
 	m, err := manifest.Load(path)
 	if err != nil {
-		m, err = manifest.BuildInitialManifest(env.ProgramVersion, path)
+		m, err = manifest.BuildInitialManifest(state.ProgramVersion, path)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -64,12 +70,10 @@ func Initialize() *manifest.Manifest {
 		meta = emptyMd
 	}
 
-	env.GlobalMetaData = meta
-	env.GlobalManifest = m
+	state.SetState(state.NewState(m, meta))
 
 	go refreshMetaData(path, m, meta)
 
-	InitializeMenus(m)
-
+	minit.InitializeMenus(m)
 	return m
 }
