@@ -9,9 +9,6 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 )
 
-// AvailablePackages is a nested map with first key being the package type(name of subfolder inside packages folder) and second key is the package name
-type AvailablePackages map[string]map[string]ResolvedPackage
-
 // GetAllAvailablePackages gets all available packages from github repo
 func GetAllAvailablePackages() (AvailablePackages, error) {
 	paths, err := scanPackagesFolder()

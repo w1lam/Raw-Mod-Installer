@@ -10,7 +10,7 @@ import (
 
 // scanPackagesFolder scans the packages folder in github repo and returns a slice of the paths to each subfolder
 func scanPackagesFolder() ([]string, error) {
-	req := fmt.Sprintf("%s/contents/packages", netcfg.GithubRepo)
+	req := fmt.Sprintf("%scontents/packages", netcfg.GithubRepo)
 
 	resp, err := http.Get(req)
 	if err != nil {
@@ -19,7 +19,7 @@ func scanPackagesFolder() ([]string, error) {
 
 	var decodedResp []GithubContentResponse
 	if err := json.NewDecoder(resp.Body).Decode(&decodedResp); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to unmarshal packages folder resp: %w", err)
 	}
 
 	if len(decodedResp) == 0 {

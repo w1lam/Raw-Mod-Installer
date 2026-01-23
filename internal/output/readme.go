@@ -8,20 +8,20 @@ import (
 	"strings"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
+	"github.com/w1lam/Raw-Mod-Installer/internal/meta"
 )
 
 // WriteModPackInfoList writes a README.txt file summarizing the mod information in the specified output path.
 func WriteModPackInfoList(mods []manifest.ManifestMod, m *manifest.Manifest) error {
 	fmt.Printf("NEEDS TO BE CHANGED TO MODPACK SPECIFIC AND STORED IN MODPACKS???")
-	metadata := resolve.LoadMetaData(m.Paths)
+	metadata := meta.LoadMetaData(m.Paths)
 	if metadata == nil {
 		var slugs []string
 		for _, m := range mods {
 			slugs = append(slugs, m.Slug)
 		}
 
-		data, err := resolve.ResolveMetaData(slugs)
+		data, err := meta.ResolveMetaData(slugs)
 		if err != nil {
 			return err
 		}

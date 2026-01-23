@@ -2,6 +2,9 @@ package lists
 
 import "github.com/w1lam/Packages/modrinth"
 
+// AvailablePackages is a nested map with first key being the package type(name of subfolder inside packages folder) and second key is the package name
+type AvailablePackages map[string]map[string]ResolvedPackage
+
 type ResolvedPackage struct {
 	Type string
 
@@ -22,7 +25,6 @@ type GithubContentResponse struct {
 	Path   string `json:"path"`
 	Sha    string `json:"sha"`
 	Size   int    `json:"size"`
-	URL    string `json:"url"`
 	RawURL string `json:"download_url"`
 	Type   string `json:"type"`
 }

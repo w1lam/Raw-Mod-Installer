@@ -24,9 +24,9 @@ func UpdateChecker(m *manifest.Manifest) (manifest.Updates, error) {
 		return manifest.Updates{}, err
 	}
 
-	mp := allPackages["modpacks"]
+	modPacks := allPackages["modpacks"]
 
-	for name, pack := range mp {
+	for name, pack := range modPacks {
 		if _, ok := m.InstalledModPacks[name]; ok && m.InstalledModPacks[name].InstalledVersion != pack.ListVersion {
 			updates.ModListUpdate[name] = true
 		}

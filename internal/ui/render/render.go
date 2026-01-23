@@ -10,7 +10,7 @@ import (
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
+	"github.com/w1lam/Raw-Mod-Installer/internal/meta"
 )
 
 func PrintInfoField(msg string) {
@@ -21,7 +21,7 @@ func PrintInfoField(msg string) {
 }
 
 // RenderModPackModList renders a list of the mods inside a modpack with Title, Categories, Source and Wiki if available
-func RenderModPackModList(modPack manifest.InstalledModPack, meta *resolve.MetaData) {
+func RenderModPackModList(modPack manifest.InstalledModPack, meta *meta.MetaData) {
 	for _, mod := range modPack.Mods {
 		fmt.Printf(" * %s\n  ", meta.Mods[mod.Slug].Title)
 

@@ -5,32 +5,32 @@ import (
 	"time"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/meta"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
-	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 )
 
-func refreshMetaData(path *paths.Paths, m *manifest.Manifest, meta *resolve.MetaData) {
+func refreshMetaData(path *paths.Paths, m *manifest.Manifest, metaD *meta.MetaData) {
 	slugs := m.AllInstalledModSlugs()
 
-	missing := meta.FilterMissing(slugs)
-	stale := meta.FilterStale(24 * time.Hour)
+	missing := metaD.FilterMissing(slugs)
+	stale := metaD.FilterStale(24 * time.Hour)
 
 	needFetch := append(missing, stale...)
 	if len(needFetch) == 0 {
 		return
 	}
 
-	fetched, err := resolve.ResolveMetaData(needFetch)
+	fetched, err := meta.ResolveMetaData(needFetch)
 	if err != nil {
 		log.Printf("Metadata refresh failed: %v", err)
 		return
 	}
 
-	meta.Lock()
-	meta.Merge(fetched)
-	meta.Unlock()
+	metaD.Lock()
+	metaD.Merge(fetched)
+	metaD.Unlock()
 
-	err = meta.Save(path)
+	err = metaD.Save(path)
 	if err != nil {
 		log.Printf("Metadata save failed: %v", err)
 	}

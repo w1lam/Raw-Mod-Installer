@@ -15,12 +15,12 @@ import (
 func init() {}
 
 func main() {
-	// mp, err := lists.GetAvailableModPacks()
+	// all, err := lists.GetAllAvailablePackages()
 	// if err != nil {
 	// 	panic(err)
 	// }
 	//
-	// fmt.Printf("%+v", mp)
+	// fmt.Printf("%+v", all)
 	//
 	// time.Sleep(time.Hour * 1)
 

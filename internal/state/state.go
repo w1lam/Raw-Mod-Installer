@@ -6,7 +6,7 @@ import (
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
+	"github.com/w1lam/Raw-Mod-Installer/internal/meta"
 )
 
 var ProgramVersion string = "0.0.1"
@@ -20,7 +20,7 @@ type State struct {
 	mu sync.RWMutex
 
 	manifest          *manifest.Manifest
-	meta              *resolve.MetaData
+	meta              *meta.MetaData
 	availablePackages lists.AvailablePackages
 	updates           manifest.Updates
 }
@@ -29,7 +29,7 @@ func (s *State) Packages() lists.AvailablePackages {
 	return s.availablePackages
 }
 
-func (s *State) MetaData() *resolve.MetaData {
+func (s *State) MetaData() *meta.MetaData {
 	return s.meta
 }
 
@@ -62,7 +62,7 @@ func (s *State) Write(fn func(*State) error) error {
 	return fn(s)
 }
 
-func NewState(m *manifest.Manifest, meta *resolve.MetaData) *State {
+func NewState(m *manifest.Manifest, meta *meta.MetaData) *State {
 	if m == nil || meta == nil {
 		panic("NewState: manifest or meta is nil")
 	}

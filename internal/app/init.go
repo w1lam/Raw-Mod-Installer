@@ -12,8 +12,8 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/meta"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
-	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
@@ -61,18 +61,18 @@ func Initialize() *manifest.Manifest {
 	}
 
 	fmt.Println(" * Loading Meta Data...")
-	meta := resolve.LoadMetaData(path)
-	if meta == nil {
-		emptyMd := &resolve.MetaData{
+	metaD := meta.LoadMetaData(path)
+	if metaD == nil {
+		emptyMd := &meta.MetaData{
 			SchemaVersion: 1,
-			Mods:          make(map[string]resolve.ModMetaData),
+			Mods:          make(map[string]meta.ModMetaData),
 		}
-		meta = emptyMd
+		metaD = emptyMd
 	}
 
-	state.SetState(state.NewState(m, meta))
+	state.SetState(state.NewState(m, metaD))
 
-	go refreshMetaData(path, m, meta)
+	go refreshMetaData(path, m, metaD)
 
 	minit.InitializeMenus(m)
 	return m
