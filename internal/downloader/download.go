@@ -34,7 +34,7 @@ type DownloadItem struct {
 
 // DownloadEntries is the main download function
 func DownloadEntries(
-	entries []DownloadItem,
+	entries map[string]DownloadItem,
 	path *paths.Paths,
 ) (DownloaderResults, error) {
 	tempDir, err := os.MkdirTemp(path.ProgramFilesDir, "downloads")
@@ -52,42 +52,41 @@ func DownloadEntries(
 
 	var mu sync.Mutex
 
-	for _, entry := range entries {
+	for id, entry := range entries {
 		wg.Add(1)
 		entry := entry
 		go func() {
 			defer wg.Done()
 			uri := entry.URL
 
-			fileName := filepath.Base(uri)
-			filePath := filepath.Join(tempDir, fileName)
+			filePath := filepath.Join(tempDir, entry.FileName)
 
-			progressCh <- Progress{File: fileName, Status: "downloading"}
+			progressCh <- Progress{File: entry.FileName, Status: "downloading"}
 
 			computedSha, err := download.DownloadFile(filePath, uri)
 			if err != nil {
-				progressCh <- Progress{File: fileName, Status: "failure", Err: err}
+				progressCh <- Progress{File: entry.FileName, Status: "failure", Err: err}
 				return
 			}
 
 			if entry.Sha512 != "" {
 				if computedSha != entry.Sha512 {
-					progressCh <- Progress{File: fileName, Status: "failure", Err: fmt.Errorf("SHA512 mismatch")}
+					progressCh <- Progress{File: entry.FileName, Status: "failure", Err: fmt.Errorf("SHA512 mismatch")}
 					return
 				}
 			} else if entry.Sha1 == "" {
 				if computedSha != entry.Sha1 {
-					progressCh <- Progress{File: fileName, Status: "failure", Err: fmt.Errorf("SHA1 mismatch")}
+					progressCh <- Progress{File: entry.FileName, Status: "failure", Err: fmt.Errorf("SHA1 mismatch")}
 					return
 				}
 			}
 
-			progressCh <- Progress{File: fileName, Status: "success"}
+			progressCh <- Progress{File: entry.FileName, Status: "success"}
 
 			mu.Lock()
-			results.DownloadedItems[entry.ID] = DownloadItem{
-				ID:       entry.ID,
-				FileName: fileName,
+			results.DownloadedItems[id] = DownloadItem{
+				ID:       id,
+				FileName: entry.FileName,
 				Sha512:   entry.Sha512,
 				Sha1:     entry.Sha1,
 				Version:  entry.Version,

@@ -4,49 +4,40 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 )
 
-type AvailablePackages struct {
-	ModPacks        map[string]ResolvedPackage `json:"modPacks"`
-	ResourceBundles map[string]ResolvedPackage `json:"resourcePacks"`
-}
+// AvailablePackages is a nested map with first key being the package type(name of subfolder inside packages folder) and second key is the package name
+type AvailablePackages map[string]map[string]ResolvedPackage
 
-// GetAllAvailablePackages gets all available packages
+// GetAllAvailablePackages gets all available packages from github repo
 func GetAllAvailablePackages() (AvailablePackages, error) {
-	modPacks, err := GetAvailablePackages(PackageModPack)
+	paths, err := scanPackagesFolder()
 	if err != nil {
-		return AvailablePackages{}, err
+		return nil, err
 	}
 
-	resourceBundles, err := GetAvailableResourceBundles()
-	if err != nil {
-		return AvailablePackages{}, err
+	availablePackages := make(AvailablePackages)
+
+	for _, path := range paths {
+		packageType := strings.TrimPrefix(path, "packages/")
+
+		packages, err := getAvailablePackages(packageType)
+		if err != nil {
+			return nil, err
+		}
+
+		availablePackages[packageType] = packages
 	}
 
-	return AvailablePackages{
-		ModPacks:        modPacks,
-		ResourceBundles: resourceBundles,
-	}, nil
+	return availablePackages, nil
 }
 
-// GetAvailablePackages gets all available packages of specified type(PackageModPack, PackageResourceBundle)
-func GetAvailablePackages(packageType PackageType) (map[string]ResolvedPackage, error) {
-	dest := ""
-
-	switch packageType {
-	case PackageModPack:
-		dest = "modpacks"
-	case PackageResourceBundle:
-		dest = "resourcebundles"
-	}
-
-	if dest == "" {
-		return nil, fmt.Errorf("no package type specified")
-	}
-
-	req := fmt.Sprintf("%scontents/%s", netcfg.GithubPackages, dest)
+// getAvailablePackages gets all available packages of specified type which is the name of the subfolder inside packages folder in github repo
+func getAvailablePackages(packageType string) (map[string]ResolvedPackage, error) {
+	req := fmt.Sprintf("%scontents/packages/%s", netcfg.GithubRepo, packageType)
 
 	resp, err := http.Get(req)
 	if err != nil {
@@ -61,7 +52,7 @@ func GetAvailablePackages(packageType PackageType) (map[string]ResolvedPackage, 
 
 	resolvedModPacks := make(map[string]ResolvedPackage)
 	for _, mp := range respJSON {
-		resolved, err := ResolveModPack(mp.RawURL)
+		resolved, err := resolvePackage(packageType, mp.RawURL)
 		if err != nil {
 			return nil, err
 		}

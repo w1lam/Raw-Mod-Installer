@@ -35,10 +35,12 @@ func BuildModPackMenu() *menu.Menu {
 
 		menu.Queue(menu.Action{
 			Function: func() error {
-				available, err := lists.GetAvailableModPacks()
+				allAvailable, err := lists.GetAllAvailablePackages()
 				if err != nil {
 					return err
 				}
+
+				available := allAvailable["modpacks"]
 
 				var installed map[string]manifest.InstalledModPack
 				var enabled string

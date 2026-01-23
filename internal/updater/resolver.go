@@ -19,10 +19,12 @@ func UpdateChecker(m *manifest.Manifest) (manifest.Updates, error) {
 		ModUpdates:    make(map[string][]modrinth.UpdateEntry),
 	}
 
-	mp, err := lists.GetAvailableModPacks()
+	allPackages, err := lists.GetAllAvailablePackages()
 	if err != nil {
 		return manifest.Updates{}, err
 	}
+
+	mp := allPackages["modpacks"]
 
 	for name, pack := range mp {
 		if _, ok := m.InstalledModPacks[name]; ok && m.InstalledModPacks[name].InstalledVersion != pack.ListVersion {

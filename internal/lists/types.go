@@ -2,15 +2,8 @@ package lists
 
 import "github.com/w1lam/Packages/modrinth"
 
-type PackageType int
-
-const (
-	PackageModPack PackageType = iota
-	PackageResourceBundle
-)
-
 type ResolvedPackage struct {
-	Type PackageType
+	Type string
 
 	Name        string
 	ListSource  string

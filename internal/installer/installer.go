@@ -11,7 +11,6 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
-	"github.com/w1lam/Raw-Mod-Installer/internal/resolve"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
@@ -24,7 +23,7 @@ const (
 
 type InstallPlan struct {
 	Intent           InstallIntent
-	RequestedPackage lists.ResolvedModPack
+	RequestedPackage lists.ResolvedPackage
 	EnsureFabric     bool
 	BackupPolicy     filesystem.BackupPolicy
 	EnableAfter      bool
@@ -60,12 +59,12 @@ func PackageInstaller(
 		return err
 	}
 
-	resolved, err := resolve.ResolveMods(plan.RequestedPackage.Entries, plan.RequestedPackage.McVersion, plan.RequestedPackage.Loader)
+	resolved, err := downloader.ResolveDownloadItem(plan.RequestedPackage.Entries, plan.RequestedPackage.McVersion, plan.RequestedPackage.Loader)
 	if err != nil {
 		return rollback(installed[enabled], path, plan, err)
 	}
 
-	downloads, err := downloader.ModsDownloader(resolved, path)
+	downloads, err := downloader.DownloadEntries(resolved, path)
 	if err != nil {
 		return rollback(installed[enabled], path, plan, err)
 	}
@@ -83,6 +82,17 @@ func PackageInstaller(
 		return fmt.Errorf("failed to compute pack hash: %w", err)
 	}
 
+	downloadedMods := make(map[string]manifest.ManifestMod)
+	for n, item := range downloads.DownloadedItems {
+		downloadedMods[n] = manifest.ManifestMod{
+			Slug:             item.ID,
+			FileName:         item.FileName,
+			Sha512:           item.Sha512,
+			Sha1:             item.Sha1,
+			InstalledVersion: item.Version,
+		}
+	}
+
 	installedMp := manifest.InstalledModPack{
 		Name:             plan.RequestedPackage.Name,
 		ListSource:       plan.RequestedPackage.ListSource,
@@ -90,7 +100,7 @@ func PackageInstaller(
 		McVersion:        plan.RequestedPackage.McVersion,
 		Loader:           plan.RequestedPackage.Loader,
 		Hash:             packHash,
-		Mods:             downloads.DownloadedMods,
+		Mods:             downloadedMods,
 	}
 
 	if plan.EnableAfter {

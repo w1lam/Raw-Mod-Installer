@@ -19,19 +19,14 @@ var (
 type State struct {
 	mu sync.RWMutex
 
-	manifest                 *manifest.Manifest
-	meta                     *resolve.MetaData
-	availableModPacks        map[string]lists.ResolvedModPack
-	availableResourceBundles map[string]lists.ResolvedResourceBundle
-	updates                  manifest.Updates
+	manifest          *manifest.Manifest
+	meta              *resolve.MetaData
+	availablePackages lists.AvailablePackages
+	updates           manifest.Updates
 }
 
-func (s *State) ModPacks() map[string]lists.ResolvedModPack {
-	return s.availableModPacks
-}
-
-func (s *State) ResourceBundles() map[string]lists.ResolvedResourceBundle {
-	return s.availableResourceBundles
+func (s *State) Packages() lists.AvailablePackages {
+	return s.availablePackages
 }
 
 func (s *State) MetaData() *resolve.MetaData {
@@ -73,10 +68,9 @@ func NewState(m *manifest.Manifest, meta *resolve.MetaData) *State {
 	}
 
 	return &State{
-		manifest:                 m,
-		meta:                     meta,
-		availableModPacks:        make(map[string]lists.ResolvedModPack),
-		availableResourceBundles: make(map[string]lists.ResolvedResourceBundle),
-		updates:                  manifest.Updates{},
+		manifest:          m,
+		meta:              meta,
+		availablePackages: make(lists.AvailablePackages),
+		updates:           manifest.Updates{},
 	}
 }

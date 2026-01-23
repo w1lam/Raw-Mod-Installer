@@ -9,7 +9,7 @@ import (
 )
 
 // resolveModPack resolves a package list
-func resolvePackage(url string) (ResolvedPackage, error) {
+func resolvePackage(packageType, url string) (ResolvedPackage, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return ResolvedPackage{}, err
@@ -86,6 +86,7 @@ func resolvePackage(url string) (ResolvedPackage, error) {
 	resolvedPackage.Entries = entries
 
 	resolvedPackage.ListSource = url
+	resolvedPackage.Type = packageType
 
 	return resolvedPackage, nil
 }

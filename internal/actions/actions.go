@@ -18,7 +18,7 @@ func InstallModPackAction(modPackName string) menu.Action {
 	gState.Read(func(s *state.State) {
 		plan = installer.InstallPlan{
 			Intent:           installer.Install,
-			RequestedPackage: s.ModPacks()[modPackName],
+			RequestedPackage: s.Packages()["modpacks"][modPackName],
 			EnsureFabric:     true,
 			BackupPolicy:     filesystem.BackupOnce,
 			EnableAfter:      true,
@@ -27,7 +27,7 @@ func InstallModPackAction(modPackName string) menu.Action {
 
 	return menu.Action{
 		Function: func() error {
-			err := installer.InstallModPack(plan)
+			err := installer.PackageInstaller(plan)
 			if err != nil {
 				return err
 			}

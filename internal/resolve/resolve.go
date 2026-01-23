@@ -16,7 +16,7 @@ type ResolvedMod struct {
 	Sha1        string             `json:"sha1"`
 }
 
-func ResolveMods(entries []modrinth.ModrinthListEntry, mcVersion, loader string) (map[string]ResolvedMod, error) {
+func ResolveDownloadItem(entries []modrinth.ModrinthListEntry, mcVersion, loader string) (map[string]ResolvedMod, error) {
 	finished := make(chan struct{})
 	go tui.RawSpinner(finished, []rune{'▙', '▛', '▜', '▟'}, config.Style.Margin, "Resolving Mods")
 	defer close(finished)
