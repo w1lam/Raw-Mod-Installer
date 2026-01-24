@@ -7,22 +7,20 @@ import (
 
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Packages/tui"
-	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/installer"
+	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
+	"github.com/w1lam/Raw-Mod-Installer/internal/services"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
-func InstallModPackAction(modPackName string) menu.Action {
+func InstallModPackAction(pkg packages.Pkg) menu.Action {
 	gState := state.Get()
 
 	plan := installer.InstallPlan{}
 	gState.Read(func(s *state.State) {
 		plan = installer.InstallPlan{
-			Intent:           installer.Install,
-			RequestedPackage: s.Packages()["modpacks"][modPackName],
-			EnsureFabric:     true,
-			BackupPolicy:     filesystem.BackupOnce,
-			EnableAfter:      true,
+			RequestedPackage: s.AvailablePackages()[pkg.Type][pkg.Name],
+			BackupPolicy:     services.BackupOnce,
 		}
 	})
 
@@ -35,36 +33,56 @@ func InstallModPackAction(modPackName string) menu.Action {
 			return nil
 		},
 		WrapUp: func(err error) {
-			fmt.Printf("\n* %s Installation Complete!\n", modPackName)
-			time.Sleep(time.Second * 3)
-			tui.ClearScreenRaw()
-			menu.RenderCurrentMenu()
+			if err == nil {
+				fmt.Printf("\n* %s Installation Complete!\n", pkg.Name)
+				time.Sleep(time.Second * 3)
+				tui.ClearScreenRaw()
+				menu.RenderCurrentMenu()
+			} else {
+				fmt.Printf("\n* %s Installation Failed!\n", pkg.Name)
+				time.Sleep(time.Second * 3)
+				tui.ClearScreenRaw()
+				menu.RenderCurrentMenu()
+			}
 		},
+		Async: true,
 	}
 }
 
-func EnableModPackAction(modPackName string) menu.Action {
+func EnablePackageAction(pkg packages.Pkg) menu.Action {
 	return menu.Action{
 		Function: func() error {
-			err := installer.EnableModPack(modPackName)
+			err := services.EnablePackage(pkg)
 			if err != nil {
 				return err
 			}
 			return nil
 		},
 		WrapUp: func(err error) {},
+		Async:  true,
 	}
 }
 
-func DisableModPackAction() menu.Action {
+func DisablePackageAction(pkgType packages.PackageType) menu.Action {
+	gState := state.Get()
+
+	var pkg packages.Pkg
+	gState.Read(func(s *state.State) {
+		pkg = packages.Pkg{
+			Name: s.Manifest().EnabledPackages[pkgType],
+			Type: pkgType,
+		}
+	})
+
 	return menu.Action{
 		Function: func() error {
-			err := installer.DisableModPack()
+			err := services.DisablePackage(pkg)
 			if err != nil {
 				return err
 			}
 			return nil
 		},
 		WrapUp: func(err error) {},
+		Async:  true,
 	}
 }

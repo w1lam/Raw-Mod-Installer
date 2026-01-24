@@ -5,11 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/olekukonko/ts"
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Packages/tui"
 	minit "github.com/w1lam/Raw-Mod-Installer/internal/app/menu"
-	"github.com/w1lam/Raw-Mod-Installer/internal/config"
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/meta"
@@ -17,7 +15,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
-func Initialize() *manifest.Manifest {
+func Initialize() {
 	tui.ClearScreenRaw()
 
 	fmt.Println("* Starting up...")
@@ -33,13 +31,6 @@ func Initialize() *manifest.Manifest {
 	if err := menu.StartInput(); err != nil {
 		log.Fatal(err)
 	}
-
-	// Setting width to terminal width
-	GetSize, _ := ts.GetSize()
-	config.Style.Width = GetSize.Col() + 1
-
-	// Setting TUI Config Variables
-	config.Style.Set()
 
 	fmt.Println(" * Resolving Paths...")
 	path, err := paths.Resolve()
@@ -75,5 +66,4 @@ func Initialize() *manifest.Manifest {
 	go refreshMetaData(path, m, metaD)
 
 	minit.InitializeMenus(m)
-	return m
 }

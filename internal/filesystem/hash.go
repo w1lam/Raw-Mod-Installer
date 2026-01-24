@@ -1,4 +1,4 @@
-package lists
+package filesystem
 
 import (
 	"crypto/sha512"

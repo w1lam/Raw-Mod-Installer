@@ -10,9 +10,9 @@ import (
 )
 
 func refreshMetaData(path *paths.Paths, m *manifest.Manifest, metaD *meta.MetaData) {
-	slugs := m.AllInstalledModSlugs()
+	entryIDs := m.AllInstalledEntries()
 
-	missing := metaD.FilterMissing(slugs)
+	missing := metaD.FilterMissing(entryIDs)
 	stale := metaD.FilterStale(24 * time.Hour)
 
 	needFetch := append(missing, stale...)

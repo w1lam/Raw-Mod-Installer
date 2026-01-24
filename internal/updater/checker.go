@@ -1,16 +1,18 @@
 package updater
 
+// Package update handels updating packages
+
 import (
 	"github.com/w1lam/Packages/modrinth"
-	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	pkg "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
 )
 
 func UpdateChecker(m *manifest.Manifest) (manifest.Updates, error) {
 	if m == nil {
 		panic("manifest is nil")
 	}
-	if m.InstalledModPacks == nil {
+	if m.InstalledPackages == nil {
 		return manifest.Updates{}, nil
 	}
 
@@ -19,7 +21,7 @@ func UpdateChecker(m *manifest.Manifest) (manifest.Updates, error) {
 		ModUpdates:    make(map[string][]modrinth.UpdateEntry),
 	}
 
-	allPackages, err := lists.GetAllAvailablePackages()
+	allPackages, err := pkg.GetAllAvailablePackages()
 	if err != nil {
 		return manifest.Updates{}, err
 	}
@@ -27,12 +29,12 @@ func UpdateChecker(m *manifest.Manifest) (manifest.Updates, error) {
 	modPacks := allPackages["modpacks"]
 
 	for name, pack := range modPacks {
-		if _, ok := m.InstalledModPacks[name]; ok && m.InstalledModPacks[name].InstalledVersion != pack.ListVersion {
+		if _, ok := m.InstalledPackages["modpacks"][name]; ok && m.InstalledPackages["modpacks"][name].InstalledVersion != pack.ListVersion {
 			updates.ModListUpdate[name] = true
 		}
 	}
 
-	for name, mp := range m.InstalledModPacks {
+	for name, mp := range m.InstalledPackages["modpacks"] {
 		mpHashes := mp.GetHashes()
 		updates.ModUpdates[name], err = modrinth.BatchFetchUpdatesFromHash(mpHashes, mp.InstalledVersion, mp.Loader)
 		if err != nil {

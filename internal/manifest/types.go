@@ -2,6 +2,7 @@ package manifest
 
 import (
 	"github.com/w1lam/Packages/modrinth"
+	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
@@ -11,11 +12,9 @@ type Manifest struct {
 	ProgramVersion   string                `json:"programVersion"`
 	InstalledLoaders map[string]LoaderInfo `json:"installedLoader"`
 
-	EnabledModPack        string `json:"enabledModPack"`
-	EnabledResourceBundle string `json:"enabledResourceBundle"`
+	EnabledPackages map[packages.PackageType]string `json:"enabledPackages"`
 
-	InstalledModPacks        map[string]InstalledModPack        `json:"installedModPacks"`
-	InstalledResourceBundles map[string]InstalledResourceBundle `json:"InstalledResourceBundles"`
+	InstalledPackages map[packages.PackageType]map[string]InstalledPackage `json:"installedPackages"`
 
 	Paths *paths.Paths `json:"-"`
 }
@@ -28,39 +27,24 @@ type LoaderInfo struct {
 }
 
 // InstalledModPack is an installed mod pack which holds all information about the mod pack, including all mods in form of map of ManifestMod with mods slug as key
-type InstalledModPack struct {
-	Name             string                 `json:"name"`
-	ListSource       string                 `json:"listSource"`
-	InstalledVersion string                 `json:"version"`
-	McVersion        string                 `json:"mcVersion"`
-	Loader           string                 `json:"loader"`
-	Hash             string                 `json:"hash"`
-	Mods             map[string]ManifestMod `json:"installedMods"`
+type InstalledPackage struct {
+	Name             string                  `json:"name"`
+	Type             packages.PackageType    `json:"type"`
+	ListSource       string                  `json:"listSource"`
+	InstalledVersion string                  `json:"version"`
+	McVersion        string                  `json:"mcVersion"`
+	Loader           string                  `json:"loader"`
+	Hash             string                  `json:"hash"`
+	Entries          map[string]PackageEntry `json:"installedEntries"`
 }
 
-type InstalledResourceBundle struct {
-	Name             string                          `json:"name"`
-	ListSource       string                          `json:"listSource"`
-	InstalledVersion string                          `json:"version"`
-	McVersion        string                          `json:"mcVersion"`
-	Hash             string                          `json:"hash"`
-	ResourcePacks    map[string]ManifestResourcePack `json:"resourcePacks"`
-}
-
-// ManifestMod is a mod entry in the manifest that holds all information about a mod
-type ManifestMod struct {
-	Slug             string `json:"slug"`
+// PackageEntry is a mod entry in the manifest that holds all information about an entry
+type PackageEntry struct {
+	ID               string `json:"id"` // id or slug
 	FileName         string `json:"fileName"`
 	Sha512           string `json:"sha512"`
 	Sha1             string `json:"sha1,omitempty"`
 	InstalledVersion string `json:"InstalledVersion"`
-}
-
-type ManifestResourcePack struct {
-	Slug             string `json:"slug"`
-	FileName         string `json:"fileName"`
-	Sha              string `json:"sha"`
-	InstalledVersion string `json:"version"`
 }
 
 // Updates is all info on available updates

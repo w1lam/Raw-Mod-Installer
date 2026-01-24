@@ -18,10 +18,8 @@ type Paths struct {
 	ManifestPath    string
 	MetaDataPath    string
 
-	ModPacksDir            string
-	ModsBackupsDir         string
-	ResourceBundlesDir     string
-	ResourcePackBackupsDir string
+	PackagesDir string
+	BackupsDir  string
 }
 
 func DefaultMinecraftDir() (string, error) {
@@ -61,18 +59,7 @@ func Resolve() (*Paths, error) {
 		ManifestPath:    filepath.Join(dataDir, "manifest.json"),
 		MetaDataPath:    filepath.Join(dataDir, "meta.json"),
 
-		ModPacksDir:    filepath.Join(installerDir, "modpacks"),
-		ModsBackupsDir: filepath.Join(installerDir, "modpacks", "backups"),
-
-		ResourceBundlesDir:     filepath.Join(installerDir, "resourcebundles"),
-		ResourcePackBackupsDir: filepath.Join(installerDir, "resourcebundles", "backups"),
+		PackagesDir: filepath.Join(installerDir, "packages"),
+		BackupsDir:  filepath.Join(installerDir, "backups"),
 	}, nil
 }
-
-//var (
-//	userProfile, _      = os.UserHomeDir()
-//	ModFolderPath       = filepath.Join(userProfile, "AppData", "Roaming", ".minecraft", "mods")
-//	ModBackupPath       = filepath.Join(userProfile, "AppData", "Roaming", ".minecraft", "mods_old")
-//	VerFilePath         = filepath.Join(userProfile, "AppData", "Roaming", ".minecraft", "mods", "ver.txt")
-//	TempModDownloadPath = filepath.Join(os.TempDir(), "temp-mod-downloads")
-//)

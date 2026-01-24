@@ -7,14 +7,15 @@ import (
 
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/actions"
-	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
+	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
+	pkg "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
-// BuildModPackMenu builds the modPackMenu
-func BuildModPackMenu() *menu.Menu {
-	m := menu.NewMenu("Mod Packs", "Chose a Mod pack", ModPackMenuID)
+// BuildResourceBundleMenu builds resourceBundleMenu
+func BuildResourceBundleMenu() *menu.Menu {
+	m := menu.NewMenu("Resource Bundles", "Chose a Resource Bundle", ResourceMenuID)
 
 	var (
 		model   PackMenuModel
@@ -35,19 +36,20 @@ func BuildModPackMenu() *menu.Menu {
 
 		menu.Queue(menu.Action{
 			Function: func() error {
-				allAvailable, err := lists.GetAllAvailablePackages()
+				allAvailable, err := pkg.GetAllAvailablePackages()
 				if err != nil {
 					return err
 				}
+				state.SetAvailablePackages(allAvailable)
 
-				available := allAvailable["modpacks"]
+				available := allAvailable[packages.PackageResourceBundle]
 
-				var installed map[string]manifest.InstalledModPack
+				var installed map[string]manifest.InstalledPackage
 				var enabled string
 
 				state.Get().Read(func(s *state.State) {
-					installed = s.Manifest().InstalledModPacks
-					enabled = s.Manifest().EnabledModPack
+					installed = s.Manifest().InstalledPackages[packages.PackageResourceBundle]
+					enabled = s.Manifest().EnabledPackages[packages.PackageResourceBundle]
 				})
 
 				// RESERVED KEYS
@@ -84,11 +86,11 @@ func BuildModPackMenu() *menu.Menu {
 				for _, inst := range installed {
 					enabledNow := inst.Name == enabled
 					title := inst.Name
-					action := actions.EnableModPackAction(inst.Name)
+					action := actions.EnablePackageAction(packages.Pkg{Name: inst.Name, Type: inst.Type})
 
 					if enabledNow {
 						title = fmt.Sprintf("%s (Enabled)", inst.Name)
-						action = actions.DisableModPackAction()
+						action = actions.DisablePackageAction(inst.Type)
 					}
 
 					desc := ""
@@ -100,7 +102,7 @@ func BuildModPackMenu() *menu.Menu {
 						Name:        title,
 						Version:     inst.InstalledVersion,
 						McVersion:   inst.McVersion,
-						Loader:      inst.Loader,
+						Loader:      "",
 						Description: desc,
 						Installed:   true,
 						Enabled:     enabledNow,
@@ -124,7 +126,7 @@ func BuildModPackMenu() *menu.Menu {
 						errMsg = err.Error()
 					}
 
-					rebuildModPackButtons(m, &model)
+					rebuildResourceBundleButtons(m, &model)
 					menu.RequestRender()
 				})
 			},
@@ -133,11 +135,11 @@ func BuildModPackMenu() *menu.Menu {
 	})
 
 	m.SetRender(func() {
-		fmt.Println("  Mod Packs")
-		fmt.Println(" ━━━━━━━━━━━\n")
+		fmt.Println("  Resource Bundles")
+		fmt.Println(" ━━━━━━━━━━━━━━━━━━\n")
 
 		if loading {
-			fmt.Println("  Loading Modpacks...\n")
+			fmt.Println("  Loading Resource Bundles...\n")
 			fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━")
 			fmt.Printf(" [B] Back   [Q] Quit\n")
 			return
@@ -147,8 +149,8 @@ func BuildModPackMenu() *menu.Menu {
 			fmt.Printf(" Error: %s\n", errMsg)
 		}
 
-		fmt.Println("  Available Mod Packs")
-		fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━")
+		fmt.Println("  Available Resource Bundles")
+		fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 		if len(model.Available) == 0 {
 			fmt.Println("  (none)\n")
 		} else {
@@ -161,7 +163,7 @@ func BuildModPackMenu() *menu.Menu {
 				}
 
 				if model.Expanded == item.Name {
-					fmt.Printf("    - ModPack Version: %s\n", item.Version)
+					fmt.Printf("    - ResourceBundle Version: %s\n", item.Version)
 					fmt.Printf("    - Minecraft Version: %s\n", item.McVersion)
 					fmt.Printf("    - Loader: %s\n", item.Loader)
 					fmt.Printf("      [I] Install\n")
@@ -170,15 +172,15 @@ func BuildModPackMenu() *menu.Menu {
 			}
 		}
 
-		fmt.Println("  Installed Mod Packs")
-		fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━")
+		fmt.Println("  Installed Resource Bundles")
+		fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 		if len(model.Installed) == 0 {
 			fmt.Println("  (none)\n")
 		} else {
 			for _, item := range model.Installed {
 				fmt.Printf("  [%c] %s\n", unicode.ToUpper(item.Key), item.Name)
 				if item.Version != "" {
-					fmt.Printf("    - ModPack Version: %s\n", item.Version)
+					fmt.Printf("    - ResourceBundle Version: %s\n", item.Version)
 				}
 				if item.McVersion != "" {
 					fmt.Printf("    - Minecraft Version: %s\n", item.McVersion)
@@ -197,7 +199,7 @@ func BuildModPackMenu() *menu.Menu {
 	return m
 }
 
-func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
+func rebuildResourceBundleButtons(m *menu.Menu, model *PackMenuModel) {
 	m.ClearButtons()
 
 	m.AddButton("Back", "", "Go Back", menu.ChangeMenu(MainMenuID), 'b', "back")
@@ -220,7 +222,7 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 						model.Expanded = name
 					}
 
-					rebuildModPackButtons(m, model)
+					rebuildResourceBundleButtons(m, model)
 					menu.RequestRender()
 					return nil
 				},
@@ -230,7 +232,7 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 		)
 
 		if model.Expanded == item.Name {
-			m.AddButton("Install", "", "Install this Mod Pack", actions.InstallModPackAction(item.Name), 'i', "install"+item.Name)
+			m.AddButton("Install", "", "Install this Resource Bundle", menu.Action{}, 'i', "install"+item.Name)
 		}
 	}
 
@@ -252,7 +254,7 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 						model.Expanded = name
 					}
 
-					rebuildModPackButtons(m, model)
+					rebuildResourceBundleButtons(m, model)
 					menu.RequestRender()
 					return nil
 				},
@@ -262,7 +264,7 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 		)
 
 		if model.Expanded == item.Name {
-			m.AddButton("Install", "", "Install this Mod Pack", actions.InstallModPackAction(item.Name), 'i', "install"+item.Name)
+			m.AddButton("Install", "", "Install this Resource Bundle", menu.Action{}, 'i', "install"+item.Name)
 		}
 	}
 }

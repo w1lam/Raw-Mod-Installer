@@ -9,27 +9,13 @@ import (
 
 	"github.com/w1lam/Packages/download"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
+	"github.com/w1lam/Raw-Mod-Installer/internal/ui"
 )
 
-// Progress represents the download progress of a file
-type Progress struct {
-	File   string
-	Status string // "downloading", "success", "failure"
-	Err    error
-}
-
+// DownloaderResults is the results of the downloader
 type DownloaderResults struct {
 	TempDir         string
 	DownloadedItems map[string]DownloadItem
-}
-
-type DownloadItem struct {
-	ID       string // slug
-	FileName string
-	URL      string
-	Sha1     string
-	Sha512   string
-	Version  string
 }
 
 // DownloadEntries is the main download function
@@ -42,7 +28,7 @@ func DownloadEntries(
 		return DownloaderResults{}, err
 	}
 
-	progressCh := make(chan Progress)
+	progressCh := make(chan ui.DownloaderProgress)
 	var wg sync.WaitGroup
 
 	results := DownloaderResults{
@@ -61,27 +47,27 @@ func DownloadEntries(
 
 			filePath := filepath.Join(tempDir, entry.FileName)
 
-			progressCh <- Progress{File: entry.FileName, Status: "downloading"}
+			progressCh <- ui.DownloaderProgress{File: entry.FileName, Status: "downloading"}
 
 			computedSha, err := download.DownloadFile(filePath, uri)
 			if err != nil {
-				progressCh <- Progress{File: entry.FileName, Status: "failure", Err: err}
+				progressCh <- ui.DownloaderProgress{File: entry.FileName, Status: "failure", Err: err}
 				return
 			}
 
 			if entry.Sha512 != "" {
 				if computedSha != entry.Sha512 {
-					progressCh <- Progress{File: entry.FileName, Status: "failure", Err: fmt.Errorf("SHA512 mismatch")}
+					progressCh <- ui.DownloaderProgress{File: entry.FileName, Status: "failure", Err: fmt.Errorf("SHA512 mismatch")}
 					return
 				}
 			} else if entry.Sha1 == "" {
 				if computedSha != entry.Sha1 {
-					progressCh <- Progress{File: entry.FileName, Status: "failure", Err: fmt.Errorf("SHA1 mismatch")}
+					progressCh <- ui.DownloaderProgress{File: entry.FileName, Status: "failure", Err: fmt.Errorf("SHA1 mismatch")}
 					return
 				}
 			}
 
-			progressCh <- Progress{File: entry.FileName, Status: "success"}
+			progressCh <- ui.DownloaderProgress{File: entry.FileName, Status: "success"}
 
 			mu.Lock()
 			results.DownloadedItems[id] = DownloadItem{
@@ -100,43 +86,11 @@ func DownloadEntries(
 		close(progressCh)
 	}()
 
-	_, failedFiles := RenderProgress(progressCh, len(entries))
+	_, failedFiles := ui.RenderDownloaderProgress(progressCh, len(entries))
 
 	if len(failedFiles) > 0 {
 		return DownloaderResults{}, fmt.Errorf("%d mods failed to install", len(failedFiles))
 	}
 
 	return results, nil
-}
-
-// RenderProgress simplified version of progress bar, pure cli
-func RenderProgress(ch <-chan Progress, total int) (successFiles []string, failedFiles []string) {
-	success := 0
-	failed := 0
-	fmt.Println("[Downloading Mods: 0/", total, ", 0%]")
-
-	for p := range ch {
-		switch p.Status {
-		case "success":
-			success++
-			successFiles = append(successFiles, p.File)
-		case "failure":
-			failed++
-			failedFiles = append(failedFiles, p.File)
-		}
-
-		processed := success + failed
-		if total == 0 {
-			total = 1
-		}
-
-		procent := int(float64(processed) / float64(total) * float64(100))
-		if procent > 100 {
-			procent = 100
-		}
-
-		fmt.Println("[Downloading Mods: ", success, "/", total, ", ", procent, "%]")
-	}
-
-	return
 }

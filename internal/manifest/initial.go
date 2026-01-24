@@ -4,6 +4,7 @@ package manifest
 import (
 	"fmt"
 
+	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
@@ -16,11 +17,9 @@ func BuildInitialManifest(programVer string, path *paths.Paths) (*Manifest, erro
 		ProgramVersion:   programVer,
 		InstalledLoaders: make(map[string]LoaderInfo),
 
-		EnabledModPack:        "",
-		EnabledResourceBundle: "",
+		EnabledPackages: make(map[packages.PackageType]string),
 
-		InstalledModPacks:        make(map[string]InstalledModPack),
-		InstalledResourceBundles: make(map[string]InstalledResourceBundle),
+		InstalledPackages: make(map[packages.PackageType]map[string]InstalledPackage),
 
 		Paths: path,
 	}

@@ -7,6 +7,7 @@ import (
 
 type PackMenuItem struct {
 	Name        string
+	Type        string
 	Version     string
 	McVersion   string
 	Loader      string
@@ -47,8 +48,8 @@ func InitializeMenus(m *manifest.Manifest) {
 	mainMenu.AddButton("Help", "", "Press H for help menu", menu.ChangeMenu(HelpMenuID), 'h', "help")
 
 	// RESOURCE BUNDLE MENU
-	resourceMenu := menu.NewMenu("Resource Bundles", "This is the resource bundles menu", ResourceMenuID)
-	resourceMenu.AddButton("Back", "<", "Go Back", menu.ChangeMenu(MainMenuID), 'b', "back")
+	resourceMenu := BuildResourceBundleMenu()
+	_ = resourceMenu
 
 	// MODPACK MENU
 	modPackMenu := BuildModPackMenu()

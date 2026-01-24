@@ -4,9 +4,9 @@ package state
 import (
 	"sync"
 
-	"github.com/w1lam/Raw-Mod-Installer/internal/lists"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/meta"
+	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 )
 
 var ProgramVersion string = "0.0.1"
@@ -16,33 +16,25 @@ var (
 	once        sync.Once
 )
 
+// State is the global state struct
 type State struct {
 	mu sync.RWMutex
 
-	manifest          *manifest.Manifest
-	meta              *meta.MetaData
-	availablePackages lists.AvailablePackages
+	manifest *manifest.Manifest
+	meta     *meta.MetaData
+
+	availablePackages packages.AvailablePackages
 	updates           manifest.Updates
 }
 
-func (s *State) Packages() lists.AvailablePackages {
-	return s.availablePackages
-}
-
-func (s *State) MetaData() *meta.MetaData {
-	return s.meta
-}
-
-func (s *State) Manifest() *manifest.Manifest {
-	return s.manifest
-}
-
+// SetState sets the state
 func SetState(s *State) {
 	once.Do(func() {
 		globalState = s
 	})
 }
 
+// Get gets the state only read or edit inside Read or Write funcs
 func Get() *State {
 	if globalState == nil {
 		panic("env.State not initialized")
@@ -50,27 +42,24 @@ func Get() *State {
 	return globalState
 }
 
-func (s *State) Read(fn func(*State)) {
-	s.mu.RLock()
-	defer s.mu.RUnlock()
-	fn(s)
-}
-
-func (s *State) Write(fn func(*State) error) error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	return fn(s)
-}
-
+// NewState creates a new state
 func NewState(m *manifest.Manifest, meta *meta.MetaData) *State {
 	if m == nil || meta == nil {
 		panic("NewState: manifest or meta is nil")
 	}
 
+	ap := make(packages.AvailablePackages)
 	return &State{
 		manifest:          m,
 		meta:              meta,
-		availablePackages: make(lists.AvailablePackages),
+		availablePackages: ap,
 		updates:           manifest.Updates{},
 	}
+}
+
+func SetAvailablePackages(pkgs packages.AvailablePackages) {
+	globalState.mu.Lock()
+	defer globalState.mu.Unlock()
+
+	globalState.availablePackages = pkgs
 }

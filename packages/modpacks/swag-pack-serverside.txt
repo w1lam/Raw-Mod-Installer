@@ -1,4 +1,5 @@
 Name: SwagPackServerSide
+Type: modpack
 Env: Server
 Version: 0.1.3
 McVersion: 1.21.10

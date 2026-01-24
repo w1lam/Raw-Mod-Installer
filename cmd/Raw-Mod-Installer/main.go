@@ -1,7 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
+	packages "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
 )
 
 // NOTES:
@@ -15,16 +19,16 @@ import (
 func init() {}
 
 func main() {
-	// all, err := lists.GetAllAvailablePackages()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	//
-	// fmt.Printf("%+v", all)
-	//
-	// time.Sleep(time.Hour * 1)
+	all, err := packages.GetAllAvailablePackages()
+	if err != nil {
+		panic(err)
+	}
 
-	_ = app.Initialize()
+	fmt.Printf("%+v", all)
+
+	time.Sleep(time.Hour * 1)
+
+	app.Initialize()
 
 	app.Run()
 }

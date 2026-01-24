@@ -4,63 +4,34 @@ package filesystem
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/w1lam/Packages/utils"
-	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
-	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
-type BackupPolicy int
-
-const (
-	BackupNever BackupPolicy = iota
-	BackupIfExists
-	BackupOnce
-)
-
-func BackupModsIfNeeded() error {
-	gState := state.Get()
-	var path *paths.Paths
-	var enabled string
-
-	gState.Read(func(s *state.State) {
-		path = s.Manifest().Paths
-		enabled = s.Manifest().EnabledModPack
-	})
-
-	if !utils.CheckFileExists(path.ModsDir) {
+// BackupDir moves a dir to backup folder
+func BackupDir(src, dst string, rotate bool) error {
+	if !utils.CheckFileExists(src) {
 		return nil
 	}
 
-	backupDir := filepath.Join(path.ModsBackupsDir, "mods.backup")
-	if enabled != "" {
-		backupDir = filepath.Join(path.ModsBackupsDir, enabled+".backup")
-	}
-
-	if utils.CheckFileExists(backupDir) {
+	if rotate && utils.CheckFileExists(dst) {
 		ts := time.Now().Format("20060102150405")
-		if err := os.Rename(backupDir, backupDir+"_"+ts); err != nil {
+		if err := os.Rename(dst, dst+"_"+ts); err != nil {
 			return err
 		}
 	}
-	return os.Rename(path.ModsDir, backupDir)
+
+	return os.Rename(src, dst)
 }
 
-// RestoreModsBackup restores the mod folder from backup
-func RestoreModsBackup(modPack manifest.InstalledModPack, path *paths.Paths) error {
-	if modPack.Name == "DEFAULT" {
-		return os.Rename(filepath.Join(path.ModsBackupsDir, "mods.backup"), path.ModsDir)
+// ResoreBackupDir restores backup
+func RestoreBackupDir(src, dst string) error {
+	if !utils.CheckFileExists(src) {
+		return fmt.Errorf("backup not found")
 	}
-	backupPth := path.ModsBackupsDir + modPack.Name + ".backup"
-	if !utils.CheckFileExists(backupPth) {
-		return fmt.Errorf("no backup folder found")
+	if utils.CheckFileExists(dst) {
+		return fmt.Errorf("destination exists")
 	}
-
-	if utils.CheckFileExists(path.ModsDir) {
-		return fmt.Errorf("mods folder already exists, refusing to overwrite")
-	}
-	return os.Rename(backupPth, path.ModsDir)
+	return os.Rename(src, dst)
 }

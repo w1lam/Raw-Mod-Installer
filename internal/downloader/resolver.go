@@ -6,8 +6,17 @@ import (
 	"github.com/w1lam/Packages/modrinth"
 )
 
-func ResolveDownloadItem(entries []modrinth.ModrinthListEntry, mcVersion, loader string) (map[string]DownloadItem, error) {
-	bestVersions := modrinth.FetchBestVersions(entries, mcVersion, loader)
+type DownloadItem struct {
+	ID       string // slug
+	FileName string
+	URL      string
+	Sha1     string
+	Sha512   string
+	Version  string
+}
+
+func ResolveDownloadItem(entries []modrinth.ModrinthListEntry, filter modrinth.EntryFilter) (map[string]DownloadItem, error) {
+	bestVersions := modrinth.FetchBestVersions(entries, filter)
 
 	out := map[string]DownloadItem{}
 

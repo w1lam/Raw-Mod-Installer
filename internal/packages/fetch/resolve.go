@@ -1,4 +1,4 @@
-package lists
+package packages
 
 import (
 	"bufio"
@@ -6,17 +6,18 @@ import (
 	"strings"
 
 	"github.com/w1lam/Packages/modrinth"
+	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 )
 
 // resolveModPack resolves a package list
-func resolvePackage(packageType, url string) (ResolvedPackage, error) {
+func resolvePackage(url string) (packages.ResolvedPackage, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return ResolvedPackage{}, err
+		return packages.ResolvedPackage{}, err
 	}
 	defer resp.Body.Close()
 
-	var resolvedPackage ResolvedPackage
+	var resolvedPackage packages.ResolvedPackage
 
 	var entries []modrinth.ModrinthListEntry
 	scanner := bufio.NewScanner(resp.Body)
@@ -30,6 +31,11 @@ func resolvePackage(packageType, url string) (ResolvedPackage, error) {
 
 		if name, ok := strings.CutPrefix(line, "Name: "); ok {
 			resolvedPackage.Name = name
+			continue
+		}
+
+		if pkgType, ok := strings.CutPrefix(line, "Type: "); ok {
+			resolvedPackage.Type = packages.PackageType(pkgType)
 			continue
 		}
 
@@ -80,13 +86,12 @@ func resolvePackage(packageType, url string) (ResolvedPackage, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return ResolvedPackage{}, err
+		return packages.ResolvedPackage{}, err
 	}
 
 	resolvedPackage.Entries = entries
 
 	resolvedPackage.ListSource = url
-	resolvedPackage.Type = packageType
 
 	return resolvedPackage, nil
 }

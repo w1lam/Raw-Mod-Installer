@@ -42,29 +42,15 @@ func EnsureDirectories(path *paths.Paths) error {
 		}
 	}
 
-	if !utils.CheckFileExists(path.ModPacksDir) {
-		err := os.MkdirAll(path.ModPacksDir, 0o755)
+	if !utils.CheckFileExists(path.PackagesDir) {
+		err := os.MkdirAll(path.PackagesDir, 0o755)
 		if err != nil {
 			return err
 		}
 	}
 
-	if !utils.CheckFileExists(path.ModsBackupsDir) {
-		err := os.MkdirAll(path.ModsBackupsDir, 0o755)
-		if err != nil {
-			return err
-		}
-	}
-
-	if !utils.CheckFileExists(path.ResourceBundlesDir) {
-		err := os.MkdirAll(path.ResourceBundlesDir, 0o755)
-		if err != nil {
-			return err
-		}
-	}
-
-	if !utils.CheckFileExists(path.ResourcePackBackupsDir) {
-		err := os.MkdirAll(path.ResourcePackBackupsDir, 0o755)
+	if !utils.CheckFileExists(path.BackupsDir) {
+		err := os.MkdirAll(path.BackupsDir, 0o755)
 		if err != nil {
 			return err
 		}
