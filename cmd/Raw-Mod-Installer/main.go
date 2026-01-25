@@ -27,6 +27,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	time.Sleep(time.Hour * 1)
 
 	// fmt.Printf("%+v\n\n\n", all[packages.PackageResourceBundle])
 	//

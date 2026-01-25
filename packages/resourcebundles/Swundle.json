@@ -1,0 +1,93 @@
+{
+ "pkgType": "resourcebundle",
+ "name": "Swundle",
+ "ListSource": "https://raw.githubusercontent.com/w1lam/Raw-Mod-Installer/main/packages/resourcebundles/swundle.txt",
+ "listVersion": "0.0.1",
+ "mcVersion": "1.21.11",
+ "loader": "none",
+ "env": "Client",
+ "description": "haha",
+ "hash": "",
+ "entries": [
+  {
+   "Slug": "connected-rocks",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "connected-bricks",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "connected-paths",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "glowing-glints",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "animated-items",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fresh-food",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "tools-and-utils",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "recolorful-containers-gui",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "eclectic-trove-legendary-tooltips",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fancy-crops",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "simple-grass-flowers",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "os-colorful-grasses",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "better-sugar-cane",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fresh-flower-pots",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "better-busy-leaves",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "better-foliage",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fresh-animations",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fresh-animations-extensions",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fire-rekindled",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "vvi",
+   "PinnedVer": ""
+  }
+ ]
+}

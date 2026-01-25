@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
 var folderToPkgType = map[string]packages.PackageType{
@@ -48,6 +51,7 @@ func GetAllAvailablePackages() (packages.AvailablePackages, error) {
 
 // getAvailablePackages gets all available packages from subfolder in repo/packages
 func getAvailablePackages(fldrName string) (map[string]packages.ResolvedPackage, error) {
+	path, err := paths.Resolve()
 	req := fmt.Sprintf("%scontents/packages/%s", netcfg.GithubRepo, fldrName)
 
 	resp, err := http.Get(req)
@@ -80,6 +84,16 @@ func getAvailablePackages(fldrName string) (map[string]packages.ResolvedPackage,
 
 		if resolved.Name == "" {
 			return nil, fmt.Errorf("package %s jas no Name", resolved.Name)
+		}
+
+		if marshaled, err := json.MarshalIndent(resolved, "", " "); err != nil {
+			return nil, fmt.Errorf("failed to marshal json: %w", err)
+		} else {
+			outFile := filepath.Join(path.ProgramFilesDir, fmt.Sprintf("%s.json", resolved.Name))
+			err := os.WriteFile(outFile, marshaled, 0o755)
+			if err != nil {
+				return nil, fmt.Errorf("failed to write json file: %w", err)
+			}
 		}
 
 		resolvedPackages[resolved.Name] = resolved

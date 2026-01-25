@@ -1,0 +1,317 @@
+{
+ "pkgType": "modpack",
+ "name": "SwagPackClientSide",
+ "ListSource": "https://raw.githubusercontent.com/w1lam/Raw-Mod-Installer/main/packages/modpacks/swag-pack-clientside.txt",
+ "listVersion": "0.0.3",
+ "mcVersion": "1.21.11",
+ "loader": "fabric",
+ "env": "Client",
+ "description": "Client Side only version of SwagPack",
+ "hash": "",
+ "entries": [
+  {
+   "Slug": "debugify",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "packet-fixer",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "no-resource-pack-warnings",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "yeetus-experimentus",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "current-game-music-track",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "minecraft-cursor",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "cubes-without-borders",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "zoomify",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "invmove",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "resourcify",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "modmenu",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "jade",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "reeses-sodium-options",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "smooth-gui",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "dynamiccrosshair",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "dynamiccrosshaircompat",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "immersive-hotbar",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "pick-up-notifier",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "better-advancements",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "silk",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fabric-api",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "cloth-config",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fabric-language-kotlin",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "creativecore",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "collective",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "mru",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "yacl",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "balm",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "player-animation-library",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "puzzles-lib",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "forge-config-api-port",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "architectury-api",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "glitchcore",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fzzy-config",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "geckolib",
+   "PinnedVer": "5.4"
+  },
+  {
+   "Slug": "sodium-extra",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "sodium",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "sodium-shadowy-path-blocks",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "entityculling",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "lithium",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "immediatelyfast",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "badoptimizations",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "ferrite-core",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "c2me-fabric",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "moreculling",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "cull-leaves",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "scalablelux",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "krypton",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "dynamic-fps",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "better-block-entities",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "distanthorizons",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "lambdynamiclights",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "iris",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "visuality",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "particular-reforged",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "fallingleaves",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "bettergrassify",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "ambient-environment",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "physicsmod",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "not-enough-animations",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "skyboxify",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "entity-model-features",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "entitytexturefeatures",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "optigui",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "continuity",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "3dskinlayers",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "weaponmaster",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "cameraoverhaul",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "subtle-effects",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "armor-3d",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "explosive-enhancement",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "punchy-fpa",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "sound-physics-remastered",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "sound",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "ambientsounds",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "presence-footsteps",
+   "PinnedVer": ""
+  }
+ ]
+}

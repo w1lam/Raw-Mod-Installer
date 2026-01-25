@@ -23,16 +23,16 @@ type Pkg struct {
 
 // ResolvedPackage is a resolved package
 type ResolvedPackage struct {
-	Type PackageType
+	Type PackageType `json:"pkgType"`
 
-	Name        string
+	Name        string `json:"name"`
 	ListSource  string
-	ListVersion string
-	McVersion   string
-	Loader      string
-	Env         string
-	Description string
-	Hash        string // Sha512
+	ListVersion string `json:"listVersion"`
+	McVersion   string `json:"mcVersion"`
+	Loader      string `json:"loader"`
+	Env         string `json:"env"`
+	Description string `json:"description"`
+	Hash        string `json:"hash"` // sha512
 
-	Entries []modrinth.ModrinthListEntry
+	Entries []modrinth.ModrinthListEntry `json:"entries"`
 }
