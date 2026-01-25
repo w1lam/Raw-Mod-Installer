@@ -1,10 +1,10 @@
-Name: SwagBundle
-Env: Client
-Version: 0.0.1
-McVersion: 1.21.11
-Loader: none
-Description: Cool lil resourcepacks that spice up minecraft
-Hash: 
+#Name: SwagBundle
+#Env: Client
+#Version: 0.0.1
+#McVersion: 1.21.11
+#Loader: none
+#Description: Cool lil resourcepacks that spice up minecraft
+#Hash: 
 
 #CONNECTED TEXTURES
 connected-rocks

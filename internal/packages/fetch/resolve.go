@@ -2,6 +2,7 @@ package packages
 
 import (
 	"bufio"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -29,37 +30,37 @@ func resolvePackage(url string, pkgType packages.PackageType) (packages.Resolved
 			continue
 		}
 
-		if name, ok := strings.CutPrefix(line, "Name: "); ok {
+		if name, ok := strings.CutPrefix(line, "#Name: "); ok {
 			resolvedPackage.Name = name
 			continue
 		}
 
-		if env, ok := strings.CutPrefix(line, "Env: "); ok {
+		if env, ok := strings.CutPrefix(line, "#Env: "); ok {
 			resolvedPackage.Env = env
 			continue
 		}
 
-		if version, ok := strings.CutPrefix(line, "Version: "); ok {
+		if version, ok := strings.CutPrefix(line, "#Version: "); ok {
 			resolvedPackage.ListVersion = version
 			continue
 		}
 
-		if mcVersion, ok := strings.CutPrefix(line, "McVersion: "); ok {
+		if mcVersion, ok := strings.CutPrefix(line, "#McVersion: "); ok {
 			resolvedPackage.McVersion = mcVersion
 			continue
 		}
 
-		if loader, ok := strings.CutPrefix(line, "Loader: "); ok {
+		if loader, ok := strings.CutPrefix(line, "#Loader: "); ok {
 			resolvedPackage.Loader = loader
 			continue
 		}
 
-		if description, ok := strings.CutPrefix(line, "Description: "); ok {
+		if description, ok := strings.CutPrefix(line, "#Description: "); ok {
 			resolvedPackage.Description = description
 			continue
 		}
 
-		if hash, ok := strings.CutPrefix(line, "Hash: "); ok {
+		if hash, ok := strings.CutPrefix(line, "#Hash: "); ok {
 			resolvedPackage.Hash = hash
 			continue
 		}
@@ -69,6 +70,9 @@ func resolvePackage(url string, pkgType packages.PackageType) (packages.Resolved
 		}
 
 		parts := strings.SplitN(line, "@", 2)
+		if strings.ContainsAny(parts[0], " :") {
+			return packages.ResolvedPackage{}, fmt.Errorf("invalid modrinth slug: %q", parts[0])
+		}
 		entry := modrinth.ModrinthListEntry{
 			Slug: parts[0],
 		}

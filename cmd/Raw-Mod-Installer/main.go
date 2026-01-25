@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
@@ -28,9 +27,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println(all["modpack"]["SwagPack"])
-	time.Sleep(time.Hour * 1)
 
 	// fmt.Printf("%+v\n\n\n", all[packages.PackageResourceBundle])
 	//

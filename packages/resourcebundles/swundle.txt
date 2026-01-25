@@ -1,10 +1,10 @@
-Name: Swundle
-Env: Client
-Version: 0.0.1
-McVersion: 1.21.11
-Loader: none
-Description: haha
-Hash: 
+#Name: Swundle
+#Env: Client
+#Version: 0.0.1
+#McVersion: 1.21.11
+#Loader: none
+#Description: haha
+#Hash: 
 
 #CONNECTED TEXTURES
 connected-rocks
