@@ -29,6 +29,9 @@ func scanPackagesFolder() ([]string, error) {
 
 	names := []string{}
 	for _, sub := range decodedResp {
+		if sub.Type != "dir" {
+			continue
+		}
 		names = append(names, sub.Name)
 	}
 

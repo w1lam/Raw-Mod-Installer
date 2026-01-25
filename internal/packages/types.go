@@ -1,4 +1,4 @@
-// Packages packages handles packages
+// Package packages handles packages
 package packages
 
 import "github.com/w1lam/Packages/modrinth"

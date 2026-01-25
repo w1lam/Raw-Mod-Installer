@@ -39,7 +39,10 @@ func InstallModPackAction(pkg packages.Pkg) menu.Action {
 				tui.ClearScreenRaw()
 				menu.RenderCurrentMenu()
 			} else {
-				fmt.Printf("\n* %s Installation Failed!\n", pkg.Name)
+				state.Get().Read(func(s *state.State) {
+					fmt.Printf("all available packages: %+v", s.AvailablePackages())
+				})
+				fmt.Printf("\n* %s Installation Failed! %v\n", pkg.Name, err)
 				time.Sleep(time.Second * 3)
 				tui.ClearScreenRaw()
 				menu.RenderCurrentMenu()

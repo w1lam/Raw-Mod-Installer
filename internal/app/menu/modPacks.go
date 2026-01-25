@@ -3,13 +3,16 @@ package app
 import (
 	"fmt"
 	"sort"
+	"time"
 	"unicode"
 
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/actions"
+	"github.com/w1lam/Raw-Mod-Installer/internal/installer"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 	pkg "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
+	"github.com/w1lam/Raw-Mod-Installer/internal/services"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
@@ -44,13 +47,13 @@ func BuildModPackMenu() *menu.Menu {
 				}
 				state.SetAvailablePackages(allAvailable)
 
-				available := allAvailable[packages.PackageModPack]
-
 				var installed map[string]manifest.InstalledPackage
+				var available map[string]packages.ResolvedPackage
 				var enabled string
 
 				gState.Read(func(s *state.State) {
 					installed = s.Manifest().InstalledPackages[packages.PackageModPack]
+					available = s.AvailablePackages()[packages.PackageModPack]
 					enabled = s.Manifest().EnabledPackages[packages.PackageModPack]
 				})
 
@@ -62,6 +65,7 @@ func BuildModPackMenu() *menu.Menu {
 
 				// BUILDING AVAILABLE MODPACKS MODEL
 				for _, mp := range available {
+					mp := mp
 					if _, ok := installed[mp.Name]; ok {
 						continue
 					}
@@ -87,6 +91,7 @@ func BuildModPackMenu() *menu.Menu {
 
 				// BUILDING INSTALLED MODPACKS MODEL
 				for _, inst := range installed {
+					inst := inst
 					enabledNow := inst.Name == enabled
 					title := inst.Name
 					action := actions.EnablePackageAction(packages.Pkg{Name: inst.Name, Type: inst.Type})
@@ -236,7 +241,44 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 		)
 
 		if model.Expanded == item.Name {
-			m.AddButton("Install", "", "Install this Mod Pack", actions.InstallModPackAction(packages.Pkg{Name: item.Name, Type: packages.PackageType(item.Type)}), 'i', "install"+item.Name)
+			pkgName := item.Name
+			pkgType := item.Type
+
+			m.AddButton(
+				"Install",
+				"",
+				"Install this Mod Pack",
+				menu.Action{
+					Function: func() error {
+						var pkg packages.ResolvedPackage
+
+						state.Get().Read(func(s *state.State) {
+							ap := s.AvailablePackages()
+							if ap == nil {
+								return
+							}
+							pkg = (ap)[packages.PackageType(pkgType)][pkgName]
+						})
+
+						plan := installer.InstallPlan{
+							RequestedPackage: pkg,
+							BackupPolicy:     services.BackupIfExists,
+						}
+
+						return installer.PackageInstaller(plan)
+					},
+					WrapUp: func(err error) {
+						if err == nil {
+							fmt.Println("Installation Complete!")
+							time.Sleep(time.Second * 3)
+							menu.RequestRender()
+						}
+					},
+					Async: true,
+				},
+				'i',
+				"install"+item.Name,
+			)
 		}
 	}
 

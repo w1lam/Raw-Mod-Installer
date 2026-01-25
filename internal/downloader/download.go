@@ -60,7 +60,7 @@ func DownloadEntries(
 					progressCh <- ui.DownloaderProgress{File: entry.FileName, Status: "failure", Err: fmt.Errorf("SHA512 mismatch")}
 					return
 				}
-			} else if entry.Sha1 == "" {
+			} else if entry.Sha1 != "" {
 				if computedSha != entry.Sha1 {
 					progressCh <- ui.DownloaderProgress{File: entry.FileName, Status: "failure", Err: fmt.Errorf("SHA1 mismatch")}
 					return
@@ -86,11 +86,17 @@ func DownloadEntries(
 		close(progressCh)
 	}()
 
+	wg.Wait()
+
 	_, failedFiles := ui.RenderDownloaderProgress(progressCh, len(entries))
+	if len(results.DownloadedItems) == 0 && len(entries) > 0 {
+		return DownloaderResults{}, fmt.Errorf("no files were downloaded")
+	}
 
 	if len(failedFiles) > 0 {
 		return DownloaderResults{}, fmt.Errorf("%d mods failed to install", len(failedFiles))
 	}
 
+	fmt.Printf("Downloaded %d/%d items\n", len(results.DownloadedItems), len(entries))
 	return results, nil
 }

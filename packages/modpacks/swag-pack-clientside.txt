@@ -1,5 +1,4 @@
 Name: SwagPackClientSide
-Type: modpack
 Env: Client
 Version: 0.0.3
 McVersion: 1.21.11

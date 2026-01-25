@@ -1,7 +1,8 @@
 Name: Swundle
-Type: resourcebundle
+Env: Client
 Version: 0.0.1
 McVersion: 1.21.11
+Loader: none
 Description: haha
 Hash: 
 

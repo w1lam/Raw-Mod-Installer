@@ -10,7 +10,7 @@ import (
 )
 
 // resolveModPack resolves a package list
-func resolvePackage(url string) (packages.ResolvedPackage, error) {
+func resolvePackage(url string, pkgType packages.PackageType) (packages.ResolvedPackage, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return packages.ResolvedPackage{}, err
@@ -31,11 +31,6 @@ func resolvePackage(url string) (packages.ResolvedPackage, error) {
 
 		if name, ok := strings.CutPrefix(line, "Name: "); ok {
 			resolvedPackage.Name = name
-			continue
-		}
-
-		if pkgType, ok := strings.CutPrefix(line, "Type: "); ok {
-			resolvedPackage.Type = packages.PackageType(pkgType)
 			continue
 		}
 
@@ -91,6 +86,7 @@ func resolvePackage(url string) (packages.ResolvedPackage, error) {
 
 	resolvedPackage.Entries = entries
 
+	resolvedPackage.Type = pkgType
 	resolvedPackage.ListSource = url
 
 	return resolvedPackage, nil

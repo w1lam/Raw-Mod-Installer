@@ -10,10 +10,14 @@ import (
 // PackageType is the type of a package modpack/resourcebundle/shaderbundle?
 type PackageType string
 
+// AllPTypes are all pkg types
+var AllPTypes = []PackageType{PackageModPack, PackageResourceBundle, PackageShaderBundle}
+
+// PKG TYPES
 const (
-	PackageModPack        PackageType = "modpacks"
-	PackageResourceBundle PackageType = "resourcebundles"
-	PackageShaderBundle   PackageType = "shaderbundles"
+	PackageModPack        PackageType = "modpack"
+	PackageResourceBundle PackageType = "resourcebundle"
+	PackageShaderBundle   PackageType = "shaderbundle"
 )
 
 // PackageBehavior defines the behavior for a package type

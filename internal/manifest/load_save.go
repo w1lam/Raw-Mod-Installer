@@ -22,11 +22,13 @@ func Load(path *paths.Paths) (*Manifest, error) {
 
 	m.Paths = path
 
+	m.Normalize()
 	return &m, nil
 }
 
 // Save saves the manifest to the specified path atomically.
 func (m *Manifest) Save() error {
+	m.Normalize()
 	tmp := m.Paths.ManifestPath + ".tmp"
 
 	data, err := json.MarshalIndent(m, "", "  ")

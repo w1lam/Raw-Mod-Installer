@@ -25,6 +25,17 @@ type InstallPlan struct {
 func PackageInstaller(
 	plan InstallPlan,
 ) error {
+	// HARDENING
+	if plan.RequestedPackage.Name == "" {
+		return fmt.Errorf("invalid install plan: empty package name")
+	}
+	if plan.RequestedPackage.Type == "" {
+		return fmt.Errorf("invalid install plan: empty package type")
+	}
+	if len(plan.RequestedPackage.Entries) == 0 {
+		return fmt.Errorf("invalid install plan: no entries to install")
+	}
+
 	gState := state.Get()
 	behavior := packages.PackageBehaviors[plan.RequestedPackage.Type]
 
@@ -32,6 +43,7 @@ func PackageInstaller(
 	var installed map[string]manifest.InstalledPackage
 	var enabled string
 
+	fmt.Println("Reading State...")
 	gState.Read(func(s *state.State) {
 		path = s.Manifest().Paths
 		installed = s.Manifest().InstalledPackages[plan.RequestedPackage.Type]
@@ -53,21 +65,23 @@ func PackageInstaller(
 	}
 
 	filter := modrinth.EntryFilter{
-		McVersion:   plan.RequestedPackage.McVersion,
-		ProjectType: string(plan.RequestedPackage.Type),
-		Loader:      plan.RequestedPackage.Loader,
+		McVersion: plan.RequestedPackage.McVersion,
+		Loader:    plan.RequestedPackage.Loader,
 	}
 
+	fmt.Println("Resolving Download Items...")
 	resolved, err := downloader.ResolveDownloadItem(plan.RequestedPackage.Entries, filter)
 	if err != nil {
-		return rollback(installed[enabled], path, plan, err)
+		return fmt.Errorf("failed to resolve items: %w", err)
 	}
 
+	fmt.Println("Starting Download...")
 	downloads, err := downloader.DownloadEntries(resolved, path)
 	if err != nil {
 		return rollback(installed[enabled], path, plan, err)
 	}
 
+	fmt.Println("Moving to Final Dir")
 	destDir := filepath.Join(path.PackagesDir, string(plan.RequestedPackage.Type), plan.RequestedPackage.Name)
 	if err := os.RemoveAll(destDir); err != nil {
 		return fmt.Errorf("failed to clear target modpack dir: %w", err)
@@ -76,6 +90,7 @@ func PackageInstaller(
 		return fmt.Errorf("failed to move to target modpack dir: %w", err)
 	}
 
+	fmt.Println("Computing Pack Hash...")
 	packHash, err := filesystem.ComputeDirHash(destDir)
 	if err != nil {
 		return fmt.Errorf("failed to compute pack hash: %w", err)
@@ -103,14 +118,22 @@ func PackageInstaller(
 	}
 
 	if packages.PackageBehaviors[plan.RequestedPackage.Type].EnableAfter {
+		fmt.Println("Enabling Package...")
 		err := services.EnablePackage(packages.Pkg{Name: plan.RequestedPackage.Name, Type: plan.RequestedPackage.Type})
 		if err != nil {
 			return rollback(installed[enabled], path, plan, err)
 		}
 	}
 
+	fmt.Println("Writing Results to Manifest")
 	return gState.Write(func(s *state.State) error {
-		s.Manifest().InstalledPackages[plan.RequestedPackage.Type][plan.RequestedPackage.Name] = installedMp
-		return s.Manifest().Save()
+		m := s.Manifest()
+
+		if m.InstalledPackages[plan.RequestedPackage.Type] == nil {
+			m.InstalledPackages[plan.RequestedPackage.Type] = make(map[string]manifest.InstalledPackage)
+		}
+
+		m.InstalledPackages[plan.RequestedPackage.Type][plan.RequestedPackage.Name] = installedMp
+		return m.Save()
 	})
 }

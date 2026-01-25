@@ -8,6 +8,25 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
+// Normalize normalizes maps in manifest to make sure all maps are initiaded
+func (m *Manifest) Normalize() {
+	if m.InstalledPackages == nil {
+		m.InstalledPackages = make(map[packages.PackageType]map[string]InstalledPackage)
+	}
+
+	for t, pkgs := range m.InstalledPackages {
+		if t == "" {
+			delete(m.InstalledPackages, t)
+			continue
+		}
+		for name := range pkgs {
+			if name == "" {
+				delete(pkgs, name)
+			}
+		}
+	}
+}
+
 // BuildInitialManifest builds the initial manifest
 func BuildInitialManifest(programVer string, path *paths.Paths) (*Manifest, error) {
 	fmt.Printf(" * Building Initial Manifest...\n")
