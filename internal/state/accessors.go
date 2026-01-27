@@ -4,6 +4,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/meta"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
+	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
 // AvailablePackages safe packages accessor
@@ -19,4 +20,11 @@ func (s *State) MetaData() *meta.MetaData {
 // Manifest safe manifest accessor
 func (s *State) Manifest() *manifest.Manifest {
 	return s.manifest
+}
+
+// Paths small paths reader DO NOT USE INSIDE READ OF WRITE
+func Paths() *paths.Paths {
+	globalState.mu.RLock()
+	defer globalState.mu.RUnlock()
+	return globalState.manifest.Paths
 }

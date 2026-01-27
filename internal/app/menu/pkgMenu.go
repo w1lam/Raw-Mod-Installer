@@ -2,9 +2,9 @@ package app
 
 import (
 	"fmt"
+	"os"
 	"sort"
 	"time"
-	"unicode"
 
 	"github.com/w1lam/Packages/menu"
 	"github.com/w1lam/Raw-Mod-Installer/internal/actions"
@@ -14,11 +14,50 @@ import (
 	pkg "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
 	"github.com/w1lam/Raw-Mod-Installer/internal/services"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
+	ui "github.com/w1lam/Raw-Mod-Installer/internal/ui/render"
 )
 
-// BuildModPackMenu builds the modPackMenu
-func BuildModPackMenu() *menu.Menu {
-	m := menu.NewMenu("Mod Packs", "Chose a Mod pack", ModPackMenuID)
+type PackMenuItem struct {
+	Name        string
+	Type        string
+	Version     string
+	McVersion   string
+	Loader      string
+	Description string
+	Installed   bool
+	Enabled     bool
+	Key         rune
+	Action      menu.Action
+}
+
+type PackMenuModel struct {
+	Available []PackMenuItem
+	Installed []PackMenuItem
+
+	Expanded string
+}
+
+type PackageMenuConfig struct {
+	Type     packages.PackageType
+	Title    string
+	Subtitle string
+}
+
+var modPackMenuConfig = PackageMenuConfig{
+	Type:     packages.PackageModPack,
+	Title:    "Mod Packs",
+	Subtitle: "Choose a Mod Pack",
+}
+
+var resourceBundleMenuConfig = PackageMenuConfig{
+	Type:     packages.PackageResourceBundle,
+	Title:    "Resource Bundles",
+	Subtitle: "Choose a Resource Bundle",
+}
+
+// BuildPackageMenu builds a package menu
+func BuildPackageMenu(cfg PackageMenuConfig, menuID menu.MenuID) *menu.Menu {
+	m := menu.NewMenu(cfg.Title, cfg.Subtitle, menuID)
 
 	var (
 		model   PackMenuModel
@@ -52,18 +91,21 @@ func BuildModPackMenu() *menu.Menu {
 				var enabled string
 
 				gState.Read(func(s *state.State) {
-					installed = s.Manifest().InstalledPackages[packages.PackageModPack]
-					available = s.AvailablePackages()[packages.PackageModPack]
-					enabled = s.Manifest().EnabledPackages[packages.PackageModPack]
+					installed = s.Manifest().InstalledPackages[cfg.Type]
+					available = s.AvailablePackages()[cfg.Type]
+					enabled = s.Manifest().EnabledPackages[cfg.Type]
 				})
 
 				// RESERVED KEYS
 				used := map[rune]bool{
 					'b': true, // BACK
 					'i': true, // INSTALL
+					'x': true, // UNINSTALL
+					'e': true, // ENABLE
+					'd': true, // DISABLE
 				}
 
-				// BUILDING AVAILABLE MODPACKS MODEL
+				// BUILDING AVAILABLE PACKAGE MODEL
 				for _, mp := range available {
 					mp := mp
 					if _, ok := installed[mp.Name]; ok {
@@ -97,7 +139,6 @@ func BuildModPackMenu() *menu.Menu {
 					action := actions.EnablePackageAction(packages.Pkg{Name: inst.Name, Type: inst.Type})
 
 					if enabledNow {
-						title = fmt.Sprintf("%s (Enabled)", inst.Name)
 						action = actions.DisablePackageAction(inst.Type)
 					}
 
@@ -135,7 +176,7 @@ func BuildModPackMenu() *menu.Menu {
 						errMsg = err.Error()
 					}
 
-					rebuildModPackButtons(m, &model)
+					rebuildPackageButtons(m, &model)
 					menu.RequestRender()
 				})
 			},
@@ -143,72 +184,17 @@ func BuildModPackMenu() *menu.Menu {
 		})
 	})
 
+	renderer := ui.PlainRenderer{Out: os.Stdout}
+
 	m.SetRender(func() {
-		fmt.Println("  Mod Packs")
-		fmt.Println(" ━━━━━━━━━━━\n")
-
-		if loading {
-			fmt.Println("  Loading Modpacks...\n")
-			fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━")
-			fmt.Printf(" [B] Back   [Q] Quit\n")
-			return
-		}
-
-		if errMsg != "" {
-			fmt.Printf(" Error: %s\n", errMsg)
-		}
-
-		fmt.Println("  Available Mod Packs")
-		fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━")
-		if len(model.Available) == 0 {
-			fmt.Println("  (none)\n")
-		} else {
-			for _, item := range model.Available {
-				item := item
-
-				fmt.Printf("  [%c] %s\n", unicode.ToUpper(item.Key), item.Name)
-				if item.Description != "" {
-					fmt.Printf("    - %s\n", item.Description)
-				}
-
-				if model.Expanded == item.Name {
-					fmt.Printf("    - ModPack Version: %s\n", item.Version)
-					fmt.Printf("    - Minecraft Version: %s\n", item.McVersion)
-					fmt.Printf("    - Loader: %s\n", item.Loader)
-					fmt.Printf("      [I] Install\n")
-				}
-				fmt.Println()
-			}
-		}
-
-		fmt.Println("  Installed Mod Packs")
-		fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━")
-		if len(model.Installed) == 0 {
-			fmt.Println("  (none)\n")
-		} else {
-			for _, item := range model.Installed {
-				fmt.Printf("  [%c] %s\n", unicode.ToUpper(item.Key), item.Name)
-				if item.Version != "" {
-					fmt.Printf("    - ModPack Version: %s\n", item.Version)
-				}
-				if item.McVersion != "" {
-					fmt.Printf("    - Minecraft Version: %s\n", item.McVersion)
-				}
-				if item.Description != "" {
-					fmt.Printf("    - %s\n", item.Description)
-				}
-				fmt.Println()
-			}
-		}
-
-		fmt.Println(" ━━━━━━━━━━━━━━━━━━━━━")
-		fmt.Printf("  [B] Back   [Q] Quit\n")
+		view := buildPackageMenuView(cfg, &model, loading, errMsg)
+		renderer.RenderPackageMenu(view)
 	})
 
 	return m
 }
 
-func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
+func rebuildPackageButtons(m *menu.Menu, model *PackMenuModel) {
 	m.ClearButtons()
 
 	m.AddButton("Back", "", "Go Back", menu.ChangeMenu(MainMenuID), 'b', "back")
@@ -231,7 +217,7 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 						model.Expanded = name
 					}
 
-					rebuildModPackButtons(m, model)
+					rebuildPackageButtons(m, model)
 					menu.RequestRender()
 					return nil
 				},
@@ -247,7 +233,7 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 			m.AddButton(
 				"Install",
 				"",
-				"Install this Mod Pack",
+				"Install this Package",
 				menu.Action{
 					Function: func() error {
 						var pkg packages.ResolvedPackage
@@ -265,12 +251,17 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 							BackupPolicy:     services.BackupIfExists,
 						}
 
+						menu.PauseInput()
+						defer menu.ResumeInput()
 						return installer.PackageInstaller(plan)
 					},
 					WrapUp: func(err error) {
 						if err == nil {
 							fmt.Println("Installation Complete!")
+							fmt.Println("Returning to Menu...")
 							time.Sleep(time.Second * 3)
+
+							rebuildPackageButtons(m, model)
 							menu.RequestRender()
 						}
 					},
@@ -300,7 +291,7 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 						model.Expanded = name
 					}
 
-					rebuildModPackButtons(m, model)
+					rebuildPackageButtons(m, model)
 					menu.RequestRender()
 					return nil
 				},
@@ -310,7 +301,118 @@ func rebuildModPackButtons(m *menu.Menu, model *PackMenuModel) {
 		)
 
 		if model.Expanded == item.Name {
-			m.AddButton("Install", "", "Install this Mod Pack", actions.InstallModPackAction(packages.Pkg{Name: item.Name, Type: packages.PackageType(item.Type)}), 'i', "install"+item.Name)
+			if !item.Enabled {
+				m.AddButton("Enable",
+					"",
+					"Enable Package",
+					menu.Action{
+						Function: func() error {
+							err := services.EnablePackage(packages.Pkg{
+								Name: item.Name,
+								Type: packages.PackageType(item.Type),
+							})
+							if err == nil {
+								item.Enabled = true
+							}
+
+							rebuildPackageButtons(m, model)
+							menu.RequestRender()
+							return err
+						},
+						Async: true,
+					},
+					'e',
+					"enable"+item.Name,
+				)
+			} else {
+				m.AddButton("Disable",
+					"",
+					"Disable Package",
+					menu.Action{
+						Function: func() error {
+							err := services.DisablePackage(packages.Pkg{
+								Name: item.Name,
+								Type: packages.PackageType(item.Type),
+							})
+							if err == nil {
+								item.Enabled = false
+							}
+							rebuildPackageButtons(m, model)
+							menu.RequestRender()
+							return err
+						},
+						Async: true,
+					},
+					'd',
+					"disable"+item.Name,
+				)
+			}
+			m.AddButton("Uninstall",
+				"",
+				"Uninstall Package",
+				menu.Action{
+					Function: func() error {
+						menu.PauseInput()
+						defer menu.ResumeInput()
+
+						return services.UninstallPackage(packages.Pkg{
+							Name: item.Name,
+							Type: packages.PackageType(item.Type),
+						})
+					},
+					WrapUp: func(err error) {
+						fmt.Printf("Package: %s Uninstalled", item.Name)
+						time.Sleep(time.Second * 3)
+
+						rebuildPackageButtons(m, model)
+						menu.RequestRender()
+					},
+					Async: true,
+				},
+				'x',
+				"uninstall"+item.Name,
+			)
 		}
 	}
+}
+
+func buildPackageMenuView(
+	cfg PackageMenuConfig,
+	model *PackMenuModel,
+	loading bool,
+	errMsg string,
+) ui.PackageMenuView {
+	view := ui.PackageMenuView{
+		Title:   cfg.Title,
+		Loading: loading,
+		Error:   errMsg,
+	}
+
+	for _, item := range model.Available {
+		view.Available = append(view.Available, ui.PackageMenuItemView{
+			Key:         item.Key,
+			Name:        item.Name,
+			Description: item.Description,
+			Version:     item.Version,
+			McVersion:   item.McVersion,
+			Loader:      item.Loader,
+			Expanded:    model.Expanded == item.Name,
+		})
+	}
+
+	for _, item := range model.Installed {
+		view.Installed = append(view.Installed, ui.PackageMenuItemView{
+			Key:         item.Key,
+			Name:        item.Name,
+			Description: item.Description,
+			Version:     item.Version,
+			McVersion:   item.McVersion,
+			Loader:      item.Loader,
+			Installed:   true,
+			Enabled:     item.Enabled,
+			Expanded:    model.Expanded == item.Name,
+		})
+	}
+
+	return view
 }

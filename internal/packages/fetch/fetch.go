@@ -4,18 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
-	"path/filepath"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
-var folderToPkgType = map[string]packages.PackageType{
+var FolderToPkgType = map[string]packages.PackageType{
 	"modpacks":        packages.PackageModPack,
 	"resourcebundles": packages.PackageResourceBundle,
 	"shaderbundles":   packages.PackageShaderBundle,
+}
+
+var PkgTypeToFolder = map[packages.PackageType]string{
+	packages.PackageModPack:        "modpacks",
+	packages.PackageResourceBundle: "resourcebundles",
+	packages.PackageShaderBundle:   "shaderbundles",
 }
 
 // GetAllAvailablePackages gets all available packages from github repo
@@ -51,7 +54,6 @@ func GetAllAvailablePackages() (packages.AvailablePackages, error) {
 
 // getAvailablePackages gets all available packages from subfolder in repo/packages
 func getAvailablePackages(fldrName string) (map[string]packages.ResolvedPackage, error) {
-	path, err := paths.Resolve()
 	req := fmt.Sprintf("%scontents/packages/%s", netcfg.GithubRepo, fldrName)
 
 	resp, err := http.Get(req)
@@ -66,7 +68,7 @@ func getAvailablePackages(fldrName string) (map[string]packages.ResolvedPackage,
 	}
 
 	// Map folder name to pkgType
-	pkgType, ok := folderToPkgType[fldrName]
+	pkgType, ok := FolderToPkgType[fldrName]
 	if !ok {
 		return nil, fmt.Errorf("package type of %s not found in index", fldrName)
 	}
@@ -77,23 +79,13 @@ func getAvailablePackages(fldrName string) (map[string]packages.ResolvedPackage,
 			continue
 		}
 
-		resolved, err := resolvePackage(p.RawURL, pkgType)
+		resolved, err := resolvePackageJSON(p.RawURL, pkgType)
 		if err != nil {
 			return nil, err
 		}
 
 		if resolved.Name == "" {
 			return nil, fmt.Errorf("package %s jas no Name", resolved.Name)
-		}
-
-		if marshaled, err := json.MarshalIndent(resolved, "", " "); err != nil {
-			return nil, fmt.Errorf("failed to marshal json: %w", err)
-		} else {
-			outFile := filepath.Join(path.ProgramFilesDir, fmt.Sprintf("%s.json", resolved.Name))
-			err := os.WriteFile(outFile, marshaled, 0o755)
-			if err != nil {
-				return nil, fmt.Errorf("failed to write json file: %w", err)
-			}
 		}
 
 		resolvedPackages[resolved.Name] = resolved

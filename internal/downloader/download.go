@@ -86,8 +86,6 @@ func DownloadEntries(
 		close(progressCh)
 	}()
 
-	wg.Wait()
-
 	_, failedFiles := ui.RenderDownloaderProgress(progressCh, len(entries))
 	if len(results.DownloadedItems) == 0 && len(entries) > 0 {
 		return DownloaderResults{}, fmt.Errorf("no files were downloaded")

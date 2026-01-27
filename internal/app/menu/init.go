@@ -5,26 +5,6 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 )
 
-type PackMenuItem struct {
-	Name        string
-	Type        string
-	Version     string
-	McVersion   string
-	Loader      string
-	Description string
-	Installed   bool
-	Enabled     bool
-	Key         rune
-	Action      menu.Action
-}
-
-type PackMenuModel struct {
-	Available []PackMenuItem
-	Installed []PackMenuItem
-
-	Expanded string
-}
-
 // Menu IDs
 const (
 	MainMenuID menu.MenuID = iota
@@ -47,15 +27,17 @@ func InitializeMenus(m *manifest.Manifest) {
 	mainMenu.AddButton("Updates", "", "Press U for Update menu", menu.ChangeMenu(UpdateMenuID), 'u', "updateMenu")
 	mainMenu.AddButton("Help", "", "Press H for help menu", menu.ChangeMenu(HelpMenuID), 'h', "help")
 
-	// RESOURCE BUNDLE MENU
-	resourceMenu := BuildResourceBundleMenu()
+	// RESOURCE BUNDLE MENU NOT FINISHED
+	// resourceMenu := BuildResourceBundleMenu()
+	resourceMenu := BuildPackageMenu(resourceBundleMenuConfig, ResourceMenuID)
 	_ = resourceMenu
 
 	// MODPACK MENU
-	modPackMenu := BuildModPackMenu()
+	// modPackMenu := BuildModPackMenu()
+	modPackMenu := BuildPackageMenu(modPackMenuConfig, ModPackMenuID)
 	_ = modPackMenu
 
-	// UPDATE MENU
+	// UPDATE MENU NOT YET IMPLEMENTED
 	updateMenu := menu.NewMenu("Update Menu", "This is the Update Menu(CURRENTLY NOT IMPLEMENTED)", UpdateMenuID)
 	updateMenu.AddButton("Check for Updates", "", "Press C to check for Updates", menu.Action{}, 'c', "updateCheck")
 	updateMenu.AddButton("Update All", "", "Press U to Install Available Updates", menu.Action{}, 'u', "updateAll")

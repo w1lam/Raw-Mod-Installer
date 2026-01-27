@@ -11,6 +11,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
+	pkg "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/services"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
@@ -47,6 +48,9 @@ func PackageInstaller(
 	gState.Read(func(s *state.State) {
 		path = s.Manifest().Paths
 		installed = s.Manifest().InstalledPackages[plan.RequestedPackage.Type]
+		if installed == nil {
+			installed = map[string]manifest.InstalledPackage{}
+		}
 		enabled = s.Manifest().EnabledPackages[plan.RequestedPackage.Type]
 	})
 
@@ -82,16 +86,21 @@ func PackageInstaller(
 	}
 
 	fmt.Println("Moving to Final Dir")
-	destDir := filepath.Join(path.PackagesDir, string(plan.RequestedPackage.Type), plan.RequestedPackage.Name)
-	if err := os.RemoveAll(destDir); err != nil {
+	parentDir := filepath.Join(path.PackagesDir, pkg.PkgTypeToFolder[plan.RequestedPackage.Type])
+	finalDir := filepath.Join(parentDir, plan.RequestedPackage.Name)
+
+	if err := os.RemoveAll(finalDir); err != nil {
 		return fmt.Errorf("failed to clear target modpack dir: %w", err)
 	}
-	if err := os.Rename(downloads.TempDir, destDir); err != nil {
+	if err := os.MkdirAll(parentDir, 0o755); err != nil {
+		return fmt.Errorf("failed to create package dir: %w", err)
+	}
+	if err := os.Rename(downloads.TempDir, finalDir); err != nil {
 		return fmt.Errorf("failed to move to target modpack dir: %w", err)
 	}
 
 	fmt.Println("Computing Pack Hash...")
-	packHash, err := filesystem.ComputeDirHash(destDir)
+	packHash, err := filesystem.ComputeDirHash(finalDir)
 	if err != nil {
 		return fmt.Errorf("failed to compute pack hash: %w", err)
 	}
@@ -109,12 +118,20 @@ func PackageInstaller(
 
 	installedMp := manifest.InstalledPackage{
 		Name:             plan.RequestedPackage.Name,
+		Type:             plan.RequestedPackage.Type,
 		ListSource:       plan.RequestedPackage.ListSource,
 		InstalledVersion: plan.RequestedPackage.ListVersion,
 		McVersion:        plan.RequestedPackage.McVersion,
 		Loader:           plan.RequestedPackage.Loader,
+		Path:             finalDir,
 		Hash:             packHash,
 		Entries:          downloadedEntries,
+	}
+
+	// Write JSON ID file
+	plan.RequestedPackage.Hash = packHash
+	if err := packages.WritePackageIDFile(plan.RequestedPackage, finalDir); err != nil {
+		return err
 	}
 
 	if packages.PackageBehaviors[plan.RequestedPackage.Type].EnableAfter {

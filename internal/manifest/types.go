@@ -26,7 +26,7 @@ type LoaderInfo struct {
 	LoaderVersion string `json:"version"`
 }
 
-// InstalledModPack is an installed mod pack which holds all information about the mod pack, including all mods in form of map of ManifestMod with mods slug as key
+// InstalledPackage is an installed package which holds all information
 type InstalledPackage struct {
 	Name             string                  `json:"name"`
 	Type             packages.PackageType    `json:"type"`
@@ -34,6 +34,7 @@ type InstalledPackage struct {
 	InstalledVersion string                  `json:"version"`
 	McVersion        string                  `json:"mcVersion"`
 	Loader           string                  `json:"loader"`
+	Path             string                  `json:"path"`
 	Hash             string                  `json:"hash"`
 	Entries          map[string]PackageEntry `json:"installedEntries"`
 }

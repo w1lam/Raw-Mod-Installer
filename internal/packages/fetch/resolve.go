@@ -2,6 +2,7 @@ package packages
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -10,8 +11,24 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 )
 
-// resolveModPack resolves a package list
-func resolvePackage(url string, pkgType packages.PackageType) (packages.ResolvedPackage, error) {
+func resolvePackageJSON(url string, pkgType packages.PackageType) (packages.ResolvedPackage, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return packages.ResolvedPackage{}, err
+	}
+
+	var pkg packages.ResolvedPackage
+	if err := json.NewDecoder(resp.Body).Decode(&pkg); err != nil {
+		return packages.ResolvedPackage{}, err
+	}
+
+	pkg.Type = pkgType
+
+	return pkg, nil
+}
+
+// resolveModPackOLD resolves a package list old system
+func resolvePackageOLD(url string, pkgType packages.PackageType) (packages.ResolvedPackage, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return packages.ResolvedPackage{}, err

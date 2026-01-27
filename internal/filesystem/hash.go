@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 type FileHashEntry struct {
@@ -25,6 +26,10 @@ func ComputeDirHash(dir string) (string, error) {
 			return err
 		}
 		if d.IsDir() {
+			return nil
+		}
+
+		if strings.HasSuffix(strings.ToLower(d.Name()), ".json") {
 			return nil
 		}
 

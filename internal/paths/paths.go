@@ -12,6 +12,7 @@ type Paths struct {
 	MinecraftDir     string
 	ModsDir          string
 	ResourcePacksDir string
+	ShaderPacksDir   string
 
 	ProgramFilesDir string
 	DataDir         string
@@ -53,6 +54,7 @@ func Resolve() (*Paths, error) {
 		MinecraftDir:     mcDir,
 		ModsDir:          filepath.Join(mcDir, "mods"),
 		ResourcePacksDir: filepath.Join(mcDir, "resourcepacks"),
+		ShaderPacksDir:   filepath.Join(mcDir, "shaderpacks"),
 
 		ProgramFilesDir: installerDir,
 		DataDir:         dataDir,

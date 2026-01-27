@@ -2,6 +2,8 @@ package ui
 
 import (
 	"fmt"
+
+	"github.com/w1lam/Packages/tui"
 )
 
 // Progress represents the download progress of a file
@@ -13,6 +15,8 @@ type DownloaderProgress struct {
 
 // RenderProgress simplified version of progress bar, pure cli
 func RenderDownloaderProgress(ch <-chan DownloaderProgress, total int) (successFiles []string, failedFiles []string) {
+	tui.ClearScreenRaw()
+
 	success := 0
 	failed := 0
 	fmt.Println("[Downloading Mods: 0/", total, ", 0%]")

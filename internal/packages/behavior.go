@@ -35,7 +35,7 @@ type PackageBehavior struct {
 var PackageBehaviors = map[PackageType]PackageBehavior{
 	PackageModPack: {
 		StorageDir: func(p *paths.Paths) string {
-			return filepath.Join(p.PackagesDir, string(PackageModPack))
+			return filepath.Join(p.PackagesDir, "modpacks")
 		},
 		ActiveDir: func(p *paths.Paths) string {
 			return p.ModsDir
@@ -46,10 +46,21 @@ var PackageBehaviors = map[PackageType]PackageBehavior{
 
 	PackageResourceBundle: {
 		StorageDir: func(p *paths.Paths) string {
-			return filepath.Join(p.PackagesDir, string(PackageResourceBundle))
+			return filepath.Join(p.PackagesDir, "resourcebundles")
 		},
 		ActiveDir: func(p *paths.Paths) string {
 			return p.ResourcePacksDir
+		},
+		EnsureLoader: false,
+		EnableAfter:  true,
+	},
+
+	PackageShaderBundle: {
+		StorageDir: func(p *paths.Paths) string {
+			return filepath.Join(p.PackagesDir, "shaderbundles")
+		},
+		ActiveDir: func(p *paths.Paths) string {
+			return p.ShaderPacksDir
 		},
 		EnsureLoader: false,
 		EnableAfter:  true,
