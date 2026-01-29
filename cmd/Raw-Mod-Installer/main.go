@@ -14,5 +14,14 @@ func init() {}
 func main() {
 	app.Initialize()
 
+	// pkgs, err := packages.GetAllAvailablePackages()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	//
+	// fmt.Printf("%+v", pkgs)
+	//
+	// time.Sleep(time.Hour * 1)
+
 	app.Run()
 }
