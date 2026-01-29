@@ -44,7 +44,6 @@ func PackageInstaller(
 	var installed map[string]manifest.InstalledPackage
 	var enabled string
 
-	fmt.Println("Reading State...")
 	gState.Read(func(s *state.State) {
 		path = s.Manifest().Paths
 		installed = s.Manifest().InstalledPackages[plan.RequestedPackage.Type]

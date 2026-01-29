@@ -26,13 +26,13 @@ type ResolvedPackage struct {
 	Type PackageType `json:"pkgType"`
 
 	Name        string `json:"name"`
-	ListSource  string
+	ListSource  string `json:"-"`
 	ListVersion string `json:"listVersion"`
 	McVersion   string `json:"mcVersion"`
 	Loader      string `json:"loader"`
 	Env         string `json:"env"`
 	Description string `json:"description"`
-	Hash        string `json:"hash"` // sha512
+	Hash        string `json:"-"` // sha512
 
 	Entries []modrinth.ModrinthListEntry `json:"entries"`
 }

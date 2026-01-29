@@ -19,7 +19,7 @@ func RenderDownloaderProgress(ch <-chan DownloaderProgress, total int) (successF
 
 	success := 0
 	failed := 0
-	fmt.Println("[Downloading Mods: 0/", total, ", 0%]")
+	fmt.Print("\n[Downloading Mods: 0/", total, ", 0%]")
 
 	for p := range ch {
 		switch p.Status {
@@ -37,11 +37,12 @@ func RenderDownloaderProgress(ch <-chan DownloaderProgress, total int) (successF
 		}
 
 		procent := int(float64(processed) / float64(total) * float64(100))
+		procent = min(procent, 100)
 		if procent > 100 {
 			procent = 100
 		}
 
-		fmt.Println("[Downloading Mods: ", success, "/", total, ", ", procent, "%]")
+		fmt.Print("\r[Downloading Mods: ", success, "/", total, ", ", procent, "%]")
 	}
 
 	return

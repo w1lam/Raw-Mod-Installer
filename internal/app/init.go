@@ -16,6 +16,9 @@ import (
 )
 
 func Initialize() {
+	tui.EnableANSI()
+	tui.HideCursor()
+
 	tui.ClearScreenRaw()
 
 	fmt.Println("* Starting up...")
