@@ -1,11 +1,11 @@
 {
   "pkgType": "modpack",
-  "name": "SwagPack1.21.11",
+  "name": "Freaky Franklin Pack",
   "listVersion": "0.2.0",
-  "mcVersion": "1.21.11",
+  "mcVersion": "1.21.10",
   "loader": "fabric",
   "env": "Client and Server",
-  "description": "(1.21.11 TEST) Mod Pack that mainly adds visual and small immersion and building mods.",
+  "description": "Mod Pack for Freaky Franklin server that mainly adds visual and small immersion and building mods.",
   "entries": [
     {
       "Slug": "debugify",
@@ -1207,3 +1207,4 @@
   }
  ]
 }
+>>>>>>> 54a581fcc5cd167f7abbadafb0ee2e413dcde52b

@@ -1,11 +1,11 @@
 {
   "pkgType": "modpack",
-  "name": "SwagPackClientSide",
+  "name": "Cool Visuals",
   "listVersion": "0.0.3",
   "mcVersion": "1.21.11",
   "loader": "fabric",
   "env": "Client",
-  "description": "Client Side only version of SwagPack",
+  "description": "Client Side only modpack woth cool visual mod and performance mods.",
   "entries": [
     {
       "Slug": "debugify",
@@ -313,4 +313,3 @@
     }
   ]
 }
-

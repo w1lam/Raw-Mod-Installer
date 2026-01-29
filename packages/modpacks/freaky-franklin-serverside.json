@@ -1,14 +1,14 @@
 {
   "pkgType": "modpack",
-  "name": "SwagPack",
-  "listVersion": "0.2.0",
+  "name": "SwagPackServerSide",
+  "listVersion": "0.1.3",
   "mcVersion": "1.21.10",
   "loader": "fabric",
-  "env": "Client and Server",
-  "description": "Mod Pack that mainly adds visual and small immersion and building mods.",
+  "env": "Server",
+  "description": "Server Side version of SwagPack",
   "entries": [
     {
-      "Slug": "debugify",
+      "Slug": "attributefix",
       "PinnedVer": ""
     },
     {
@@ -16,43 +16,23 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "attributefix",
+      "Slug": "debugify",
       "PinnedVer": ""
     },
     {
-      "Slug": "modelfix",
+      "Slug": "chunky",
       "PinnedVer": ""
     },
     {
-      "Slug": "no-resource-pack-warnings",
+      "Slug": "spark",
       "PinnedVer": ""
     },
     {
-      "Slug": "yeetus-experimentus",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "current-game-music-track",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "minecraft-cursor",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "cubes-without-borders",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "dark-loading-screen",
+      "Slug": "servercore",
       "PinnedVer": ""
     },
     {
       "Slug": "appleskin",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "zoomify",
       "PinnedVer": ""
     },
     {
@@ -64,47 +44,11 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "invmove",
-      "PinnedVer": ""
-    },
-    {
       "Slug": "inventory-management",
       "PinnedVer": ""
     },
     {
-      "Slug": "resourcify",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "immersive-ui",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "modmenu",
-      "PinnedVer": ""
-    },
-    {
       "Slug": "jade",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "reeses-sodium-options",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "smooth-gui",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "dynamiccrosshair",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "dynamiccrosshaircompat",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "immersive-hotbar",
       "PinnedVer": ""
     },
     {
@@ -113,10 +57,6 @@
     },
     {
       "Slug": "emotecraft",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "better-advancements",
       "PinnedVer": ""
     },
     {
@@ -196,15 +136,11 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "immersive-ores",
-      "PinnedVer": ""
-    },
-    {
       "Slug": "travelersbackpack",
       "PinnedVer": ""
     },
     {
-      "Slug": "do-a-barrel-roll",
+      "Slug": "immersive-ores",
       "PinnedVer": ""
     },
     {
@@ -224,6 +160,10 @@
       "PinnedVer": ""
     },
     {
+      "Slug": "do-a-barrel-roll",
+      "PinnedVer": ""
+    },
+    {
       "Slug": "hardcore-revival",
       "PinnedVer": ""
     },
@@ -240,11 +180,11 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "crate-delight",
+      "Slug": "storage-delight",
       "PinnedVer": ""
     },
     {
-      "Slug": "storage-delight",
+      "Slug": "crate-delight",
       "PinnedVer": ""
     },
     {
@@ -256,15 +196,15 @@
       "PinnedVer": ""
     },
     {
+      "Slug": "transmog",
+      "PinnedVer": ""
+    },
+    {
       "Slug": "magnum-torch",
       "PinnedVer": ""
     },
     {
       "Slug": "trading-post",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "transmog",
       "PinnedVer": ""
     },
     {
@@ -380,35 +320,7 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "geckolib",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "sodium-extra",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "sodium",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "sodium-shadowy-path-blocks",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "entityculling",
-      "PinnedVer": ""
-    },
-    {
       "Slug": "lithium",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "immediatelyfast",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "badoptimizations",
       "PinnedVer": ""
     },
     {
@@ -420,27 +332,11 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "moreculling",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "cull-leaves",
-      "PinnedVer": ""
-    },
-    {
       "Slug": "scalablelux",
       "PinnedVer": ""
     },
     {
       "Slug": "krypton",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "dynamic-fps",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "better-block-entities",
       "PinnedVer": ""
     },
     {
@@ -472,82 +368,6 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "easy-anvils",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "easy-magic",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "visual-workbench",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "lambdynamiclights",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "iris",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "visuality",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "particular-reforged",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "fallingleaves",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "bettergrassify",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "ambient-environment",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "physicsmod",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "not-enough-animations",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "skyboxify",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "entity-model-features",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "entitytexturefeatures",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "optigui",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "continuity",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "fusion-connected-textures",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "3dskinlayers",
-      "PinnedVer": ""
-    },
-    {
       "Slug": "serene-seasons",
       "PinnedVer": ""
     },
@@ -560,19 +380,19 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "cameraoverhaul",
-      "PinnedVer": ""
-    },
-    {
       "Slug": "subtle-effects",
       "PinnedVer": ""
     },
     {
-      "Slug": "armor-3d",
+      "Slug": "easy-anvils",
       "PinnedVer": ""
     },
     {
-      "Slug": "explosive-enhancement",
+      "Slug": "easy-magic",
+      "PinnedVer": ""
+    },
+    {
+      "Slug": "visual-workbench",
       "PinnedVer": ""
     },
     {
@@ -580,23 +400,7 @@
       "PinnedVer": ""
     },
     {
-      "Slug": "punchy-fpa",
-      "PinnedVer": ""
-    },
-    {
       "Slug": "sound-physics-remastered",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "sound",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "ambientsounds",
-      "PinnedVer": ""
-    },
-    {
-      "Slug": "presence-footsteps",
       "PinnedVer": ""
     }
   ]
@@ -604,17 +408,17 @@
 
 =======
  "pkgType": "modpack",
- "name": "SwagPack",
- "ListSource": "https://raw.githubusercontent.com/w1lam/Raw-Mod-Installer/main/packages/modpacks/swag-pack.txt",
- "listVersion": "0.2.0",
+ "name": "SwagPackServerSide",
+ "ListSource": "https://raw.githubusercontent.com/w1lam/Raw-Mod-Installer/main/packages/modpacks/swag-pack-serverside.txt",
+ "listVersion": "0.1.3",
  "mcVersion": "1.21.10",
  "loader": "fabric",
- "env": "Client and Server",
- "description": "Mod Pack that mainly adds visual, small immersion, building and a few new features mods.",
+ "env": "Server",
+ "description": "Server Side version of SwagPack",
  "hash": "",
  "entries": [
   {
-   "Slug": "debugify",
+   "Slug": "attributefix",
    "PinnedVer": ""
   },
   {
@@ -622,43 +426,23 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "attributefix",
+   "Slug": "debugify",
    "PinnedVer": ""
   },
   {
-   "Slug": "modelfix",
+   "Slug": "chunky",
    "PinnedVer": ""
   },
   {
-   "Slug": "no-resource-pack-warnings",
+   "Slug": "spark",
    "PinnedVer": ""
   },
   {
-   "Slug": "yeetus-experimentus",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "current-game-music-track",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "minecraft-cursor",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cubes-without-borders",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dark-loading-screen",
+   "Slug": "servercore",
    "PinnedVer": ""
   },
   {
    "Slug": "appleskin",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "zoomify",
    "PinnedVer": ""
   },
   {
@@ -670,47 +454,11 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "invmove",
-   "PinnedVer": ""
-  },
-  {
    "Slug": "inventory-management",
    "PinnedVer": ""
   },
   {
-   "Slug": "resourcify",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "immersive-ui",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "modmenu",
-   "PinnedVer": ""
-  },
-  {
    "Slug": "jade",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "reeses-sodium-options",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "smooth-gui",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dynamiccrosshair",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dynamiccrosshaircompat",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "immersive-hotbar",
    "PinnedVer": ""
   },
   {
@@ -719,10 +467,6 @@
   },
   {
    "Slug": "emotecraft",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "better-advancements",
    "PinnedVer": ""
   },
   {
@@ -802,15 +546,11 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "immersive-ores",
-   "PinnedVer": ""
-  },
-  {
    "Slug": "travelersbackpack",
    "PinnedVer": ""
   },
   {
-   "Slug": "do-a-barrel-roll",
+   "Slug": "immersive-ores",
    "PinnedVer": ""
   },
   {
@@ -830,6 +570,10 @@
    "PinnedVer": ""
   },
   {
+   "Slug": "do-a-barrel-roll",
+   "PinnedVer": ""
+  },
+  {
    "Slug": "hardcore-revival",
    "PinnedVer": ""
   },
@@ -846,11 +590,11 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "crate-delight",
+   "Slug": "storage-delight",
    "PinnedVer": ""
   },
   {
-   "Slug": "storage-delight",
+   "Slug": "crate-delight",
    "PinnedVer": ""
   },
   {
@@ -862,15 +606,15 @@
    "PinnedVer": ""
   },
   {
+   "Slug": "transmog",
+   "PinnedVer": ""
+  },
+  {
    "Slug": "magnum-torch",
    "PinnedVer": ""
   },
   {
    "Slug": "trading-post",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "transmog",
    "PinnedVer": ""
   },
   {
@@ -986,35 +730,7 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "geckolib",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sodium-extra",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sodium",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sodium-shadowy-path-blocks",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "entityculling",
-   "PinnedVer": ""
-  },
-  {
    "Slug": "lithium",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "immediatelyfast",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "badoptimizations",
    "PinnedVer": ""
   },
   {
@@ -1026,27 +742,11 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "moreculling",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cull-leaves",
-   "PinnedVer": ""
-  },
-  {
    "Slug": "scalablelux",
    "PinnedVer": ""
   },
   {
    "Slug": "krypton",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dynamic-fps",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "better-block-entities",
    "PinnedVer": ""
   },
   {
@@ -1078,82 +778,6 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "easy-anvils",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "easy-magic",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "visual-workbench",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "lambdynamiclights",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "iris",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "visuality",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "particular-reforged",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "fallingleaves",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "bettergrassify",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "ambient-environment",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "physicsmod",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "not-enough-animations",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "skyboxify",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "entity-model-features",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "entitytexturefeatures",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "optigui",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "continuity",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "fusion-connected-textures",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "3dskinlayers",
-   "PinnedVer": ""
-  },
-  {
    "Slug": "serene-seasons",
    "PinnedVer": ""
   },
@@ -1166,19 +790,19 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "cameraoverhaul",
-   "PinnedVer": ""
-  },
-  {
    "Slug": "subtle-effects",
    "PinnedVer": ""
   },
   {
-   "Slug": "armor-3d",
+   "Slug": "easy-anvils",
    "PinnedVer": ""
   },
   {
-   "Slug": "explosive-enhancement",
+   "Slug": "easy-magic",
+   "PinnedVer": ""
+  },
+  {
+   "Slug": "visual-workbench",
    "PinnedVer": ""
   },
   {
@@ -1186,25 +810,8 @@
    "PinnedVer": ""
   },
   {
-   "Slug": "punchy-fpa",
-   "PinnedVer": ""
-  },
-  {
    "Slug": "sound-physics-remastered",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sound",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "ambientsounds",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "presence-footsteps",
    "PinnedVer": ""
   }
  ]
 }
->>>>>>> 54a581fcc5cd167f7abbadafb0ee2e413dcde52b

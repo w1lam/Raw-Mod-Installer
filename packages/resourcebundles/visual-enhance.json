@@ -1,11 +1,11 @@
 {
   "pkgType": "resourcebundle",
-  "name": "SwagBundle",
+  "name": "Visual Enhancements Bundle",
   "listVersion": "0.0.1",
   "mcVersion": "1.21.11",
   "loader": "none",
   "env": "Client",
-  "description": "Cool lil resourcepacks that spice up minecraft",
+  "description": "Cool lil resourcepacks that spice up minecraft visuals",
   "entries": [
     {
       "Slug": "connected-rocks",
@@ -89,4 +89,3 @@
     }
   ]
 }
-
