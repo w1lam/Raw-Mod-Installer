@@ -6,8 +6,7 @@
  "mcVersion": "1.21.10",
  "loader": "fabric",
  "env": "Client and Server",
- "description": "Mod Pack that mainly adds visual and small immersion and building mods.",
- "hash": "967087fedf583cda616a089706b439da83e2ef9af7f5cb7d6f52e67c541164553b6344c41c393d964c9f6a99ef8b21ca3e56101a051bc1b67790a1d33450d903",
+ "description": "Mod Pack that mainly adds visual, small immersion, building and a few new features mods.",
  "entries": [
   {
    "Slug": "debugify",
