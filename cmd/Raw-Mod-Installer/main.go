@@ -1,12 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/w1lam/Packages/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
-	packages "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
 )
 
 // NOTES:
@@ -21,16 +17,16 @@ func main() {
 
 	modrinth.EnableDevMode()
 
-	pkgs, err := packages.GetAllAvailablePackages()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%+v\n", pkgs)
+	// pkgs, err := packages.GetAllAvailablePackages()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Printf("%+v\n", pkgs)
 	//
 	// vers := modrinth.FetchBestVersions(pkgs["resourcebundles"]["Visual Enhancements Bundle"].Entries, modrinth.Filter{McVersion: "1.21.10", Loader: ""})
 	// fmt.Printf("%+v", vers)
 	//
-	time.Sleep(time.Hour * 1)
+	// time.Sleep(time.Hour * 1)
 
 	app.Run()
 }

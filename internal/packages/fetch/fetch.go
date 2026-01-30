@@ -22,7 +22,7 @@ var PkgTypeToFolder = map[packages.PackageType]string{
 }
 
 // GetAllAvailablePackages gets all available packages from github repo
-func GetAllAvailablePackages() (packages.AvailablePackages, error) {
+func GetAllAvailablePackagesOLD() (packages.AvailablePackages, error) {
 	subFldrs, err := scanPackagesFolder()
 	if err != nil {
 		return nil, err

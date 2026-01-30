@@ -11,7 +11,6 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/installer"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
-	pkg "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
 	"github.com/w1lam/Raw-Mod-Installer/internal/services"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 	ui "github.com/w1lam/Raw-Mod-Installer/internal/ui/render"
@@ -80,7 +79,7 @@ func BuildPackageMenu(cfg PackageMenuConfig, menuID menu.MenuID) *menu.Menu {
 			Function: func() error {
 				gState := state.Get()
 
-				allAvailable, err := pkg.GetAllAvailablePackages()
+				allAvailable, err := packages.GetAllAvailablePackages()
 				if err != nil {
 					return err
 				}

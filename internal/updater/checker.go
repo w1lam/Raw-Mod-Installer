@@ -5,7 +5,7 @@ package updater
 import (
 	"github.com/w1lam/Packages/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
-	pkg "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
+	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 )
 
 func UpdateChecker(m *manifest.Manifest) (manifest.Updates, error) {
@@ -21,7 +21,7 @@ func UpdateChecker(m *manifest.Manifest) (manifest.Updates, error) {
 		ModUpdates:    make(map[string][]modrinth.UpdateEntry),
 	}
 
-	allPackages, err := pkg.GetAllAvailablePackages()
+	allPackages, err := packages.GetAllAvailablePackages()
 	if err != nil {
 		return manifest.Updates{}, err
 	}
