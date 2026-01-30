@@ -1,6 +1,6 @@
 {
   "name": "Freaky Franklin (SERVERSIDE)",
-  "listVersion": "0.1.3",
+  "listVersion": "0.1.4",
   "mcVersion": "1.21.10",
   "loader": "fabric",
   "env": "Server",
@@ -191,11 +191,6 @@
     },
     {
       "ID": "default-skill-trees",
-      "pinnedVer": "",
-      "type": "mod"
-    },
-    {
-      "ID": "better-combat",
       "pinnedVer": "",
       "type": "mod"
     },

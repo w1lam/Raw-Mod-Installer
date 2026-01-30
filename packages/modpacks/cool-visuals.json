@@ -1,6 +1,6 @@
 {
   "name": "Cool Visuals",
-  "listVersion": "0.0.3",
+  "listVersion": "0.0.4",
   "mcVersion": "1.21.11",
   "loader": "fabric",
   "env": "client",

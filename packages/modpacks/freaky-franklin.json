@@ -1,6 +1,6 @@
 {
   "name": "Freaky Franklin Pack",
-  "listVersion": "0.2.0",
+  "listVersion": "0.2.2",
   "mcVersion": "1.21.10",
   "loader": "fabric",
   "env": "Client and Server",
@@ -275,11 +275,6 @@
       "type": "mod"
     },
     {
-      "ID": "better-combat",
-      "pinnedVer": "",
-      "type": "mod"
-    },
-    {
       "ID": "hardcore-revival",
       "pinnedVer": "",
       "type": "mod"
@@ -471,11 +466,6 @@
     },
     {
       "ID": "supermartijn642s-config-lib",
-      "pinnedVer": "",
-      "type": "mod"
-    },
-    {
-      "ID": "geckolib",
       "pinnedVer": "",
       "type": "mod"
     },
@@ -725,7 +715,7 @@
       "type": "mod"
     },
     {
-      "ID": "punchy-fpa",
+      "ID": "hold-my-items",
       "pinnedVer": "",
       "type": "mod"
     },
