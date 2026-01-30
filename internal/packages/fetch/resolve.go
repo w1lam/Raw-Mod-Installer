@@ -11,7 +11,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 )
 
-func resolvePackageJSON(url string, pkgType packages.PackageType) (packages.ResolvedPackage, error) {
+func resolvePackageJSON(url string) (packages.ResolvedPackage, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return packages.ResolvedPackage{}, err
@@ -21,8 +21,6 @@ func resolvePackageJSON(url string, pkgType packages.PackageType) (packages.Reso
 	if err := json.NewDecoder(resp.Body).Decode(&pkg); err != nil {
 		return packages.ResolvedPackage{}, err
 	}
-
-	pkg.Type = pkgType
 
 	return pkg, nil
 }
@@ -37,7 +35,7 @@ func resolvePackageOLD(url string, pkgType packages.PackageType) (packages.Resol
 
 	var resolvedPackage packages.ResolvedPackage
 
-	var entries []modrinth.ModrinthListEntry
+	var entries []modrinth.Entry
 	scanner := bufio.NewScanner(resp.Body)
 
 	for scanner.Scan() {
@@ -90,8 +88,8 @@ func resolvePackageOLD(url string, pkgType packages.PackageType) (packages.Resol
 		if strings.ContainsAny(parts[0], " :") {
 			return packages.ResolvedPackage{}, fmt.Errorf("invalid modrinth slug: %q", parts[0])
 		}
-		entry := modrinth.ModrinthListEntry{
-			Slug: parts[0],
+		entry := modrinth.Entry{
+			ID: parts[0],
 		}
 
 		if len(parts) == 2 {

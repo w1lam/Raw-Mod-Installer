@@ -31,7 +31,7 @@ func GetAllAvailablePackages() (packages.AvailablePackages, error) {
 	availablePackages := make(packages.AvailablePackages)
 
 	for _, fldr := range subFldrs {
-		pkgs, err := getAvailablePackages(fldr)
+		pkgs, err := getPackagesFromFolder(fldr)
 		if err != nil {
 			return nil, err
 		}
@@ -46,6 +46,12 @@ func GetAllAvailablePackages() (packages.AvailablePackages, error) {
 			break
 		}
 
+		for _, rp := range pkgs {
+			for _, e := range rp.Entries {
+				e.Type = packages.PackageToEntryType[rp.Type]
+			}
+		}
+
 		availablePackages[pkgType] = pkgs
 	}
 
@@ -53,7 +59,7 @@ func GetAllAvailablePackages() (packages.AvailablePackages, error) {
 }
 
 // getAvailablePackages gets all available packages from subfolder in repo/packages
-func getAvailablePackages(fldrName string) (map[string]packages.ResolvedPackage, error) {
+func getPackagesFromFolder(fldrName string) (map[string]packages.ResolvedPackage, error) {
 	req := fmt.Sprintf("%scontents/packages/%s", netcfg.GithubRepo, fldrName)
 
 	resp, err := http.Get(req)
@@ -67,19 +73,13 @@ func getAvailablePackages(fldrName string) (map[string]packages.ResolvedPackage,
 		return nil, err
 	}
 
-	// Map folder name to pkgType
-	pkgType, ok := FolderToPkgType[fldrName]
-	if !ok {
-		return nil, fmt.Errorf("package type of %s not found in index", fldrName)
-	}
-
 	resolvedPackages := make(map[string]packages.ResolvedPackage)
 	for _, p := range respJSON {
 		if p.Type != "file" {
 			continue
 		}
 
-		resolved, err := resolvePackageJSON(p.RawURL, pkgType)
+		resolved, err := resolvePackageJSON(p.RawURL)
 		if err != nil {
 			return nil, err
 		}

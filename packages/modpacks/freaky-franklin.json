@@ -1,1210 +1,753 @@
 {
-  "pkgType": "modpack",
   "name": "Freaky Franklin Pack",
   "listVersion": "0.2.0",
   "mcVersion": "1.21.10",
   "loader": "fabric",
   "env": "Client and Server",
   "description": "Mod Pack for Freaky Franklin server that mainly adds visual and small immersion and building mods.",
+  "pkgType": "modpack",
+  "listSource": "",
+  "hash": "",
   "entries": [
     {
       "Slug": "debugify",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "packet-fixer",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "attributefix",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "modelfix",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "no-resource-pack-warnings",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "yeetus-experimentus",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "current-game-music-track",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "minecraft-cursor",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "cubes-without-borders",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "dark-loading-screen",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "appleskin",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "zoomify",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "xaeros-world-map",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "ping-wheel",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "invmove",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "inventory-management",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "resourcify",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "immersive-ui",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "modmenu",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "jade",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "reeses-sodium-options",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "smooth-gui",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "dynamiccrosshair",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "dynamiccrosshaircompat",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "immersive-hotbar",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "pick-up-notifier",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "emotecraft",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "better-advancements",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "fallingtree",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "veinminer-enchantment",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "veinminer",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "cut-through",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "rechiseled",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "diagonal-fences",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "diagonal-walls",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "diagonal-windows",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "enchanted-vertical-slabs",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "macaws-bridges",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "macaws-doors",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "macaws-fences-and-walls",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "macaws-lights-and-lamps",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "macaws-stairs",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "macaws-trapdoors",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "macaws-windows",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "stoneworks",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "beautify-refabricated",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "elytra-trims",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "immersive-ores",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "travelersbackpack",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "do-a-barrel-roll",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "attributes",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "skills",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "default-skill-trees",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "better-combat",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "hardcore-revival",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "true-ending",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "toms-storage",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "nether-chested",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "crate-delight",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "storage-delight",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "farmers-delight-refabricated",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "more-delight",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "magnum-torch",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "trading-post",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "transmog",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "animal_feeding_trough",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "silk",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "melody",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "fabric-api",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "cloth-config",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "lithostitched",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "fabric-language-kotlin",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "creativecore",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "collective",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "mru",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "yacl",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "balm",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "cicada",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "player-animation-library",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "library-ferret",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "puzzles-lib",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "forge-config-api-port",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "octo-lib",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "architectury-api",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "glitchcore",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "konkrete",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "cardinal-components-api",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "moogs-structure-lib",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "fzzy-config",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "malilib",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "prickle",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "supermartijn642s-core-lib",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "supermartijn642s-config-lib",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "geckolib",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "sodium-extra",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "sodium",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "sodium-shadowy-path-blocks",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "entityculling",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "lithium",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "immediatelyfast",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "badoptimizations",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "ferrite-core",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "c2me-fabric",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "moreculling",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "cull-leaves",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "scalablelux",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "krypton",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "dynamic-fps",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "better-block-entities",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "clumps",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "distanthorizons",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "terralith",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "dungeons-and-taverns",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "better-village",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "mes-moogs-end-structures",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "incendium",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "easy-anvils",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "easy-magic",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "visual-workbench",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "lambdynamiclights",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "iris",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "visuality",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "particular-reforged",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "fallingleaves",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "bettergrassify",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "ambient-environment",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "physicsmod",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "not-enough-animations",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "skyboxify",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "entity-model-features",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "entitytexturefeatures",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "optigui",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "continuity",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "fusion-connected-textures",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "3dskinlayers",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "serene-seasons",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "weaponmaster",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "spawn-animations",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "cameraoverhaul",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "subtle-effects",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "armor-3d",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "explosive-enhancement",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "villager-names-serilum",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "punchy-fpa",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "sound-physics-remastered",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "sound",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "ambientsounds",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     },
     {
       "Slug": "presence-footsteps",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "mod"
     }
   ]
 }
-
-=======
- "pkgType": "modpack",
- "name": "SwagPack",
- "ListSource": "https://raw.githubusercontent.com/w1lam/Raw-Mod-Installer/main/packages/modpacks/swag-pack.txt",
- "listVersion": "0.2.0",
- "mcVersion": "1.21.10",
- "loader": "fabric",
- "env": "Client and Server",
- "description": "Mod Pack that mainly adds visual, small immersion, building and a few new features mods.",
- "hash": "",
- "entries": [
-  {
-   "Slug": "debugify",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "packet-fixer",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "attributefix",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "modelfix",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "no-resource-pack-warnings",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "yeetus-experimentus",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "current-game-music-track",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "minecraft-cursor",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cubes-without-borders",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dark-loading-screen",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "appleskin",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "zoomify",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "xaeros-world-map",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "ping-wheel",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "invmove",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "inventory-management",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "resourcify",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "immersive-ui",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "modmenu",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "jade",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "reeses-sodium-options",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "smooth-gui",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dynamiccrosshair",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dynamiccrosshaircompat",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "immersive-hotbar",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "pick-up-notifier",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "emotecraft",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "better-advancements",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "fallingtree",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "veinminer-enchantment",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "veinminer",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cut-through",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "rechiseled",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "diagonal-fences",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "diagonal-walls",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "diagonal-windows",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "enchanted-vertical-slabs",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "macaws-bridges",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "macaws-doors",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "macaws-fences-and-walls",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "macaws-lights-and-lamps",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "macaws-stairs",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "macaws-trapdoors",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "macaws-windows",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "stoneworks",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "beautify-refabricated",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "elytra-trims",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "immersive-ores",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "travelersbackpack",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "do-a-barrel-roll",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "attributes",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "skills",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "default-skill-trees",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "better-combat",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "hardcore-revival",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "true-ending",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "toms-storage",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "nether-chested",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "crate-delight",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "storage-delight",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "farmers-delight-refabricated",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "more-delight",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "magnum-torch",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "trading-post",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "transmog",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "animal_feeding_trough",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "silk",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "melody",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "fabric-api",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cloth-config",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "lithostitched",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "fabric-language-kotlin",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "creativecore",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "collective",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "mru",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "yacl",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "balm",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cicada",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "player-animation-library",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "library-ferret",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "puzzles-lib",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "forge-config-api-port",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "octo-lib",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "architectury-api",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "glitchcore",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "konkrete",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cardinal-components-api",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "moogs-structure-lib",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "fzzy-config",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "malilib",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "prickle",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "supermartijn642s-core-lib",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "supermartijn642s-config-lib",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "geckolib",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sodium-extra",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sodium",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sodium-shadowy-path-blocks",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "entityculling",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "lithium",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "immediatelyfast",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "badoptimizations",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "ferrite-core",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "c2me-fabric",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "moreculling",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cull-leaves",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "scalablelux",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "krypton",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dynamic-fps",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "better-block-entities",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "clumps",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "distanthorizons",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "terralith",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "dungeons-and-taverns",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "better-village",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "mes-moogs-end-structures",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "incendium",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "easy-anvils",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "easy-magic",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "visual-workbench",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "lambdynamiclights",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "iris",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "visuality",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "particular-reforged",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "fallingleaves",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "bettergrassify",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "ambient-environment",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "physicsmod",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "not-enough-animations",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "skyboxify",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "entity-model-features",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "entitytexturefeatures",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "optigui",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "continuity",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "fusion-connected-textures",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "3dskinlayers",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "serene-seasons",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "weaponmaster",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "spawn-animations",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "cameraoverhaul",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "subtle-effects",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "armor-3d",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "explosive-enhancement",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "villager-names-serilum",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "punchy-fpa",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sound-physics-remastered",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "sound",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "ambientsounds",
-   "PinnedVer": ""
-  },
-  {
-   "Slug": "presence-footsteps",
-   "PinnedVer": ""
-  }
- ]
-}
->>>>>>> 54a581fcc5cd167f7abbadafb0ee2e413dcde52b

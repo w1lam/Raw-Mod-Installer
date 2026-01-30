@@ -20,6 +20,18 @@ const (
 	PackageShaderBundle   PackageType = "shaderbundle"
 )
 
+var EntryTypeToPackage = map[modrinth.EntryType]PackageType{
+	modrinth.Mod:          PackageModPack,
+	modrinth.Resourcepack: PackageResourceBundle,
+	modrinth.Shaderpack:   PackageShaderBundle,
+}
+
+var PackageToEntryType = map[PackageType]modrinth.EntryType{
+	PackageModPack:        modrinth.Mod,
+	PackageResourceBundle: modrinth.Resourcepack,
+	PackageShaderBundle:   modrinth.Shaderpack,
+}
+
 // PackageBehavior defines the behavior for a package type
 type PackageBehavior struct {
 	StorageDir func(*paths.Paths) string
@@ -28,7 +40,7 @@ type PackageBehavior struct {
 	EnsureLoader bool
 	EnableAfter  bool
 
-	ResolveFilter modrinth.EntryFilter
+	ResolveFilter modrinth.Filter
 }
 
 // PackageBehaviors defines the behavior for a package type

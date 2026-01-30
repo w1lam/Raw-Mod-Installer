@@ -23,9 +23,9 @@ func InitializeMenus(m *manifest.Manifest) {
 	// MAIN MENU
 	mainMenu := menu.NewMenu("Main Menu", "This is the Main Menu.", MainMenuID)
 	mainMenu.AddButton("Mod Packs", "", "Press M to view available Mod Packs", menu.ChangeMenu(ModPackMenuID), 'm', "modpacks")
-	mainMenu.AddButton("Resource Bundles", "", "Press R to view available Resource Bundles", menu.ChangeMenu(ResourceMenuID), 'r', "resourceBundles")
-	mainMenu.AddButton("Updates", "", "Press U for Update menu", menu.ChangeMenu(UpdateMenuID), 'u', "updateMenu")
-	mainMenu.AddButton("Help", "", "Press H for help menu", menu.ChangeMenu(HelpMenuID), 'h', "help")
+	mainMenu.AddButton("Resource Bundles (WIP)", "", "Press R to view available Resource Bundles", menu.ChangeMenu(ResourceMenuID), 'r', "resourceBundles")
+	mainMenu.AddButton("Updates (WIP)", "", "Press U for Update menu", menu.ChangeMenu(UpdateMenuID), 'u', "updateMenu")
+	mainMenu.AddButton("Help(WIP)", "", "Press H for help menu", menu.ChangeMenu(HelpMenuID), 'h', "help")
 
 	// RESOURCE BUNDLE MENU NOT FINISHED
 	// resourceMenu := BuildResourceBundleMenu()

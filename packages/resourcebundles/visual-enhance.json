@@ -1,91 +1,113 @@
 {
-  "pkgType": "resourcebundle",
   "name": "Visual Enhancements Bundle",
   "listVersion": "0.0.1",
   "mcVersion": "1.21.11",
-  "loader": "none",
+  "loader": "",
   "env": "Client",
   "description": "Cool lil resourcepacks that spice up minecraft visuals",
+  "pkgType": "resourcebundle",
+  "listSource": "",
+  "hash": "",
   "entries": [
     {
       "Slug": "connected-rocks",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "connected-bricks",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "connected-paths",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "glowing-glints",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "animated-items",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "fresh-food",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "tools-and-utils",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "recolorful-containers-gui",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "eclectic-trove-legendary-tooltips",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "fancy-crops",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "simple-grass-flowers",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "os-colorful-grasses",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "better-sugar-cane",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "fresh-flower-pots",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "better-busy-leaves",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "better-foliage",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "fresh-animations",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "fresh-animations-extensions",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "fire-rekindled",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     },
     {
       "Slug": "vvi",
-      "PinnedVer": ""
+      "PinnedVer": "",
+      "type": "resourcepack"
     }
   ]
 }

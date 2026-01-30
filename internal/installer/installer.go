@@ -67,7 +67,7 @@ func PackageInstaller(
 		return err
 	}
 
-	filter := modrinth.EntryFilter{
+	filter := modrinth.Filter{
 		McVersion: plan.RequestedPackage.McVersion,
 		Loader:    plan.RequestedPackage.Loader,
 	}

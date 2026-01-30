@@ -7,30 +7,30 @@ import (
 	"github.com/w1lam/Packages/modrinth"
 )
 
+// DownloadItem represents a single item to be downloaded
 type DownloadItem struct {
-	ID       string // slug
+	ID       string // ID/slug
 	FileName string
 	URL      string
 	Sha1     string
 	Sha512   string
 	Version  string
+	Type     modrinth.EntryType
 }
 
-func ResolveDownloadItem(entries []modrinth.ModrinthListEntry, filter modrinth.EntryFilter) (map[string]DownloadItem, error) {
-	fmt.Println("Fetching Best Versions...")
-
+// ResolveDownloadItem resolves the download items that the downloader consumes
+func ResolveDownloadItem(entries []modrinth.Entry, filter modrinth.Filter) (map[string]DownloadItem, error) {
 	bestVersions := modrinth.FetchBestVersions(entries, filter)
 	out := map[string]DownloadItem{}
 
-	fmt.Println("Building Download Item...")
 	for _, entry := range entries {
-		version, ok := bestVersions[entry.Slug]
+		version, ok := bestVersions[entry.ID]
 		if !ok || version == nil {
-			return nil, fmt.Errorf("no compatible version found for %s (mc=%s loader=%s)", entry.Slug, filter.McVersion, filter.Loader)
+			return nil, fmt.Errorf("no compatible version found for %s (mc=%s loader=%s)", entry.ID, filter.McVersion, filter.Loader)
 		}
 
 		if len(version.Files) == 0 {
-			return nil, fmt.Errorf("no downloadable files for %s", entry.Slug)
+			return nil, fmt.Errorf("no downloadable files for %s", entry.ID)
 		}
 
 		file := version.Files[0]
@@ -41,8 +41,8 @@ func ResolveDownloadItem(entries []modrinth.ModrinthListEntry, filter modrinth.E
 			}
 		}
 
-		out[entry.Slug] = DownloadItem{
-			ID:       entry.Slug,
+		out[entry.ID] = DownloadItem{
+			ID:       entry.ID,
 			FileName: filepath.Base(file.URL),
 			URL:      file.URL,
 			Sha1:     file.Hashes.Sha1,

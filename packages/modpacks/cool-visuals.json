@@ -1,315 +1,393 @@
 {
-  "pkgType": "modpack",
   "name": "Cool Visuals",
   "listVersion": "0.0.3",
   "mcVersion": "1.21.11",
   "loader": "fabric",
-  "env": "Client",
+  "env": "client",
   "description": "Client Side only modpack woth cool visual mod and performance mods.",
+  "pkgType": "modpack",
+  "listSource": "",
+  "hash": "",
   "entries": [
     {
-      "Slug": "debugify",
-      "PinnedVer": ""
+      "ID": "debugify",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "packet-fixer",
-      "PinnedVer": ""
+      "ID": "packet-fixer",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "no-resource-pack-warnings",
-      "PinnedVer": ""
+      "ID": "no-resource-pack-warnings",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "yeetus-experimentus",
-      "PinnedVer": ""
+      "ID": "yeetus-experimentus",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "current-game-music-track",
-      "PinnedVer": ""
+      "ID": "current-game-music-track",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "minecraft-cursor",
-      "PinnedVer": ""
+      "ID": "minecraft-cursor",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "cubes-without-borders",
-      "PinnedVer": ""
+      "ID": "cubes-without-borders",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "zoomify",
-      "PinnedVer": ""
+      "ID": "zoomify",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "invmove",
-      "PinnedVer": ""
+      "ID": "invmove",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "resourcify",
-      "PinnedVer": ""
+      "ID": "resourcify",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "modmenu",
-      "PinnedVer": ""
+      "ID": "modmenu",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "jade",
-      "PinnedVer": ""
+      "ID": "jade",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "reeses-sodium-options",
-      "PinnedVer": ""
+      "ID": "reeses-sodium-options",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "smooth-gui",
-      "PinnedVer": ""
+      "ID": "smooth-gui",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "dynamiccrosshair",
-      "PinnedVer": ""
+      "ID": "dynamiccrosshair",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "dynamiccrosshaircompat",
-      "PinnedVer": ""
+      "ID": "dynamiccrosshaircompat",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "immersive-hotbar",
-      "PinnedVer": ""
+      "ID": "immersive-hotbar",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "pick-up-notifier",
-      "PinnedVer": ""
+      "ID": "pick-up-notifier",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "better-advancements",
-      "PinnedVer": ""
+      "ID": "better-advancements",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "silk",
-      "PinnedVer": ""
+      "ID": "silk",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "fabric-api",
-      "PinnedVer": ""
+      "ID": "fabric-api",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "cloth-config",
-      "PinnedVer": ""
+      "ID": "cloth-config",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "fabric-language-kotlin",
-      "PinnedVer": ""
+      "ID": "fabric-language-kotlin",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "creativecore",
-      "PinnedVer": ""
+      "ID": "creativecore",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "collective",
-      "PinnedVer": ""
+      "ID": "collective",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "mru",
-      "PinnedVer": ""
+      "ID": "mru",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "yacl",
-      "PinnedVer": ""
+      "ID": "yacl",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "balm",
-      "PinnedVer": ""
+      "ID": "balm",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "player-animation-library",
-      "PinnedVer": ""
+      "ID": "player-animation-library",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "puzzles-lib",
-      "PinnedVer": ""
+      "ID": "puzzles-lib",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "forge-config-api-port",
-      "PinnedVer": ""
+      "ID": "forge-config-api-port",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "architectury-api",
-      "PinnedVer": ""
+      "ID": "architectury-api",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "glitchcore",
-      "PinnedVer": ""
+      "ID": "glitchcore",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "fzzy-config",
-      "PinnedVer": ""
+      "ID": "fzzy-config",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "geckolib",
-      "PinnedVer": "5.4"
+      "ID": "geckolib",
+      "pinnedVer": "5.4",
+      "type": "mod"
     },
     {
-      "Slug": "sodium-extra",
-      "PinnedVer": ""
+      "ID": "sodium-extra",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "sodium",
-      "PinnedVer": ""
+      "ID": "sodium",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "sodium-shadowy-path-blocks",
-      "PinnedVer": ""
+      "ID": "sodium-shadowy-path-blocks",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "entityculling",
-      "PinnedVer": ""
+      "ID": "entityculling",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "lithium",
-      "PinnedVer": ""
+      "ID": "lithium",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "immediatelyfast",
-      "PinnedVer": ""
+      "ID": "immediatelyfast",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "badoptimizations",
-      "PinnedVer": ""
+      "ID": "badoptimizations",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "ferrite-core",
-      "PinnedVer": ""
+      "ID": "ferrite-core",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "c2me-fabric",
-      "PinnedVer": ""
+      "ID": "c2me-fabric",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "moreculling",
-      "PinnedVer": ""
+      "ID": "moreculling",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "cull-leaves",
-      "PinnedVer": ""
+      "ID": "cull-leaves",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "scalablelux",
-      "PinnedVer": ""
+      "ID": "scalablelux",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "krypton",
-      "PinnedVer": ""
+      "ID": "krypton",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "dynamic-fps",
-      "PinnedVer": ""
+      "ID": "dynamic-fps",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "better-block-entities",
-      "PinnedVer": ""
+      "ID": "better-block-entities",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "distanthorizons",
-      "PinnedVer": ""
+      "ID": "distanthorizons",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "lambdynamiclights",
-      "PinnedVer": ""
+      "ID": "lambdynamiclights",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "iris",
-      "PinnedVer": ""
+      "ID": "iris",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "visuality",
-      "PinnedVer": ""
+      "ID": "visuality",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "particular-reforged",
-      "PinnedVer": ""
+      "ID": "particular-reforged",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "fallingleaves",
-      "PinnedVer": ""
+      "ID": "fallingleaves",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "bettergrassify",
-      "PinnedVer": ""
+      "ID": "bettergrassify",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "ambient-environment",
-      "PinnedVer": ""
+      "ID": "ambient-environment",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "physicsmod",
-      "PinnedVer": ""
+      "ID": "physicsmod",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "not-enough-animations",
-      "PinnedVer": ""
+      "ID": "not-enough-animations",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "skyboxify",
-      "PinnedVer": ""
+      "ID": "skyboxify",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "entity-model-features",
-      "PinnedVer": ""
+      "ID": "entity-model-features",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "entitytexturefeatures",
-      "PinnedVer": ""
+      "ID": "entitytexturefeatures",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "optigui",
-      "PinnedVer": ""
+      "ID": "optigui",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "continuity",
-      "PinnedVer": ""
+      "ID": "continuity",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "3dskinlayers",
-      "PinnedVer": ""
+      "ID": "3dskinlayers",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "weaponmaster",
-      "PinnedVer": ""
+      "ID": "weaponmaster",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "cameraoverhaul",
-      "PinnedVer": ""
+      "ID": "cameraoverhaul",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "subtle-effects",
-      "PinnedVer": ""
+      "ID": "subtle-effects",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "armor-3d",
-      "PinnedVer": ""
+      "ID": "armor-3d",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "explosive-enhancement",
-      "PinnedVer": ""
+      "ID": "explosive-enhancement",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "punchy-fpa",
-      "PinnedVer": ""
+      "ID": "punchy-fpa",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "sound-physics-remastered",
-      "PinnedVer": ""
+      "ID": "sound-physics-remastered",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "sound",
-      "PinnedVer": ""
+      "ID": "sound",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "ambientsounds",
-      "PinnedVer": ""
+      "ID": "ambientsounds",
+      "pinnedVer": "",
+      "type": "mod"
     },
     {
-      "Slug": "presence-footsteps",
-      "PinnedVer": ""
+      "ID": "presence-footsteps",
+      "pinnedVer": "",
+      "type": "mod"
     }
   ]
 }
