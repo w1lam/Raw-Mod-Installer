@@ -4,7 +4,7 @@
   "mcVersion": "1.21.11",
   "loader": "fabric",
   "env": "client",
-  "description": "Client Side only modpack woth cool visual mod and performance mods.",
+  "description": "Client Side only modpack with cool visual and performance mods.",
   "pkgType": "modpack",
   "listSource": "",
   "hash": "",
