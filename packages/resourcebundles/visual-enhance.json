@@ -10,103 +10,103 @@
   "hash": "",
   "entries": [
     {
-      "Slug": "connected-rocks",
-      "PinnedVer": "",
+      "ID": "connected-rocks",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "connected-bricks",
-      "PinnedVer": "",
+      "ID": "connected-bricks",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "connected-paths",
-      "PinnedVer": "",
+      "ID": "connected-paths",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "glowing-glints",
-      "PinnedVer": "",
+      "ID": "glowing-glints",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "animated-items",
-      "PinnedVer": "",
+      "ID": "animated-items",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "fresh-food",
-      "PinnedVer": "",
+      "ID": "fresh-food",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "tools-and-utils",
-      "PinnedVer": "",
+      "ID": "tools-and-utils",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "recolorful-containers-gui",
-      "PinnedVer": "",
+      "ID": "recolorful-containers-gui",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "eclectic-trove-legendary-tooltips",
-      "PinnedVer": "",
+      "ID": "eclectic-trove-legendary-tooltips",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "fancy-crops",
-      "PinnedVer": "",
+      "ID": "fancy-crops",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "simple-grass-flowers",
-      "PinnedVer": "",
+      "ID": "simple-grass-flowers",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "os-colorful-grasses",
-      "PinnedVer": "",
+      "ID": "os-colorful-grasses",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "better-sugar-cane",
-      "PinnedVer": "",
+      "ID": "better-sugar-cane",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "fresh-flower-pots",
-      "PinnedVer": "",
+      "ID": "fresh-flower-pots",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "better-busy-leaves",
-      "PinnedVer": "",
+      "ID": "better-busy-leaves",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "better-foliage",
-      "PinnedVer": "",
+      "ID": "better-foliage",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "fresh-animations",
-      "PinnedVer": "",
+      "ID": "fresh-animations",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "fresh-animations-extensions",
-      "PinnedVer": "",
+      "ID": "fresh-animations-extensions",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "fire-rekindled",
-      "PinnedVer": "",
+      "ID": "fire-rekindled",
+      "pinnedVer": "",
       "type": "resourcepack"
     },
     {
-      "Slug": "vvi",
-      "PinnedVer": "",
+      "ID": "vvi",
+      "pinnedVer": "",
       "type": "resourcepack"
     }
   ]

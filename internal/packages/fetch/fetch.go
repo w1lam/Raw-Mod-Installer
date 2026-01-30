@@ -46,12 +46,6 @@ func GetAllAvailablePackages() (packages.AvailablePackages, error) {
 			break
 		}
 
-		for _, rp := range pkgs {
-			for _, e := range rp.Entries {
-				e.Type = packages.PackageToEntryType[rp.Type]
-			}
-		}
-
 		availablePackages[pkgType] = pkgs
 	}
 

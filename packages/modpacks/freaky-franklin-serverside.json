@@ -10,498 +10,498 @@
   "hash": "",
   "entries": [
     {
-      "Slug": "attributefix",
-      "PinnedVer": "",
+      "ID": "attributefix",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "packet-fixer",
-      "PinnedVer": "",
+      "ID": "packet-fixer",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "debugify",
-      "PinnedVer": "",
+      "ID": "debugify",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "chunky",
-      "PinnedVer": "",
+      "ID": "chunky",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "spark",
-      "PinnedVer": "",
+      "ID": "spark",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "servercore",
-      "PinnedVer": "",
+      "ID": "servercore",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "appleskin",
-      "PinnedVer": "",
+      "ID": "appleskin",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "xaeros-world-map",
-      "PinnedVer": "",
+      "ID": "xaeros-world-map",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "ping-wheel",
-      "PinnedVer": "",
+      "ID": "ping-wheel",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "inventory-management",
-      "PinnedVer": "",
+      "ID": "inventory-management",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "jade",
-      "PinnedVer": "",
+      "ID": "jade",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "pick-up-notifier",
-      "PinnedVer": "",
+      "ID": "pick-up-notifier",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "emotecraft",
-      "PinnedVer": "",
+      "ID": "emotecraft",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "fallingtree",
-      "PinnedVer": "",
+      "ID": "fallingtree",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "veinminer-enchantment",
-      "PinnedVer": "",
+      "ID": "veinminer-enchantment",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "veinminer",
-      "PinnedVer": "",
+      "ID": "veinminer",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "cut-through",
-      "PinnedVer": "",
+      "ID": "cut-through",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "rechiseled",
-      "PinnedVer": "",
+      "ID": "rechiseled",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "diagonal-fences",
-      "PinnedVer": "",
+      "ID": "diagonal-fences",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "diagonal-walls",
-      "PinnedVer": "",
+      "ID": "diagonal-walls",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "diagonal-windows",
-      "PinnedVer": "",
+      "ID": "diagonal-windows",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "enchanted-vertical-slabs",
-      "PinnedVer": "",
+      "ID": "enchanted-vertical-slabs",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "macaws-bridges",
-      "PinnedVer": "",
+      "ID": "macaws-bridges",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "macaws-doors",
-      "PinnedVer": "",
+      "ID": "macaws-doors",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "macaws-fences-and-walls",
-      "PinnedVer": "",
+      "ID": "macaws-fences-and-walls",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "macaws-lights-and-lamps",
-      "PinnedVer": "",
+      "ID": "macaws-lights-and-lamps",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "macaws-stairs",
-      "PinnedVer": "",
+      "ID": "macaws-stairs",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "macaws-trapdoors",
-      "PinnedVer": "",
+      "ID": "macaws-trapdoors",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "macaws-windows",
-      "PinnedVer": "",
+      "ID": "macaws-windows",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "stoneworks",
-      "PinnedVer": "",
+      "ID": "stoneworks",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "beautify-refabricated",
-      "PinnedVer": "",
+      "ID": "beautify-refabricated",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "elytra-trims",
-      "PinnedVer": "",
+      "ID": "elytra-trims",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "travelersbackpack",
-      "PinnedVer": "",
+      "ID": "travelersbackpack",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "immersive-ores",
-      "PinnedVer": "",
+      "ID": "immersive-ores",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "attributes",
-      "PinnedVer": "",
+      "ID": "attributes",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "skills",
-      "PinnedVer": "",
+      "ID": "skills",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "default-skill-trees",
-      "PinnedVer": "",
+      "ID": "default-skill-trees",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "better-combat",
-      "PinnedVer": "",
+      "ID": "better-combat",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "do-a-barrel-roll",
-      "PinnedVer": "",
+      "ID": "do-a-barrel-roll",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "hardcore-revival",
-      "PinnedVer": "",
+      "ID": "hardcore-revival",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "true-ending",
-      "PinnedVer": "",
+      "ID": "true-ending",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "toms-storage",
-      "PinnedVer": "",
+      "ID": "toms-storage",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "nether-chested",
-      "PinnedVer": "",
+      "ID": "nether-chested",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "storage-delight",
-      "PinnedVer": "",
+      "ID": "storage-delight",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "crate-delight",
-      "PinnedVer": "",
+      "ID": "crate-delight",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "farmers-delight-refabricated",
-      "PinnedVer": "",
+      "ID": "farmers-delight-refabricated",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "more-delight",
-      "PinnedVer": "",
+      "ID": "more-delight",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "transmog",
-      "PinnedVer": "",
+      "ID": "transmog",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "magnum-torch",
-      "PinnedVer": "",
+      "ID": "magnum-torch",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "trading-post",
-      "PinnedVer": "",
+      "ID": "trading-post",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "animal_feeding_trough",
-      "PinnedVer": "",
+      "ID": "animal_feeding_trough",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "silk",
-      "PinnedVer": "",
+      "ID": "silk",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "melody",
-      "PinnedVer": "",
+      "ID": "melody",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "fabric-api",
-      "PinnedVer": "",
+      "ID": "fabric-api",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "cloth-config",
-      "PinnedVer": "",
+      "ID": "cloth-config",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "lithostitched",
-      "PinnedVer": "",
+      "ID": "lithostitched",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "fabric-language-kotlin",
-      "PinnedVer": "",
+      "ID": "fabric-language-kotlin",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "creativecore",
-      "PinnedVer": "",
+      "ID": "creativecore",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "collective",
-      "PinnedVer": "",
+      "ID": "collective",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "mru",
-      "PinnedVer": "",
+      "ID": "mru",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "yacl",
-      "PinnedVer": "",
+      "ID": "yacl",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "balm",
-      "PinnedVer": "",
+      "ID": "balm",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "cicada",
-      "PinnedVer": "",
+      "ID": "cicada",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "player-animation-library",
-      "PinnedVer": "",
+      "ID": "player-animation-library",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "library-ferret",
-      "PinnedVer": "",
+      "ID": "library-ferret",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "puzzles-lib",
-      "PinnedVer": "",
+      "ID": "puzzles-lib",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "forge-config-api-port",
-      "PinnedVer": "",
+      "ID": "forge-config-api-port",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "octo-lib",
-      "PinnedVer": "",
+      "ID": "octo-lib",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "architectury-api",
-      "PinnedVer": "",
+      "ID": "architectury-api",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "glitchcore",
-      "PinnedVer": "",
+      "ID": "glitchcore",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "konkrete",
-      "PinnedVer": "",
+      "ID": "konkrete",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "cardinal-components-api",
-      "PinnedVer": "",
+      "ID": "cardinal-components-api",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "moogs-structure-lib",
-      "PinnedVer": "",
+      "ID": "moogs-structure-lib",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "fzzy-config",
-      "PinnedVer": "",
+      "ID": "fzzy-config",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "malilib",
-      "PinnedVer": "",
+      "ID": "malilib",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "prickle",
-      "PinnedVer": "",
+      "ID": "prickle",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "supermartijn642s-core-lib",
-      "PinnedVer": "",
+      "ID": "supermartijn642s-core-lib",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "supermartijn642s-config-lib",
-      "PinnedVer": "",
+      "ID": "supermartijn642s-config-lib",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "lithium",
-      "PinnedVer": "",
+      "ID": "lithium",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "ferrite-core",
-      "PinnedVer": "",
+      "ID": "ferrite-core",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "c2me-fabric",
-      "PinnedVer": "",
+      "ID": "c2me-fabric",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "scalablelux",
-      "PinnedVer": "",
+      "ID": "scalablelux",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "krypton",
-      "PinnedVer": "",
+      "ID": "krypton",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "clumps",
-      "PinnedVer": "",
+      "ID": "clumps",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "distanthorizons",
-      "PinnedVer": "",
+      "ID": "distanthorizons",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "terralith",
-      "PinnedVer": "",
+      "ID": "terralith",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "dungeons-and-taverns",
-      "PinnedVer": "",
+      "ID": "dungeons-and-taverns",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "better-village",
-      "PinnedVer": "",
+      "ID": "better-village",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "mes-moogs-end-structures",
-      "PinnedVer": "",
+      "ID": "mes-moogs-end-structures",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "incendium",
-      "PinnedVer": "",
+      "ID": "incendium",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "serene-seasons",
-      "PinnedVer": "",
+      "ID": "serene-seasons",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "weaponmaster",
-      "PinnedVer": "",
+      "ID": "weaponmaster",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "spawn-animations",
-      "PinnedVer": "",
+      "ID": "spawn-animations",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "subtle-effects",
-      "PinnedVer": "",
+      "ID": "subtle-effects",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "easy-anvils",
-      "PinnedVer": "",
+      "ID": "easy-anvils",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "easy-magic",
-      "PinnedVer": "",
+      "ID": "easy-magic",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "visual-workbench",
-      "PinnedVer": "",
+      "ID": "visual-workbench",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "villager-names-serilum",
-      "PinnedVer": "",
+      "ID": "villager-names-serilum",
+      "pinnedVer": "",
       "type": "mod"
     },
     {
-      "Slug": "sound-physics-remastered",
-      "PinnedVer": "",
+      "ID": "sound-physics-remastered",
+      "pinnedVer": "",
       "type": "mod"
     }
   ]
