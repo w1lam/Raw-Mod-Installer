@@ -10,6 +10,21 @@
   "hash": "",
   "entries": [
     {
+      "ID": "particle-core",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "gputape",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "rsls",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
       "ID": "debugify",
       "pinnedVer": "",
       "type": "mod"

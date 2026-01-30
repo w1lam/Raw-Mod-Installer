@@ -10,6 +10,11 @@
   "hash": "",
   "entries": [
     {
+      "ID": "spawn-animations-compats",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
       "ID": "attributefix",
       "pinnedVer": "",
       "type": "mod"
@@ -336,11 +341,6 @@
     },
     {
       "ID": "forge-config-api-port",
-      "pinnedVer": "",
-      "type": "mod"
-    },
-    {
-      "ID": "octo-lib",
       "pinnedVer": "",
       "type": "mod"
     },
