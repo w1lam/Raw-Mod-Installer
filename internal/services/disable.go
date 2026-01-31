@@ -5,28 +5,42 @@ import (
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
-// DisablePackage disables the currently enabled modpack
 func DisablePackage(pkg packages.Pkg) error {
-	gState := state.Get()
+	gs := state.Get()
 
-	var path *paths.Paths
-	gState.Read(func(s *state.State) {
-		if s.Manifest().EnabledPackages[pkg.Type] == "" {
+	var (
+		enabled    bool
+		storageDir string
+		activeDir  string
+	)
+
+	gs.Read(func(s *state.State) {
+		// Is this package currently enabled?
+		if s.Manifest().EnabledPackages[pkg.Type] != pkg.Name {
 			return
 		}
-		path = s.Manifest().Paths
+
+		if p, ok := s.Manifest().InstalledPackages[pkg.Type][pkg.Name]; ok {
+			enabled = true
+			storageDir = p.StorageDir
+			activeDir = p.ActiveDir
+		}
 	})
 
-	err := filesystem.DisablePackageFS(pkg, path)
-	if err != nil {
-		return fmt.Errorf("failed to move pacakge: %w", err)
+	if !enabled {
+		return nil // already disabled → no-op
 	}
 
-	return gState.Write(func(s *state.State) error {
+	backupDir := activeDir + ".bak"
+
+	if err := filesystem.SwapDirs(activeDir, storageDir, backupDir); err != nil {
+		return fmt.Errorf("failed to disable package %s: %w", pkg.Name, err)
+	}
+
+	return gs.Write(func(s *state.State) error {
 		s.Manifest().EnabledPackages[pkg.Type] = ""
 		return s.Manifest().Save()
 	})

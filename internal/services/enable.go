@@ -5,31 +5,47 @@ import (
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
 )
 
 // EnablePackage enables the specified package
 func EnablePackage(pkg packages.Pkg) error {
-	gState := state.Get()
+	gs := state.Get()
 
-	var alreadyEnabled bool
-	var path *paths.Paths
-	gState.Read(func(s *state.State) {
+	var (
+		installed      bool
+		alreadyEnabled bool
+		storageDir     string
+		activeDir      string
+	)
+
+	gs.Read(func(s *state.State) {
+		if p, ok := s.Manifest().InstalledPackages[pkg.Type][pkg.Name]; ok {
+			installed = true
+			storageDir = p.StorageDir
+			activeDir = p.ActiveDir
+		}
+
 		alreadyEnabled = s.Manifest().EnabledPackages[pkg.Type] == pkg.Name
-		path = s.Manifest().Paths
 	})
+	if storageDir == "" || activeDir == "" {
+		return fmt.Errorf("invalid package paths for %s", pkg.Name)
+	}
 
 	if alreadyEnabled {
 		return nil
 	}
+	if !installed {
+		return fmt.Errorf("package not installed: %s", pkg.Name)
+	}
 
-	err := filesystem.EnablePackageFS(pkg, path)
+	backupDir := storageDir + ".bak"
+	err := filesystem.SwapDirs(storageDir, activeDir, backupDir)
 	if err != nil {
 		return fmt.Errorf("failed to move package: %w", err)
 	}
 
-	return gState.Write(func(s *state.State) error {
+	return gs.Write(func(s *state.State) error {
 		s.Manifest().EnabledPackages[pkg.Type] = pkg.Name
 		return s.Manifest().Save()
 	})

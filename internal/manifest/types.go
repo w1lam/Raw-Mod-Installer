@@ -34,9 +34,11 @@ type InstalledPackage struct {
 	InstalledVersion string                  `json:"version"`
 	McVersion        string                  `json:"mcVersion"`
 	Loader           string                  `json:"loader"`
-	Path             string                  `json:"path"`
 	Hash             string                  `json:"hash"`
 	Entries          map[string]PackageEntry `json:"installedEntries"`
+
+	ActiveDir  string `json:"activeDir"`
+	StorageDir string `json:"storageDir"`
 }
 
 // PackageEntry is a mod entry in the manifest that holds all information about an entry

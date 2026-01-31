@@ -115,16 +115,27 @@ func PackageInstaller(
 		}
 	}
 
-	installedMp := manifest.InstalledPackage{
+	activeDir := ""
+	switch plan.RequestedPackage.Type {
+	case packages.PackageModPack:
+		activeDir = path.ModsDir
+	case packages.PackageResourceBundle:
+		activeDir = path.ResourcePacksDir
+	case packages.PackageShaderBundle:
+		activeDir = path.ShaderPacksDir
+	}
+
+	installedP := manifest.InstalledPackage{
 		Name:             plan.RequestedPackage.Name,
 		Type:             plan.RequestedPackage.Type,
 		ListSource:       plan.RequestedPackage.ListSource,
 		InstalledVersion: plan.RequestedPackage.ListVersion,
 		McVersion:        plan.RequestedPackage.McVersion,
 		Loader:           plan.RequestedPackage.Loader,
-		Path:             finalDir,
 		Hash:             packHash,
 		Entries:          downloadedEntries,
+		ActiveDir:        activeDir,
+		StorageDir:       finalDir,
 	}
 
 	// Write JSON ID file
@@ -149,7 +160,7 @@ func PackageInstaller(
 			m.InstalledPackages[plan.RequestedPackage.Type] = make(map[string]manifest.InstalledPackage)
 		}
 
-		m.InstalledPackages[plan.RequestedPackage.Type][plan.RequestedPackage.Name] = installedMp
+		m.InstalledPackages[plan.RequestedPackage.Type][plan.RequestedPackage.Name] = installedP
 		return m.Save()
 	})
 }

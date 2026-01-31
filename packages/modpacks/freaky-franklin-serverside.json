@@ -1,6 +1,6 @@
 {
   "name": "Freaky Franklin (SERVERSIDE)",
-  "listVersion": "0.1.4",
+  "listVersion": "0.1.5",
   "mcVersion": "1.21.10",
   "loader": "fabric",
   "env": "Server",
@@ -9,6 +9,26 @@
   "listSource": "",
   "hash": "",
   "entries": [
+    {
+      "ID": "waystones",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "rustic-deligth",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "xaeros-minimap",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "macaws-roofs",
+      "pinnedVer": "",
+      "type": "mod"
+    },
     {
       "ID": "spawn-animations-compats",
       "pinnedVer": "",

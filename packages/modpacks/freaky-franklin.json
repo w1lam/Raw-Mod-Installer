@@ -1,6 +1,6 @@
 {
   "name": "Freaky Franklin Pack",
-  "listVersion": "0.2.2",
+  "listVersion": "0.2.3",
   "mcVersion": "1.21.10",
   "loader": "fabric",
   "env": "Client and Server",
@@ -9,6 +9,31 @@
   "listSource": "",
   "hash": "",
   "entries": [
+    {
+      "ID": "xaeros-maps-x-waystones",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "waystones",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "rustic-deligth",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "xaeros-minimap",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "macaws-roofs",
+      "pinnedVer": "",
+      "type": "mod"
+    },
     {
       "ID": "particle-core",
       "pinnedVer": "",

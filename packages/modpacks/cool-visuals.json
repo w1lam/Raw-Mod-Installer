@@ -195,11 +195,6 @@
       "type": "mod"
     },
     {
-      "ID": "geckolib",
-      "pinnedVer": "5.4",
-      "type": "mod"
-    },
-    {
       "ID": "sodium-extra",
       "pinnedVer": "",
       "type": "mod"
@@ -380,7 +375,7 @@
       "type": "mod"
     },
     {
-      "ID": "punchy-fpa",
+      "ID": "hold-my-items",
       "pinnedVer": "",
       "type": "mod"
     },

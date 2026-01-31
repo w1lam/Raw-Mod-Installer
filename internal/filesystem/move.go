@@ -3,41 +3,32 @@ package filesystem
 import (
 	"fmt"
 	"os"
-	"path/filepath"
-
-	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
-	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 )
 
-func EnablePackageFS(pkg packages.Pkg, path *paths.Paths) error {
-	behavior := packages.PackageBehaviors[pkg.Type]
-
-	src := filepath.Join(behavior.StorageDir(path), pkg.Name)
-	dst := behavior.ActiveDir(path)
-
-	if err := os.RemoveAll(dst); err != nil {
-		return fmt.Errorf("failed to clear mods dir: %w", err)
+// SwapDirs swaps two dirs
+func SwapDirs(src, dst, backup string) error {
+	// sanity checks
+	if _, err := os.Stat(src); err != nil {
+		return fmt.Errorf("source missing: %w", err)
 	}
 
+	_ = os.RemoveAll(backup)
+
+	// Step 1: move current active out of the way
+	if _, err := os.Stat(dst); err == nil {
+		if err := os.Rename(dst, backup); err != nil {
+			return fmt.Errorf("failed to backup active dir: %w", err)
+		}
+	}
+
+	// Step 2: move new package into place
 	if err := os.Rename(src, dst); err != nil {
-		return fmt.Errorf("failed to enable package \"%s\". pkgType %s : %w", pkg.Name, pkg.Type, err)
+		// rollback
+		_ = os.Rename(backup, dst)
+		return fmt.Errorf("failed to activate package: %w", err)
 	}
 
-	return nil
-}
-
-func DisablePackageFS(pkg packages.Pkg, path *paths.Paths) error {
-	behavior := packages.PackageBehaviors[pkg.Type]
-
-	src := behavior.ActiveDir(path)
-	dst := filepath.Join(behavior.StorageDir(path), pkg.Name)
-
-	if err := os.RemoveAll(dst); err != nil {
-		return fmt.Errorf("failed to clear target modpack dir: %w", err)
-	}
-
-	if err := os.Rename(src, dst); err != nil {
-		return err
-	}
+	// Step 3: cleanup backup
+	_ = os.RemoveAll(backup)
 	return nil
 }

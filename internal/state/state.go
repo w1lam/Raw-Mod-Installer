@@ -9,7 +9,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 )
 
-var ProgramVersion string = "0.0.1"
+var ProgramVersion string = "0.0.2"
 
 var (
 	globalState *State
