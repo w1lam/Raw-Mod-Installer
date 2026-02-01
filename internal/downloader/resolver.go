@@ -26,10 +26,12 @@ func ResolveDownloadItem(entries []modrinth.Entry, filter modrinth.Filter) (map[
 	for _, entry := range entries {
 		version, ok := bestVersions[entry.ID]
 		if !ok || version == nil {
+			fmt.Printf("\nRESOLVE FAIL: no version for %s\n", entry.ID)
 			return nil, fmt.Errorf("no compatible version found for %s (mc=%s loader=%s)", entry.ID, filter.McVersion, filter.Loader)
 		}
 
 		if len(version.Files) == 0 {
+			fmt.Printf("\nRESOLVE FAIL: no version for %s\n", entry.ID)
 			return nil, fmt.Errorf("no downloadable files for %s", entry.ID)
 		}
 
@@ -51,5 +53,6 @@ func ResolveDownloadItem(entries []modrinth.Entry, filter modrinth.Filter) (map[
 		}
 	}
 
+	fmt.Println("RESOLVE FINISHED")
 	return out, nil
 }
