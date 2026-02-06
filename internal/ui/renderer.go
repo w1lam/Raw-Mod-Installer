@@ -11,5 +11,4 @@ type PlainRenderer struct {
 
 type Renderer interface {
 	PackageMenuRenderer
-	ProgressRenderer
 }
