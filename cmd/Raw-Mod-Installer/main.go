@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/w1lam/Packages/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
 )
 
@@ -15,7 +14,7 @@ func init() {}
 func main() {
 	app.Initialize()
 
-	modrinth.EnableDevMode()
+	// modrinth.EnableDevMode()
 
 	// pkgs, err := packages.GetAllAvailablePackages()
 	// if err != nil {

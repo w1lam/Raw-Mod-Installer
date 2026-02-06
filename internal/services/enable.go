@@ -15,20 +15,20 @@ func EnablePackage(pkg packages.Pkg) error {
 	var (
 		installed      bool
 		alreadyEnabled bool
-		storageDir     string
-		activeDir      string
+		storagePath    string
+		activePath     string
 	)
 
 	gs.Read(func(s *state.State) {
 		if p, ok := s.Manifest().InstalledPackages[pkg.Type][pkg.Name]; ok {
 			installed = true
-			storageDir = p.StorageDir
-			activeDir = p.ActiveDir
+			storagePath = p.StoragePath
+			activePath = p.ActivePath
 		}
 
 		alreadyEnabled = s.Manifest().EnabledPackages[pkg.Type] == pkg.Name
 	})
-	if storageDir == "" || activeDir == "" {
+	if storagePath == "" || activePath == "" {
 		return fmt.Errorf("invalid package paths for %s", pkg.Name)
 	}
 
@@ -39,8 +39,8 @@ func EnablePackage(pkg packages.Pkg) error {
 		return fmt.Errorf("package not installed: %s", pkg.Name)
 	}
 
-	backupDir := storageDir + ".bak"
-	err := filesystem.SwapDirs(storageDir, activeDir, backupDir)
+	backupPath := storagePath + ".bak"
+	err := filesystem.SwapDirs(storagePath, activePath, backupPath)
 	if err != nil {
 		return fmt.Errorf("failed to move package: %w", err)
 	}

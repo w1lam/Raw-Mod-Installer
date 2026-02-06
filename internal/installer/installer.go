@@ -11,7 +11,6 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/filesystem"
 	"github.com/w1lam/Raw-Mod-Installer/internal/manifest"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
-	pkg "github.com/w1lam/Raw-Mod-Installer/internal/packages/fetch"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
 	"github.com/w1lam/Raw-Mod-Installer/internal/services"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
@@ -85,7 +84,7 @@ func PackageInstaller(
 	}
 
 	fmt.Println("Moving to Final Dir")
-	parentDir := filepath.Join(path.PackagesDir, pkg.PkgTypeToFolder[plan.RequestedPackage.Type])
+	parentDir := filepath.Join(path.PackagesDir, packages.PkgTypeToFolder[plan.RequestedPackage.Type])
 	finalDir := filepath.Join(parentDir, plan.RequestedPackage.Name)
 
 	if err := os.RemoveAll(finalDir); err != nil {
@@ -134,22 +133,14 @@ func PackageInstaller(
 		Loader:           plan.RequestedPackage.Loader,
 		Hash:             packHash,
 		Entries:          downloadedEntries,
-		ActiveDir:        activeDir,
-		StorageDir:       finalDir,
+		ActivePath:       activeDir,
+		StoragePath:      finalDir,
 	}
 
 	// Write JSON ID file
 	plan.RequestedPackage.Hash = packHash
-	if err := packages.WritePackageIDFile(plan.RequestedPackage, finalDir); err != nil {
+	if err := manifest.WritePackageIDFile(installedP, finalDir); err != nil {
 		return err
-	}
-
-	if packages.PackageBehaviors[plan.RequestedPackage.Type].EnableAfter {
-		fmt.Println("Enabling Package...")
-		err := services.EnablePackage(packages.Pkg{Name: plan.RequestedPackage.Name, Type: plan.RequestedPackage.Type})
-		if err != nil {
-			return rollback(installed[enabled], path, plan, err)
-		}
 	}
 
 	fmt.Println("Writing Results to Manifest")

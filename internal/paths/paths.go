@@ -21,6 +21,7 @@ type Paths struct {
 
 	PackagesDir string
 	BackupsDir  string
+	LogPath     string
 }
 
 func DefaultMinecraftDir() (string, error) {
@@ -63,5 +64,6 @@ func Resolve() (*Paths, error) {
 
 		PackagesDir: filepath.Join(installerDir, "packages"),
 		BackupsDir:  filepath.Join(installerDir, "backups"),
+		LogPath:     filepath.Join(installerDir, "logs.log"),
 	}, nil
 }

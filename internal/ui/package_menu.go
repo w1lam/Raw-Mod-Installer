@@ -1,9 +1,7 @@
-// Package ui holds ui renders and headers ONLY visuals
 package ui
 
 import (
 	"fmt"
-	"io"
 	"strings"
 	"unicode"
 )
@@ -33,10 +31,6 @@ type PackageMenuItemView struct {
 
 type PackageMenuRenderer interface {
 	RenderPackageMenu(view PackageMenuView)
-}
-
-type PlainRenderer struct {
-	Out io.Writer
 }
 
 func (r *PlainRenderer) RenderPackageMenu(v PackageMenuView) {

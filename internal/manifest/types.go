@@ -1,6 +1,8 @@
 package manifest
 
 import (
+	"time"
+
 	"github.com/w1lam/Packages/modrinth"
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 	"github.com/w1lam/Raw-Mod-Installer/internal/paths"
@@ -16,7 +18,16 @@ type Manifest struct {
 
 	InstalledPackages map[packages.PackageType]map[string]InstalledPackage `json:"installedPackages"`
 
-	Paths *paths.Paths `json:"-"`
+	Paths       *paths.Paths `json:"-"`
+	Initialized bool         `json:"initialized"`
+	Backups     []BackupEntry
+}
+
+type BackupEntry struct {
+	Time time.Time
+	Type packages.PackageType
+	Path string
+	ID   string
 }
 
 // LoaderInfo is the information about a mod loader
@@ -37,8 +48,8 @@ type InstalledPackage struct {
 	Hash             string                  `json:"hash"`
 	Entries          map[string]PackageEntry `json:"installedEntries"`
 
-	ActiveDir  string `json:"activeDir"`
-	StorageDir string `json:"storageDir"`
+	ActivePath  string `json:"activePath"`
+	StoragePath string `json:"storagePath"`
 }
 
 // PackageEntry is a mod entry in the manifest that holds all information about an entry

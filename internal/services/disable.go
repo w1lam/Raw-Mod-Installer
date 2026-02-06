@@ -12,9 +12,9 @@ func DisablePackage(pkg packages.Pkg) error {
 	gs := state.Get()
 
 	var (
-		enabled    bool
-		storageDir string
-		activeDir  string
+		enabled     bool
+		storagePath string
+		activePath  string
 	)
 
 	gs.Read(func(s *state.State) {
@@ -25,8 +25,8 @@ func DisablePackage(pkg packages.Pkg) error {
 
 		if p, ok := s.Manifest().InstalledPackages[pkg.Type][pkg.Name]; ok {
 			enabled = true
-			storageDir = p.StorageDir
-			activeDir = p.ActiveDir
+			storagePath = p.StoragePath
+			activePath = p.ActivePath
 		}
 	})
 
@@ -34,9 +34,9 @@ func DisablePackage(pkg packages.Pkg) error {
 		return nil // already disabled → no-op
 	}
 
-	backupDir := activeDir + ".bak"
+	backupPath := activePath + ".bak"
 
-	if err := filesystem.SwapDirs(activeDir, storageDir, backupDir); err != nil {
+	if err := filesystem.SwapDirs(activePath, storagePath, backupPath); err != nil {
 		return fmt.Errorf("failed to disable package %s: %w", pkg.Name, err)
 	}
 

@@ -13,7 +13,7 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/packages"
 	"github.com/w1lam/Raw-Mod-Installer/internal/services"
 	"github.com/w1lam/Raw-Mod-Installer/internal/state"
-	ui "github.com/w1lam/Raw-Mod-Installer/internal/ui/render"
+	"github.com/w1lam/Raw-Mod-Installer/internal/ui"
 )
 
 type PackMenuItem struct {
@@ -235,6 +235,9 @@ func rebuildPackageButtons(m *menu.Menu, model *PackMenuModel) {
 				"Install this Package",
 				menu.Action{
 					Function: func() error {
+						menu.PauseInput()
+						defer menu.ResumeInput()
+
 						var pkg packages.ResolvedPackage
 
 						state.Get().Read(func(s *state.State) {
@@ -250,9 +253,12 @@ func rebuildPackageButtons(m *menu.Menu, model *PackMenuModel) {
 							BackupPolicy:     services.BackupIfExists,
 						}
 
-						menu.PauseInput()
-						defer menu.ResumeInput()
-						return installer.PackageInstaller(plan)
+						err := installer.PackageInstaller(plan)
+						if err != nil {
+							return err
+						}
+
+						return services.EnablePackage(packages.Pkg{Name: plan.RequestedPackage.Name, Type: plan.RequestedPackage.Type})
 					},
 					WrapUp: func(err error) {
 						if err == nil {

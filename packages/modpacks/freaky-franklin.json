@@ -10,6 +10,41 @@
   "hash": "",
   "entries": [
     {
+      "ID": "not-enough-crashes",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "resourceful-config",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "some-more-blocks",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "enderscape",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "underground-worlds",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "better-archeology",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "controlify",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
       "ID": "xaeros-maps-x-waystones",
       "pinnedVer": "",
       "type": "mod"

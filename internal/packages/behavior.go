@@ -32,6 +32,12 @@ var PackageToEntryType = map[PackageType]modrinth.EntryType{
 	PackageShaderBundle:   modrinth.Shaderpack,
 }
 
+var PkgTypeToFolder = map[PackageType]string{
+	PackageModPack:        "modpacks",
+	PackageResourceBundle: "resourcebundles",
+	PackageShaderBundle:   "shaderbundles",
+}
+
 // PackageBehavior defines the behavior for a package type
 type PackageBehavior struct {
 	StorageDir func(*paths.Paths) string

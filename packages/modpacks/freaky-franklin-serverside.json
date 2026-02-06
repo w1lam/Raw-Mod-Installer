@@ -10,6 +10,31 @@
   "hash": "",
   "entries": [
     {
+      "ID": "resourceful-config",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "some-more-blocks",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "enderscape",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "underground-worlds",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
+      "ID": "better-archeology",
+      "pinnedVer": "",
+      "type": "mod"
+    },
+    {
       "ID": "waystones",
       "pinnedVer": "",
       "type": "mod"
