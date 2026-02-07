@@ -1,5 +1,6 @@
 {
-  "name": "Freaky Franklin Pack",
+  "name": "FreakyFranklin",
+  "id": "freaky-franklin",
   "listVersion": "0.2.3",
   "mcVersion": "1.21.10",
   "loader": "fabric",

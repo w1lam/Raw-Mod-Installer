@@ -18,34 +18,15 @@ import (
 	"github.com/w1lam/Raw-Mod-Installer/internal/verify"
 )
 
-func Initialize() {
-	tui.EnableANSI()
-	tui.HideCursor()
-
-	tui.ClearScreenRaw()
-
-	fmt.Println("* Starting up...")
-
-	// Setting Program Exit Function
-	menu.SetProgramExitFunc(func() {
-		Exit()
-	})
-
-	// Start menu workers
-	menu.StartWorkers(4)
-	// Start input checker
-	if err := menu.StartInput(); err != nil {
-		log.Fatal(fmt.Errorf("failed to start menu workers: %w", err))
-	}
-
-	fmt.Println(" * Resolving Paths...")
+// InitCore core functionality initiation
+func InitCore() error {
 	path, err := paths.Resolve()
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to resolve paths: %w", err))
+		return err
 	}
 
 	if err := filesystem.EnsureDirectories(path); err != nil {
-		log.Fatal(fmt.Errorf("failed to ensure directories: %w", err))
+		return err
 	}
 
 	// Start error handler
@@ -53,16 +34,14 @@ func Initialize() {
 		log.Fatal(fmt.Errorf("failed to start error handler: %w", err))
 	}
 
-	fmt.Println(" * Loading Manifest...")
 	m, err := manifest.Load(path)
 	if err != nil {
 		m, err = manifest.BuildInitialManifest(state.ProgramVersion, path)
 		if err != nil {
-			log.Fatal(fmt.Errorf("failed to build initial manifest: %w", err))
+			return err
 		}
 	}
 
-	fmt.Println(" * Loading Meta Data...")
 	metaD := meta.LoadMetaData(path)
 	if metaD == nil {
 		emptyMd := &meta.MetaData{
@@ -75,30 +54,62 @@ func Initialize() {
 	// Sets global state
 	state.SetState(state.NewState(m, metaD))
 
+	// Verify packages
+	verify.VerifyAndReconcile(path)
+
+	return nil
+}
+
+type InitMode int
+
+const (
+	CLI InitMode = iota
+	TUI
+)
+
+// InitTUI initializes the tui
+func InitTUI() {
+	tui.EnableANSI()
+	tui.HideCursor()
+	tui.ClearScreenRaw()
+
+	fmt.Println("* Starting up...")
+	m := state.Get().Manifest()
+
+	// Setting Program Exit Function
+	menu.SetProgramExitFunc(Exit)
+
+	// Start menu workers
+	menu.StartWorkers(4)
+
+	// Start input checker
+	if err := menu.StartInput(); err != nil {
+		log.Fatal(fmt.Errorf("failed to start menu workers: %w", err))
+	}
+
 	// Backup if first run
 	if !m.Initialized {
 		go func() {
-			res, err := services.PerformInitialBackup(path)
+			res, err := services.PerformInitialBackup(m.Paths)
 			if err != nil {
 				errors.Report("startup.backup", err)
 				return
 			}
 
-			state.Get().Write(func(s *state.State) error {
-				if err := services.ApplyInitialBackup(s.Manifest(), res, path); err != nil {
+			if err := state.Get().Write(func(s *state.State) error {
+				if err := services.ApplyInitialBackup(s.Manifest(), res, s.Manifest().Paths); err != nil {
 					errors.Report("startup.backup.apply", err)
 				}
 				return nil
-			})
+			}); err != nil {
+				log.Fatal(fmt.Errorf("OH NOOOO ): failed to write initial backup to state: %w", err))
+			}
 		}()
 	}
 
-	// Verify packages
-	verify.VerifyAndReconcile(path)
-
 	// refresh meta data of installed package entries
-	go refreshMetaData(path, m, metaD)
+	go refreshMetaData(state.Get().Manifest().Paths, m, state.Get().MetaData())
 
 	// Initialize menus
-	minit.InitializeMenus(m)
+	minit.InitializeMenus(state.Get().Manifest())
 }

@@ -24,6 +24,7 @@ type Pkg struct {
 // ResolvedPackage is a resolved package
 type ResolvedPackage struct {
 	Name string `json:"name"`
+	ID   string `json:"id"`
 
 	ListVersion string `json:"listVersion"`
 	McVersion   string `json:"mcVersion"`

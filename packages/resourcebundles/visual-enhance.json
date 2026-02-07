@@ -1,5 +1,6 @@
 {
-  "name": "Visual Enhancements Bundle",
+  "name": "VisualEnhancementsBundle",
+  "id": "visual-enhancements",
   "listVersion": "0.0.1",
   "mcVersion": "1.21.11",
   "loader": "",

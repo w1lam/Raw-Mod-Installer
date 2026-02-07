@@ -1,5 +1,6 @@
 {
-  "name": "Cool Visuals",
+  "name": "CoolVisuals",
+  "id": "cool-visuals",
   "listVersion": "0.0.4",
   "mcVersion": "1.21.11",
   "loader": "fabric",

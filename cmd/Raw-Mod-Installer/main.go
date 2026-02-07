@@ -1,7 +1,11 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/w1lam/Raw-Mod-Installer/internal/app"
+	"github.com/w1lam/Raw-Mod-Installer/internal/cli"
 )
 
 // NOTES:
@@ -12,20 +16,21 @@ import (
 func init() {}
 
 func main() {
-	app.Initialize()
+	if len(os.Args) > 1 {
+		err := app.InitCore()
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	// modrinth.EnableDevMode()
+		cli.Execute()
+		return
+	}
 
-	// pkgs, err := packages.GetAllAvailablePackages()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Printf("%+v\n", pkgs)
-	//
-	// vers := modrinth.FetchBestVersions(pkgs["resourcebundles"]["Visual Enhancements Bundle"].Entries, modrinth.Filter{McVersion: "1.21.10", Loader: ""})
-	// fmt.Printf("%+v", vers)
-	//
-	// time.Sleep(time.Hour * 1)
+	if err := app.InitCore(); err != nil {
+		log.Fatal(err)
+	}
+
+	app.InitTUI()
 
 	app.Run()
 }

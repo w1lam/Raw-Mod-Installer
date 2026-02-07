@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/w1lam/Raw-Mod-Installer/internal/netcfg"
 )
@@ -57,8 +58,21 @@ func getPackagesFromFolder(folder string) ([]ResolvedPackage, error) {
 	return result, nil
 }
 
+var githubHTTPClient = &http.Client{
+	Timeout: 10 * time.Second,
+}
+
 func githubGetJSON(url string, out any) error {
-	resp, err := http.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Accept", "application/vnd.github+json")
+	req.Header.Set("Cache-Control", "no-cache")
+	req.Header.Set("User-Agent", "MyModInstaller/1.0")
+
+	resp, err := githubHTTPClient.Do(req)
 	if err != nil {
 		return err
 	}

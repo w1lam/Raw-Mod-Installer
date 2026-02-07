@@ -1,5 +1,6 @@
 {
-  "name": "Freaky Franklin (SERVERSIDE)",
+  "name": "FreakyFranklinSERVERSIDE",
+  "id": "freaky-frankling-serverside",
   "listVersion": "0.1.5",
   "mcVersion": "1.21.10",
   "loader": "fabric",
